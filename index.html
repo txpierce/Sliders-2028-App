@@ -83,17 +83,16 @@
     .admin-game-row { border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-bottom: 10px; background: #F8FAFC; }
     .admin-game-row-title { font-weight: 800; color: var(--navy); margin-bottom: 6px; font-size: 0.82rem; display: flex; justify-content: space-between; }
 
-    /* FORMS & BUTTONS (MOBILE ACCESSIBLE TOUCH TARGETS) */
+    /* FORMS & BUTTONS */
     .form-group { margin-bottom: 10px; }
     .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 3px; color: var(--navy); }
-    .form-control, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; /* Prevents mobile browser zoom */ }
+    .form-control, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; }
     
     .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.82rem; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
     .btn-gold { background-color: var(--gold); color: var(--navy); }
     .btn-navy { background-color: var(--navy); color: #fff; }
     .btn-navy:hover { opacity: 0.9; }
     .btn-sm { padding: 5px 10px; font-size: 0.75rem; }
-    .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
 
     /* MODALS */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 12px; }
@@ -108,10 +107,9 @@
       <span class="brand-title">⚾ SOUTH TEXAS SLIDERS 2028</span>
       <span class="motto">EFFORT • DISCIPLINE • ACCOUNTABILITY • GROWTH • RESPECT</span>
     </div>
+    <!-- Dynamically Populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Pierce">2028 Pierce (Head Coach: Matt Pierce)</option>
-      <option value="2028 Borden">2028 Borden (Head Coach: Nathan Borden)</option>
-      <option value="2028 Taylor">2028 Taylor (Head Coach: Brandon Taylor)</option>
+      <option value="2028 Pierce">Loading Teams...</option>
     </select>
   </header>
 
@@ -137,8 +135,6 @@
 
     <!-- 1. WELCOME & PROGRAM OVERVIEW -->
     <div id="welcomeTab" class="tab-panel active">
-      
-      <!-- ANNOUNCEMENT BANNER -->
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
         <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.</p>
@@ -181,13 +177,12 @@
         <div class="card-body">
           <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
           <h3 style="margin-top: 12px;">Spring Training Master Schedule</h3>
-          
           <div class="table-responsive">
             <table>
               <thead>
                 <tr><th>Date</th><th>Day</th><th>Event / Focus Area</th><th>Location</th><th>Notes</th></tr>
               </thead>
-              <tbody id="springTrainingScheduleBody">
+              <tbody>
                 <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
                 <tr><td>May 30, 2027</td><td>Sunday</td><td>Offensive Evaluation & Controlled Machine Scrimmages</td><td>Tri-County Fields</td><td>Full BP & In/Out Flow</td></tr>
                 <tr><td>May 31, 2027</td><td>Monday</td><td>Final Scrimmage Play & Roster Confirmation</td><td>Tri-County Fields</td><td>Final Team Assignments</td></tr>
@@ -202,17 +197,17 @@
     <div id="teamsHubTab" class="tab-panel">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-          <span id="selectedTeamTitle">🧢 2028 Pierce Operations Hub</span>
-          <span id="selectedTeamBadge" class="badge bg-gold">Matt Pierce - Head Coach</span>
+          <span id="selectedTeamTitle">🧢 Team Operations Hub</span>
+          <span id="selectedTeamBadge" class="badge bg-gold">Head Coach</span>
         </div>
         <div class="card-body">
           <div class="grid-2 mb-3">
             <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
               <h3>📱 Communication & Live Platforms</h3>
-              <p><strong>sportsYou Team Code:</strong> <span id="teamSportsYouCode" class="badge bg-gold" style="font-size: 0.85rem;">GGVD-ZCSV</span></p>
+              <p><strong>sportsYou Team Code:</strong> <span id="teamSportsYouCode" class="badge bg-gold" style="font-size: 0.85rem;">-</span></p>
               <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                 <a id="sportsYouBtn" href="https://sportsyou.app" target="_blank" class="btn btn-navy btn-sm">sportsYou Login</a>
-                <a id="gameChangerBtn" href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-gold btn-sm">GameChanger</a>
+                <a id="gameChangerBtn" href="#" target="_blank" class="btn btn-gold btn-sm">GameChanger</a>
                 <a id="calendarBtn" href="#" target="_blank" class="btn btn-navy btn-sm">Google Calendar Link</a>
               </div>
             </div>
@@ -225,7 +220,7 @@
                     <tr><th>Role</th><th>Name</th><th>Phone</th><th>Email</th></tr>
                   </thead>
                   <tbody id="staffTableBody">
-                    <tr><td>Head Coach</td><td>Matt Pierce</td><td>(832) 443-2715</td><td>pierce.matt.c@gmail.com</td></tr>
+                    <tr><td colspan="4">Loading staff info...</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -250,7 +245,7 @@
     <!-- 4. SCHEDULES & HOTELS -->
     <div id="scheduleLogisticsTab" class="tab-panel">
       <div id="tournamentsListContainer">
-        <p style="text-align: center; color: var(--text-muted);">Loading tournament schedule cards (Sorted by Next Tournament)...</p>
+        <p style="text-align: center; color: var(--text-muted);">Loading tournament schedule cards...</p>
       </div>
     </div>
 
@@ -264,7 +259,7 @@
     <!-- 6. PITCHSMART REST & RECOVERY -->
     <div id="pitchSmartTab" class="tab-panel">
       <div class="card">
-        <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (Ordered by Next Available)</div>
+        <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules</div>
         <div class="card-body">
           <div class="table-responsive">
             <table>
@@ -298,7 +293,7 @@
         <div class="card">
           <div class="card-header">🎥 Highlight Edits & Custom Video Requests</div>
           <div class="card-body">
-            <p>Upload raw footage/photos to team Dropbox. Send request details to Media Coordinator <strong>Jaxon Williams</strong> (jaxonwilliams42@gmail.com). Turnaround time is 5–7 business days.</p>
+            <p>Upload raw footage/photos to team Dropbox. Send request details to Media Coordinator <strong>Jaxon Williams</strong> (jaxonwilliams42@gmail.com).</p>
           </div>
         </div>
 
@@ -331,7 +326,6 @@
             <ul>
               <li>Support the team with a positive attitude regardless of game outcome.</li>
               <li>Allow coaches to coach, players to play, and umpires to officiate.</li>
-              <li>Communicate respectfully outside game windows.</li>
             </ul>
           </div>
         </div>
@@ -353,7 +347,7 @@
     <!-- 9. COORDINATOR ADMIN CONSOLE -->
     <div id="adminTab" class="tab-panel">
       <div class="grid-2">
-        <!-- EDIT WELCOME & ANNOUNCEMENTS -->
+        <!-- EDIT ANNOUNCEMENTS -->
         <div class="card">
           <div class="card-header">✏️ Edit Announcements & Welcome Content</div>
           <div class="card-body">
@@ -363,7 +357,7 @@
                 <textarea id="adminAnnouncementText" class="form-control" rows="2"></textarea>
               </div>
               <div class="form-group">
-                <label>Add Upcoming Event (Date & Title)</label>
+                <label>Add Upcoming Event</label>
                 <input type="text" id="adminNewEvent" class="form-control" placeholder="e.g. June 10 - Team Practice at 5pm">
               </div>
               <button type="submit" class="btn btn-navy" style="width: 100%;">Update Welcome Page</button>
@@ -388,7 +382,43 @@
         </div>
       </div>
 
-      <!-- ADD NEW TOURNAMENT TO SCHEDULE CARD -->
+      <!-- ADD NEW TEAM CARD -->
+      <div class="card">
+        <div class="card-header">➕ Add New Team to Program</div>
+        <div class="card-body">
+          <form onsubmit="submitNewTeam(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Team Name</label>
+                <input type="text" id="ntTeamName" class="form-control" placeholder="e.g. 2028 Smith" required>
+              </div>
+              <div class="form-group">
+                <label>Head Coach Full Name</label>
+                <input type="text" id="ntCoachName" class="form-control" placeholder="e.g. John Smith" required>
+              </div>
+              <div class="form-group">
+                <label>sportsYou Code</label>
+                <input type="text" id="ntSportsYouCode" class="form-control" placeholder="e.g. ABCD-1234">
+              </div>
+              <div class="form-group">
+                <label>GameChanger Team Link</label>
+                <input type="url" id="ntGcLink" class="form-control" placeholder="https://web.gc.com/teams/...">
+              </div>
+              <div class="form-group">
+                <label>Google Calendar Link</label>
+                <input type="url" id="ntCalLink" class="form-control" placeholder="https://calendar.google.com/...">
+              </div>
+              <div class="form-group">
+                <label>Coach Phone / Email</label>
+                <input type="text" id="ntCoachPhone" class="form-control" placeholder="(555) 555-5555 / coach@email.com">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Team to Program</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADD NEW TOURNAMENT CARD -->
       <div class="card">
         <div class="card-header">🏆 Add New Tournament to Schedule</div>
         <div class="card-body">
@@ -396,12 +426,7 @@
             <div class="grid-2">
               <div class="form-group">
                 <label>Assigned Team</label>
-                <select id="ntTeam" class="form-select" required>
-                  <option value="All">All Teams</option>
-                  <option value="2028 Pierce">2028 Pierce</option>
-                  <option value="2028 Borden">2028 Borden</option>
-                  <option value="2028 Taylor">2028 Taylor</option>
-                </select>
+                <select id="ntTeam" class="form-select" required></select>
               </div>
               <div class="form-group">
                 <label>Tournament Name</label>
@@ -421,23 +446,23 @@
               </div>
               <div class="form-group">
                 <label>Facility / Field Map Link (or TBA)</label>
-                <input type="text" id="ntMapLink" class="form-control" placeholder="e.g. https://maps.google.com/... or TBA">
+                <input type="text" id="ntMapLink" class="form-control" placeholder="https://maps.google.com/... or TBA">
               </div>
               <div class="form-group">
                 <label>Hotel Booking Link (or TBA)</label>
-                <input type="text" id="ntHotelLink" class="form-control" placeholder="e.g. [suspicious link removed]... or TBA">
+                <input type="text" id="ntHotelLink" class="form-control" placeholder="[suspicious link removed]... or TBA">
               </div>
               <div class="form-group">
                 <label>Hotel Cutoff Date</label>
                 <input type="date" id="ntCutoffDate" class="form-control">
               </div>
             </div>
-            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Tournament to Operations Manual</button>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Tournament to Schedule</button>
           </form>
         </div>
       </div>
 
-      <!-- ADD NEW PLAYER TO ROSTER CARD -->
+      <!-- ADD NEW PLAYER CARD -->
       <div class="card">
         <div class="card-header">🧢 Add New Player to Roster</div>
         <div class="card-body">
@@ -445,11 +470,7 @@
             <div class="grid-2">
               <div class="form-group">
                 <label>Assigned Team</label>
-                <select id="npTeam" class="form-select" required>
-                  <option value="2028 Pierce">2028 Pierce</option>
-                  <option value="2028 Borden">2028 Borden</option>
-                  <option value="2028 Taylor">2028 Taylor</option>
-                </select>
+                <select id="npTeam" class="form-select" required></select>
               </div>
               <div class="form-group">
                 <label>Player Full Name</label>
@@ -490,22 +511,16 @@
         </div>
       </div>
 
-      <!-- BATCH TOURNAMENT SCHEDULE CREATOR (UP TO 20 GAMES) -->
+      <!-- BATCH GAMES CARD -->
       <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
         <div class="card-body">
           <form onsubmit="submitBatchGames(event)">
             <div class="form-group mb-3">
               <label>Select Tournament</label>
-              <select id="gAdminTournamentSelect" class="form-select" required>
-                <!-- Populated dynamically from Google Sheet tournaments -->
-              </select>
+              <select id="gAdminTournamentSelect" class="form-select" required></select>
             </div>
-
-            <div id="batchGamesContainer">
-              <!-- 20 Game Entry Slots Generated dynamically -->
-            </div>
-
+            <div id="batchGamesContainer"></div>
             <button type="submit" class="btn btn-navy" style="width:100%; margin-top:10px;">Publish Filled Tournament Games</button>
           </form>
         </div>
@@ -514,7 +529,7 @@
 
   </div>
 
-  <!-- RSVP / GAME AVAILABILITY MODAL -->
+  <!-- RSVP MODAL -->
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
@@ -535,7 +550,6 @@
             <label>Select Player Name</label>
             <select id="rPlayerName" class="form-select" required></select>
           </div>
-          
           <div class="form-group">
             <label>Game Availability Status</label>
             <select id="rGameStatus" class="form-select">
@@ -544,8 +558,8 @@
               <option value="Partial">Partial / Arriving Late</option>
             </select>
           </div>
-          
-          <div class="form-group"><label>Pitcher Arm Readiness</label>
+          <div class="form-group">
+            <label>Pitcher Arm Readiness</label>
             <select id="rArm" class="form-select">
               <option value="Fresh">Fresh & Ready to Pitch</option>
               <option value="Sore">Arm Soreness / Rest Recommended</option>
@@ -559,7 +573,7 @@
     </div>
   </div>
 
-  <!-- PITCHER OUTINGS HISTORY MODAL -->
+  <!-- PITCHER HISTORY MODAL -->
   <div id="pitcherHistoryModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
@@ -584,34 +598,11 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
+    let fetchedTeams = [];
     let currentRoster = [];
     let currentPitchLogs = [];
     let currentTournaments = [];
     let currentGames = [];
-
-    const TEAM_DATA = {
-      "2028 Pierce": {
-        coach: "Matt Pierce",
-        code: "GGVD-ZCSV",
-        gc: "https://web.gc.com/teams/XlmuG2vLD7gg",
-        cal: "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [{ role: "Head Coach", name: "Matt Pierce", phone: "(832) 443-2715", email: "pierce.matt.c@gmail.com" }]
-      },
-      "2028 Borden": {
-        coach: "Nathan Borden",
-        code: "KRXJ-CK3C",
-        gc: "https://web.gc.com/teams/Ml3nTpzTsmZU",
-        cal: "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [{ role: "Head Coach", name: "Nathan Borden", phone: "(361) 228-3874", email: "nathanborden07@gmail.com" }]
-      },
-      "2028 Taylor": {
-        coach: "Brandon Taylor",
-        code: "Q3EK-J7SS",
-        gc: "https://web.gc.com/teams/CgOvvexQuPjb",
-        cal: "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [{ role: "Head Coach", name: "Brandon Taylor", phone: "(210) 850-6409", email: "bwt243@gmail.com" }]
-      }
-    };
 
     function buildAdminGameSlots() {
       const container = document.getElementById('batchGamesContainer');
@@ -674,9 +665,7 @@
     function switchTabFromDropdown(panelId) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       const targetPanel = document.getElementById(panelId);
-      if (targetPanel) {
-        targetPanel.classList.add('active');
-      }
+      if (targetPanel) targetPanel.classList.add('active');
     }
 
     function toggleModal(show, tournamentName = '', gameDetails = '') {
@@ -693,25 +682,63 @@
     }
 
     function updateClock() {
-      const now = new Date();
-      document.getElementById('clockDisplay').innerText = now.toLocaleString();
+      document.getElementById('clockDisplay').innerText = new Date().toLocaleString();
     }
     setInterval(updateClock, 1000);
 
-    function onTeamChange() {
-      const team = document.getElementById('teamSelector').value;
-      const meta = TEAM_DATA[team];
+    function renderDynamicTeams(teams) {
+      if (!teams || teams.length === 0) return;
+      fetchedTeams = teams;
+
+      const teamSelect = document.getElementById('teamSelector');
+      const ntTeamSelect = document.getElementById('ntTeam');
+      const npTeamSelect = document.getElementById('npTeam');
+
+      const currentSelected = teamSelect.value;
+      const optionsHTML = teams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
-      document.getElementById('selectedTeamTitle').innerText = `🧢 ${team} Operations Hub`;
-      document.getElementById('selectedTeamBadge').innerText = `${meta.coach} - Head Coach`;
-      document.getElementById('teamSportsYouCode').innerText = meta.code;
-      document.getElementById('gameChangerBtn').href = meta.gc;
-      document.getElementById('calendarBtn').href = meta.cal;
+      teamSelect.innerHTML = optionsHTML;
+      if (currentSelected && teams.some(t => t['Team'] === currentSelected)) {
+        teamSelect.value = currentSelected;
+      }
 
-      document.getElementById('staffTableBody').innerHTML = meta.staff.map(s => `
-        <tr><td>${s.role}</td><td>${s.name}</td><td>${s.phone}</td><td>${s.email}</td></tr>
-      `).join('');
+      const adminOptionsHTML = `<option value="All">All Teams</option>` + teams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+      if (ntTeamSelect) ntTeamSelect.innerHTML = adminOptionsHTML;
+      if (npTeamSelect) npTeamSelect.innerHTML = teams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+    }
 
+    function updateSelectedTeamOps(selectedTeamName) {
+      const teamObj = fetchedTeams.find(t => t['Team'] === selectedTeamName) || {
+        'Team': selectedTeamName,
+        'Head Coach': 'Head Coach',
+        'sportsYou Code': 'N/A',
+        'GameChanger Link': '#',
+        'Calendar Link': '#',
+        'Coach Phone': 'N/A',
+        'Coach Email': 'N/A'
+      };
+
+      document.getElementById('selectedTeamTitle').innerText = `🧢 ${teamObj['Team']} Operations Hub`;
+      document.getElementById('selectedTeamBadge').innerText = `${teamObj['Head Coach']} - Head Coach`;
+      document.getElementById('teamSportsYouCode').innerText = teamObj['sportsYou Code'] || 'N/A';
+      
+      const gcBtn = document.getElementById('gameChangerBtn');
+      const calBtn = document.getElementById('calendarBtn');
+      if (gcBtn) gcBtn.href = teamObj['GameChanger Link'] || '#';
+      if (calBtn) calBtn.href = teamObj['Calendar Link'] || '#';
+
+      document.getElementById('staffTableBody').innerHTML = `
+        <tr>
+          <td>Head Coach</td>
+          <td>${teamObj['Head Coach']}</td>
+          <td>${teamObj['Coach Phone'] || '-'}</td>
+          <td>${teamObj['Coach Email'] || '-'}</td>
+        </tr>`;
+    }
+
+    function onTeamChange() {
+      const selectedTeam = document.getElementById('teamSelector').value;
+      updateSelectedTeamOps(selectedTeam);
       loadData();
     }
 
@@ -722,7 +749,7 @@
       }
       const datesStr = t['Dates'] || '';
       if (datesStr) {
-        const firstPart = datesStr.split(' - ')[0].split(' to ')[0].trim();
+        const firstPart = datesStr.split(' - ').split(' to ').trim();
         const d = new Date(firstPart);
         if (!isNaN(d.getTime())) return d;
       }
@@ -739,6 +766,12 @@
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         const data = await res.json();
+        
+        if (data.teams && data.teams.length > 0) {
+          renderDynamicTeams(data.teams);
+          updateSelectedTeamOps(team);
+        }
+
         currentRoster = data.roster || [];
         currentPitchLogs = data.pitchSmart || [];
         currentTournaments = sortTournamentsChronologically(data.tournaments || []);
@@ -759,12 +792,10 @@
     function populateTournamentDropdowns(tournaments) {
       const select = document.getElementById('gAdminTournamentSelect');
       if (!select) return;
-
       if (!tournaments || tournaments.length === 0) {
         select.innerHTML = `<option value="">No tournaments found - add one above</option>`;
         return;
       }
-
       select.innerHTML = tournaments.map(t => {
         const tName = t['Tournament Name'] || t['Event ID'];
         const tDates = t['Dates'] ? ` (${t['Dates']})` : '';
@@ -807,7 +838,6 @@
     function populatePlayerDropdowns(roster) {
       const rSelect = document.getElementById('rPlayerName');
       const pSelect = document.getElementById('pPlayerName');
-      
       const optionsHTML = roster.length > 0 
         ? roster.map(r => `<option value="${r['Full Name']}">${r['Full Name']} (#${r['Jersey #']})</option>`).join('')
         : `<option value="">No players found</option>`;
@@ -958,8 +988,8 @@
       });
 
       tbody.innerHTML = sortedLogs.map(p => {
-        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
-        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
+        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T') : 'Eligible';
+        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T') : '-';
         return `
           <tr>
             <td><strong>${p['Player ID']}</strong></td>
@@ -984,10 +1014,10 @@
       } else {
         tbody.innerHTML = history.map(h => `
           <tr>
-            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
+            <td>${h['Outing Date'] ? h['Outing Date'].split('T') : '-'}</td>
             <td>${h['Pitches Thrown']}</td>
             <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
-            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
+            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T') : '-'}</td>
           </tr>
         `).join('');
       }
@@ -1007,6 +1037,23 @@
           </div>`;
       }
       alert('Welcome page updated!');
+    }
+
+    async function submitNewTeam(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'addTeam',
+        teamName: document.getElementById('ntTeamName').value.trim(),
+        coachName: document.getElementById('ntCoachName').value.trim(),
+        sportsYouCode: document.getElementById('ntSportsYouCode').value.trim(),
+        gcLink: document.getElementById('ntGcLink').value.trim(),
+        calLink: document.getElementById('ntCalLink').value.trim(),
+        coachPhone: document.getElementById('ntCoachPhone').value.trim()
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert(`Team "${payload.teamName}" added successfully to Google Sheets!`);
+      e.target.reset();
+      loadData();
     }
 
     async function submitNewTournament(e) {
@@ -1126,7 +1173,7 @@
     window.onload = function() {
       buildAdminGameSlots();
       updateClock();
-      onTeamChange();
+      loadData();
     };
   </script>
 </body>
