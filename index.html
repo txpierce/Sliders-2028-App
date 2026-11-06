@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>South Texas Sliders 2028 Operations Manual</title>
+  <title>South Texas Sliders Operations Manual</title>
   <style>
     :root {
       --navy: #002D62;
@@ -104,7 +104,7 @@
   <!-- HEADER -->
   <header>
     <div>
-      <span class="brand-title">⚾ SOUTH TEXAS SLIDERS 2028</span>
+      <span class="brand-title">⚾ SOUTH TEXAS SLIDERS</span>
       <span class="motto">EFFORT • DISCIPLINE • ACCOUNTABILITY • GROWTH • RESPECT</span>
     </div>
     <!-- Dynamically Populated Header Team Dropdown -->
@@ -137,7 +137,7 @@
     <div id="welcomeTab" class="tab-panel active">
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
-        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.</p>
+        <p id="announcementText">Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.</p>
       </div>
 
       <div class="grid-2">
@@ -145,7 +145,7 @@
           <div class="card-header">✉️ Welcome from the President</div>
           <div class="card-body">
             <p><strong>Dear Sliders Families,</strong></p>
-            <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is to develop elite baseball players while instilling character, discipline, and effort.</p>
+            <p>On behalf of our entire organization, welcome to the South Texas Sliders family. Our mission is to develop elite baseball players while instilling character, discipline, and effort.</p>
             <p><strong>Program Leadership:</strong></p>
             <ul>
               <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
@@ -175,7 +175,7 @@
       <div class="card">
         <div class="card-header">📑 2027 Spring Training Operations (May 29 – May 31, 2027)</div>
         <div class="card-body">
-          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
+          <p>Spring Training provides a progressive evaluation model to establish final team rosters based on talent, performance, and consistency.</p>
           <h3 style="margin-top: 12px;">Spring Training Master Schedule</h3>
           <div class="table-responsive">
             <table>
@@ -183,7 +183,7 @@
                 <tr><th>Date</th><th>Day</th><th>Event / Focus Area</th><th>Location</th><th>Notes</th></tr>
               </thead>
               <tbody>
-                <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
+                <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All Players Attend</td></tr>
                 <tr><td>May 30, 2027</td><td>Sunday</td><td>Offensive Evaluation & Controlled Machine Scrimmages</td><td>Tri-County Fields</td><td>Full BP & In/Out Flow</td></tr>
                 <tr><td>May 31, 2027</td><td>Monday</td><td>Final Scrimmage Play & Roster Confirmation</td><td>Tri-County Fields</td><td>Final Team Assignments</td></tr>
               </tbody>
@@ -298,7 +298,7 @@
         </div>
 
         <div class="card">
-          <div class="card-header">📈 College Baseball Benchmarks (2028 Grads)</div>
+          <div class="card-header">📈 College Baseball Benchmarks</div>
           <div class="card-body">
             <div class="table-responsive">
               <table>
@@ -598,6 +598,12 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
+    const DEFAULT_TEAMS = [
+      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
+      { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
+    ];
+
     let fetchedTeams = [];
     let currentRoster = [];
     let currentPitchLogs = [];
@@ -687,24 +693,24 @@
     setInterval(updateClock, 1000);
 
     function renderDynamicTeams(teams) {
-      if (!teams || teams.length === 0) return;
-      fetchedTeams = teams;
+      const activeTeams = (teams && teams.length > 0) ? teams : DEFAULT_TEAMS;
+      fetchedTeams = activeTeams;
 
       const teamSelect = document.getElementById('teamSelector');
       const ntTeamSelect = document.getElementById('ntTeam');
       const npTeamSelect = document.getElementById('npTeam');
 
       const currentSelected = teamSelect.value;
-      const optionsHTML = teams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
+      const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       teamSelect.innerHTML = optionsHTML;
-      if (currentSelected && teams.some(t => t['Team'] === currentSelected)) {
+      if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
         teamSelect.value = currentSelected;
       }
 
-      const adminOptionsHTML = `<option value="All">All Teams</option>` + teams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+      const adminOptionsHTML = `<option value="All">All Teams</option>` + activeTeams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
       if (ntTeamSelect) ntTeamSelect.innerHTML = adminOptionsHTML;
-      if (npTeamSelect) npTeamSelect.innerHTML = teams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+      if (npTeamSelect) npTeamSelect.innerHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
     }
 
     function updateSelectedTeamOps(selectedTeamName) {
@@ -767,10 +773,8 @@
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         const data = await res.json();
         
-        if (data.teams && data.teams.length > 0) {
-          renderDynamicTeams(data.teams);
-          updateSelectedTeamOps(team);
-        }
+        renderDynamicTeams(data.teams);
+        updateSelectedTeamOps(team);
 
         currentRoster = data.roster || [];
         currentPitchLogs = data.pitchSmart || [];
@@ -786,6 +790,7 @@
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
+        renderDynamicTeams(DEFAULT_TEAMS);
       }
     }
 
