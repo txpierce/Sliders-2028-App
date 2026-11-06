@@ -43,8 +43,12 @@
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 3px 6px rgba(0,0,0,0.04); overflow: hidden; margin-bottom: 20px; }
-    .card-header { background-color: var(--navy); color: #fff; padding: 14px 18px; font-weight: 800; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
-    .card-body { padding: 18px; }
+    .card-header { background-color: var(--navy); color: #fff; padding: 12px 16px; font-weight: 800; font-size: 0.92rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); flex-wrap: wrap; gap: 8px; }
+    .card-body { padding: 16px; }
+
+    /* TIGHT LINEUP CARD CONTAINER */
+    .tight-lineup-card { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; background: #fff; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+    .tight-lineup-header { background: #EDF2F7; padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 0.88rem; }
 
     /* ANNOUNCEMENT BANNER */
     .announcement-box { background: #FEFCBF; border-left: 6px solid var(--gold); padding: 14px 18px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; color: #744210; }
@@ -52,7 +56,7 @@
 
     /* TYPOGRAPHY & BADGES */
     h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; display: inline-block; }
-    h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 12px 0 6px 0; }
+    h3 { font-size: 1.02rem; font-weight: 700; color: var(--navy); margin: 12px 0 6px 0; }
     p { margin-bottom: 10px; font-size: 0.92rem; color: #2D3748; }
     ul { margin-left: 20px; margin-bottom: 12px; font-size: 0.9rem; }
     li { margin-bottom: 4px; }
@@ -65,26 +69,30 @@
 
     /* TABLES */
     table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
     th { background-color: #EDF2F7; font-weight: 800; color: var(--navy); }
     tr:nth-child(even) { background-color: #F8FAFC; }
 
-    /* VERTICAL LINEUP CARD STYLING */
-    .lineup-vertical-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-    .lineup-vertical-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 6px; }
-    .lineup-pos-tag { font-weight: 800; color: var(--navy); min-width: 65px; }
+    /* VERTICAL LINEUP LIST */
+    .lineup-vertical-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; padding: 12px; }
+    .lineup-vertical-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; }
+    .lineup-pos-tag { font-weight: 800; color: var(--navy); min-width: 50px; }
     .lineup-player-name { font-weight: 700; color: #2D3748; }
 
+    /* ADMIN GAME ROW ENTRY BLOCK */
+    .admin-game-row { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; background: #F8FAFC; }
+    .admin-game-row-title { font-weight: 800; color: var(--navy); margin-bottom: 8px; font-size: 0.85rem; display: flex; justify-content: space-between; }
+
     /* FORMS & BUTTONS */
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
-    .form-control, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.83rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
+    .form-control, .form-select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.88rem; }
     
-    .btn { display: inline-block; padding: 10px 18px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.88rem; text-align: center; transition: all 0.2s; }
+    .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.85rem; text-align: center; transition: all 0.2s; }
     .btn-gold { background-color: var(--gold); color: var(--navy); }
     .btn-navy { background-color: var(--navy); color: #fff; }
     .btn-navy:hover { opacity: 0.9; }
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .btn-sm { padding: 4px 10px; font-size: 0.78rem; }
     .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
 
     /* MODALS */
@@ -130,7 +138,7 @@
       <!-- ANNOUNCEMENT BANNER -->
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
-        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Please review upcoming tournament dates and ensure player availability is submitted on time.</p>
+        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Please review upcoming tournament dates and submit player availability per game.</p>
       </div>
 
       <div class="grid-2">
@@ -154,25 +162,9 @@
             <span id="clockDisplay" style="font-weight: 800; color: var(--gold); font-size: 0.85rem;"></span>
           </div>
           <div class="card-body">
-            <h3>Upcoming Events Agenda</h3>
+            <h3>Upcoming Events & Game Agenda</h3>
             <div id="agendaListContainer">
-              <div style="border-left: 4px solid var(--gold); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <strong>May 29–31, 2027</strong>
-                  <a href="[suspicious link removed]" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>
-                </div>
-                <div style="font-weight:700; color:var(--navy);">Sliders Spring Training Evaluation</div>
-                <div style="font-size:0.82rem; color:var(--text-muted);">Tri-County Fields (Mandatory Evaluation)</div>
-              </div>
-
-              <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <strong>June 16–20, 2027</strong>
-                  <a href="[suspicious link removed]" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>
-                </div>
-                <div style="font-weight:700; color:var(--navy);">Five Tool Pudge Rodriguez World Classic</div>
-                <div style="font-size:0.82rem; color:var(--text-muted);">Melissa Z-Plex (Melissa, TX)</div>
-              </div>
+              <p style="text-align:center; color:var(--text-muted);">Loading upcoming events...</p>
             </div>
           </div>
         </div>
@@ -235,7 +227,7 @@
           <h3>📋 Official Squad Roster</h3>
           <table>
             <thead>
-              <tr><th>Player Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
+              <tr><th>Player Full Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
             </thead>
             <tbody id="teamRosterBody">
               <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
@@ -262,7 +254,7 @@
     <!-- 6. PITCHSMART REST & RECOVERY -->
     <div id="pitchSmartTab" class="tab-panel">
       <div class="card">
-        <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (15–16 Age Group)</div>
+        <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (Ordered by Next Available)</div>
         <div class="card-body">
           <table>
             <thead>
@@ -273,10 +265,10 @@
             </tbody>
           </table>
           
-          <h3 style="margin-top: 20px;">Staff Pitching Rest Tracker</h3>
+          <h3 style="margin-top: 20px;">Pitcher Rest Status (Sorted by Next Availability Date)</h3>
           <table>
             <thead>
-              <tr><th>Pitcher Name</th><th>Outing Date</th><th>Pitches Thrown</th><th>Rest Days Required</th><th>Next Eligible Date</th><th>Actions</th></tr>
+              <tr><th>Pitcher Full Name</th><th>Last Outing Date</th><th>Pitches Thrown</th><th>Rest Days Required</th><th>Next Eligible Date</th><th>Outing History</th></tr>
             </thead>
             <tbody id="pitchTrackerBody">
               <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading pitch logs...</td></tr>
@@ -363,35 +355,13 @@
           </div>
         </div>
 
-        <!-- INSERT GAME SCHEDULE -->
-        <div class="card">
-          <div class="card-header">➕ Insert Tournament Game Schedule</div>
-          <div class="card-body">
-            <form onsubmit="submitGame(event)">
-              <div class="form-group"><label>Tournament Name</label><input type="text" id="gEventId" class="form-control" placeholder="e.g. Five Tool Pudge WS" required></div>
-              <div class="form-group"><label>Game ID</label><input type="text" id="gGameId" class="form-control" placeholder="e.g. GM-001" required></div>
-              <div class="form-group"><label>Date & Time</label><div style="display:flex; gap:10px;"><input type="date" id="gDate" class="form-control" required><input type="time" id="gTime" class="form-control" required></div></div>
-              <div class="form-group"><label>Opponent</label><input type="text" id="gOpponent" class="form-control" required></div>
-              <div class="form-group"><label>Location / Field #</label><input type="text" id="gField" class="form-control" placeholder="e.g. Premier Field 3" required></div>
-              <div class="form-group"><label>Uniform</label>
-                <select id="gUniform" class="form-select">
-                  <option value="Orange Dri-Fit / Navy Custom">Orange Dri-Fit / Navy Custom Top</option>
-                  <option value="Navy Custom Top / White Pants">Navy Custom Top / White Pants</option>
-                  <option value="White Custom Jersey / Navy Pants">White Custom Jersey / Navy Pants</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-navy" style="width:100%;">Publish Game</button>
-            </form>
-          </div>
-        </div>
-
         <!-- LOG PITCH COUNT -->
         <div class="card">
           <div class="card-header">📝 Log Pitch Count</div>
           <div class="card-body">
             <form onsubmit="submitPitchLog(event)">
               <div class="form-group">
-                <label>Pitcher Name</label>
+                <label>Pitcher Full Name</label>
                 <select id="pPlayerName" class="form-select" required></select>
               </div>
               <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
@@ -401,11 +371,36 @@
           </div>
         </div>
       </div>
+
+      <!-- BATCH TOURNAMENT SCHEDULE CREATOR (UP TO 20 GAMES) -->
+      <div class="card">
+        <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
+        <div class="card-body">
+          <form onsubmit="submitBatchGames(event)">
+            <div class="form-group mb-3">
+              <label>Select Tournament</label>
+              <select id="gAdminTournamentSelect" class="form-select" required>
+                <option value="Spring Training Evaluation">Spring Training Evaluation</option>
+                <option value="Five Tool Pudge Rodriguez World Classic">Five Tool Pudge Rodriguez World Classic</option>
+                <option value="USA Baseball West Championships">USA Baseball West Championships</option>
+                <option value="VTOOL 16U World Series">VTOOL 16U World Series</option>
+                <option value="Perfect Game State Championship">Perfect Game State Championship</option>
+              </select>
+            </div>
+
+            <div id="batchGamesContainer">
+              <!-- 20 Game Entry Slots Generated dynamically -->
+            </div>
+
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:10px;">Publish Filled Tournament Games</button>
+          </form>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- RSVP / AVAILABILITY MODAL -->
+  <!-- RSVP / GAME AVAILABILITY MODAL -->
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
@@ -419,30 +414,20 @@
             <input type="text" id="rEventId" class="form-control" readonly style="background:#EDF2F7;">
           </div>
           <div class="form-group">
+            <label>Game / Opponent</label>
+            <input type="text" id="rGameDetails" class="form-control" readonly style="background:#EDF2F7;">
+          </div>
+          <div class="form-group">
             <label>Select Player Name</label>
             <select id="rPlayerName" class="form-select" required></select>
           </div>
           
           <div class="form-group">
-            <label>Game 1 / Day 1 Availability</label>
-            <select id="rGame1" class="form-select">
-              <option value="Available">Available</option>
-              <option value="Unavailable">Unavailable</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Game 2 / Day 2 Availability</label>
-            <select id="rGame2" class="form-select">
-              <option value="Available">Available</option>
-              <option value="Unavailable">Unavailable</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Bracket Play Days (Sat/Sun)</label>
-            <select id="rGameBracket" class="form-select">
-              <option value="Available">Available for Bracket Play</option>
-              <option value="Partial">Partial / Conflict</option>
-              <option value="Unavailable">Unavailable</option>
+            <label>Game Availability Status</label>
+            <select id="rGameStatus" class="form-select">
+              <option value="Available">Available to Play</option>
+              <option value="Unavailable">Unavailable / Conflict</option>
+              <option value="Partial">Partial / Arriving Late</option>
             </select>
           </div>
           
@@ -454,7 +439,7 @@
             </select>
           </div>
           <div class="form-group"><label>Notes / Time Conflicts</label><input type="text" id="rNotes" class="form-control"></div>
-          <button type="submit" class="btn btn-navy" style="width:100%;">Submit Availability</button>
+          <button type="submit" class="btn btn-navy" style="width:100%;">Submit Game Availability</button>
         </form>
       </div>
     </div>
@@ -485,6 +470,8 @@
 
     let currentRoster = [];
     let currentPitchLogs = [];
+    let currentTournaments = [];
+    let currentGames = [];
 
     const TEAM_DATA = {
       "2028 Pierce": {
@@ -510,6 +497,64 @@
       }
     };
 
+    function buildAdminGameSlots() {
+      const container = document.getElementById('batchGamesContainer');
+      let html = '';
+      for (let i = 1; i <= 20; i++) {
+        html += `
+          <div class="admin-game-row">
+            <div class="admin-game-row-title">
+              <span>Game #${i} Slot</span>
+              <span style="font-size:0.75rem; color:var(--text-muted);">(Leave blank to skip)</span>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
+              <div class="form-group">
+                <label>Game Type</label>
+                <select id="bgType_${i}" class="form-select">
+                  <option value="Pool Play">Pool Play</option>
+                  <option value="Consolation">Consolation</option>
+                  <option value="Bracket Play">Bracket Play</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="bgDate_${i}" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Time</label>
+                <input type="time" id="bgTime_${i}" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Opponent</label>
+                <input type="text" id="bgOpponent_${i}" class="form-control" placeholder="Opponent Name">
+              </div>
+              <div class="form-group">
+                <label>Field / Location</label>
+                <input type="text" id="bgField_${i}" class="form-control" placeholder="Field # / Location">
+              </div>
+              <div class="form-group">
+                <label>Jersey Top</label>
+                <select id="bgTop_${i}" class="form-select">
+                  <option value="Navy Custom Top">Navy Custom Top</option>
+                  <option value="Orange Dri-Fit">Orange Dri-Fit</option>
+                  <option value="White Custom Jersey">White Custom Jersey</option>
+                  <option value="Navy Dri-Fit">Navy Dri-Fit</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Pants / Bottom</label>
+                <select id="bgBottom_${i}" class="form-select">
+                  <option value="White Pants">White Pants</option>
+                  <option value="Navy Pants">Navy Pants</option>
+                  <option value="Grey Pants">Grey Pants</option>
+                </select>
+              </div>
+            </div>
+          </div>`;
+      }
+      container.innerHTML = html;
+    }
+
     function switchTab(panelId) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -517,11 +562,12 @@
       document.getElementById(panelId).classList.add('active');
     }
 
-    function toggleModal(show, tournamentName = '') {
+    function toggleModal(show, tournamentName = '', gameDetails = '') {
       const modal = document.getElementById('rsvpModal');
       modal.style.display = show ? 'flex' : 'none';
-      if (show && tournamentName) {
-        document.getElementById('rEventId').value = tournamentName;
+      if (show) {
+        if (tournamentName) document.getElementById('rEventId').value = tournamentName;
+        if (gameDetails) document.getElementById('rGameDetails').value = gameDetails;
       }
     }
 
@@ -559,15 +605,48 @@
         const data = await res.json();
         currentRoster = data.roster || [];
         currentPitchLogs = data.pitchSmart || [];
+        currentTournaments = data.tournaments || [];
+        currentGames = data.games || [];
 
         populatePlayerDropdowns(currentRoster);
+        renderAgenda(currentTournaments, currentGames);
         renderRoster(currentRoster);
-        renderTournaments(data.tournaments, data.games);
-        renderRotations(data.tournaments, data.rotations, data.games);
+        renderTournaments(currentTournaments, currentGames);
+        renderRotations(currentTournaments, data.rotations, currentGames);
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
       }
+    }
+
+    function renderAgenda(tournaments, games) {
+      const container = document.getElementById('agendaListContainer');
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted);">No upcoming events listed.</p>`;
+        return;
+      }
+      container.innerHTML = tournaments.map(t => {
+        const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
+        return `
+          <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>${t['Dates'] || 'TBD'}</strong>
+              ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>` : ''}
+            </div>
+            <div style="font-weight:800; color:var(--navy); font-size:0.95rem;">${t['Tournament Name']}</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); mb-1">${t['Location'] || 'TBD'}</div>
+            
+            ${eventGames.length > 0 ? `
+              <div style="margin-top:6px; background:#fff; border:1px solid var(--border); border-radius:6px; padding:6px 10px;">
+                <strong style="font-size:0.8rem; color:var(--navy);">Scheduled Games:</strong>
+                ${eventGames.map(g => `
+                  <div style="font-size:0.78rem; border-top:1px solid #EDF2F7; padding-top:2px; margin-top:2px;">
+                    • <strong>${g['Game ID']} (${g['Date']} @ ${g['Game Time']}):</strong> vs. ${g['Opponent']} (${g['Location/Field #']})
+                  </div>
+                `).join('')}
+              </div>` : ''}
+          </div>`;
+      }).join('');
     }
 
     function populatePlayerDropdowns(roster) {
@@ -618,13 +697,12 @@
               <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
                 ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
                 ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
-                <button class="btn btn-outline btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}')">RSVP / Game Availability</button>
               </div>
               
-              <h3>Game Schedule</h3>
+              <h3>Game Schedule & Player RSVP</h3>
               <table>
                 <thead>
-                  <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform</th></tr>
+                  <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
                 </thead>
                 <tbody>
                   ${eventGames.length > 0 ? eventGames.map(g => `
@@ -632,11 +710,14 @@
                       <td><strong>${g['Game ID']}</strong></td>
                       <td>${g['Date']}</td>
                       <td>${g['Game Time']}</td>
-                      <td>${g['Opponent']}</td>
+                      <td><strong>vs. ${g['Opponent']}</strong></td>
                       <td>${g['Location/Field #']}</td>
                       <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
+                      <td>
+                        <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${g['Game ID']} - vs. ${g['Opponent']}')">RSVP Game</button>
+                      </td>
                     </tr>
-                  `).join('') : `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
+                  `).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
                 </tbody>
               </table>
             </div>
@@ -663,28 +744,41 @@
               <span>${t['Dates']}</span>
             </div>
             <div class="card-body">
-              ${eventRotations.length > 0 ? eventRotations.map(r => `
-                <div style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px; background: #fff;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                    <h4 style="color:var(--navy); font-size:1.05rem;">⚾ Game Lineup Card: ${r['Game ID']}</h4>
-                    <span class="badge bg-navy">SP: ${r['Starting Pitcher (SP)']}</span>
-                  </div>
-                  <p><strong>Relief Pitchers:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</p>
-                  
-                  <div class="lineup-vertical-list">
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">C</span><span class="lineup-player-name">${r['C'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">1B</span><span class="lineup-player-name">${r['1B'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">2B</span><span class="lineup-player-name">${r['2B'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">3B</span><span class="lineup-player-name">${r['3B'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">SS</span><span class="lineup-player-name">${r['SS'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">LF</span><span class="lineup-player-name">${r['LF'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">CF</span><span class="lineup-player-name">${r['CF'] || 'TBD'}</span></div>
-                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">RF</span><span class="lineup-player-name">${r['RF'] || 'TBD'}</span></div>
-                    ${r['EH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">EH</span><span class="lineup-player-name">${r['EH']}</span></div>` : ''}
-                    ${r['DH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">DH</span><span class="lineup-player-name">${r['DH']}</span></div>` : ''}
-                  </div>
-                </div>
-              `).join('') : `<p style="color:var(--text-muted); text-align:center;">No published lineups for this tournament yet.</p>`}
+              ${eventRotations.length > 0 ? eventRotations.map(r => {
+                const gameInfo = (games || []).find(g => g['Game ID'] === r['Game ID']) || {};
+                const gDate = gameInfo['Date'] || '';
+                const gTime = gameInfo['Game Time'] || '';
+                const gOpponent = gameInfo['Opponent'] ? `vs. ${gameInfo['Opponent']}` : '';
+                const gLocation = gameInfo['Location/Field #'] || '';
+                const gUniform = gameInfo['Designated Uniform'] || '';
+
+                return `
+                  <div class="tight-lineup-card">
+                    <div class="tight-lineup-header">
+                      <span>⚾ ${r['Game ID']} | ${gDate} @ ${gTime} ${gOpponent} (${gLocation})</span>
+                      <span class="badge bg-gold">${gUniform}</span>
+                    </div>
+                    <div style="padding: 10px 14px; background: #fff;">
+                      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:8px; font-size:0.85rem;">
+                        <span><strong>Starting Pitcher (SP):</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span></span>
+                        <span><strong>Relief Pitchers:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</span>
+                      </div>
+                      
+                      <div class="lineup-vertical-list">
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">C</span><span class="lineup-player-name">${r['C'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">1B</span><span class="lineup-player-name">${r['1B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">2B</span><span class="lineup-player-name">${r['2B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">3B</span><span class="lineup-player-name">${r['3B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">SS</span><span class="lineup-player-name">${r['SS'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">LF</span><span class="lineup-player-name">${r['LF'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">CF</span><span class="lineup-player-name">${r['CF'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">RF</span><span class="lineup-player-name">${r['RF'] || 'TBD'}</span></div>
+                        ${r['EH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">EH</span><span class="lineup-player-name">${r['EH']}</span></div>` : ''}
+                        ${r['DH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">DH</span><span class="lineup-player-name">${r['DH']}</span></div>` : ''}
+                      </div>
+                    </div>
+                  </div>`;
+              }).join('') : `<p style="color:var(--text-muted); text-align:center;">No published lineups for this tournament yet.</p>`}
             </div>
           </div>`;
       }).join('');
@@ -696,7 +790,15 @@
         tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No pitch logs recorded yet.</td></tr>`;
         return;
       }
-      tbody.innerHTML = pitchLogs.map(p => {
+
+      // SORT PITCHERS BY NEXT AVAILABLE DATE ASCENDING (EARLIEST / ELIGIBLE FIRST)
+      const sortedLogs = [...pitchLogs].sort((a, b) => {
+        const dateA = a['Next Eligible Pitch Date'] || '';
+        const dateB = b['Next Eligible Pitch Date'] || '';
+        return dateA.localeCompare(dateB);
+      });
+
+      tbody.innerHTML = sortedLogs.map(p => {
         const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
         const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
         return `
@@ -707,7 +809,7 @@
             <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-red' : 'bg-green'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
             <td><strong>${cleanDate}</strong></td>
             <td>
-              <button class="btn btn-navy btn-sm" onclick="viewPitcherHistory('${p['Player ID']}')">View Outings</button>
+              <button class="btn btn-navy btn-sm" onclick="viewPitcherHistory('${p['Player ID']}')">History</button>
             </td>
           </tr>`;
       }).join('');
@@ -748,21 +850,44 @@
       alert('Welcome page updated!');
     }
 
-    async function submitGame(e) {
+    async function submitBatchGames(e) {
       e.preventDefault();
-      const payload = {
-        action: 'insertGame',
-        eventId: document.getElementById('gEventId').value,
-        gameId: document.getElementById('gGameId').value,
-        date: document.getElementById('gDate').value,
-        time: document.getElementById('gTime').value,
-        opponent: document.getElementById('gOpponent').value,
-        field: document.getElementById('gField').value,
-        uniform: document.getElementById('gUniform').value
-      };
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Game schedule added successfully!');
-      loadData();
+      const tournament = document.getElementById('gAdminTournamentSelect').value;
+      let submittedCount = 0;
+
+      for (let i = 1; i <= 20; i++) {
+        const opponent = document.getElementById(`bgOpponent_${i}`).value.trim();
+        const date = document.getElementById(`bgDate_${i}`).value;
+        
+        if (opponent && date) {
+          const gameType = document.getElementById(`bgType_${i}`).value;
+          const time = document.getElementById(`bgTime_${i}`).value;
+          const field = document.getElementById(`bgField_${i}`).value || 'TBD';
+          const top = document.getElementById(`bgTop_${i}`).value;
+          const bottom = document.getElementById(`bgBottom_${i}`).value;
+          
+          const payload = {
+            action: 'insertGame',
+            eventId: tournament,
+            gameId: `GM-${gameType.charAt(0)}${i}`,
+            date: date,
+            time: time,
+            opponent: opponent,
+            field: field,
+            uniform: `${top} / ${bottom}`
+          };
+          
+          await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+          submittedCount++;
+        }
+      }
+
+      if (submittedCount > 0) {
+        alert(`Successfully published ${submittedCount} game(s) to ${tournament}!`);
+        loadData();
+      } else {
+        alert('Please fill out Opponent and Date for at least one game slot.');
+      }
     }
 
     async function submitPitchLog(e) {
@@ -781,25 +906,22 @@
 
     async function submitRSVP(e) {
       e.preventDefault();
-      const g1 = document.getElementById('rGame1').value;
-      const g2 = document.getElementById('rGame2').value;
-      const gb = document.getElementById('rGameBracket').value;
-      
       const payload = {
         action: 'submitRSVP',
         eventId: document.getElementById('rEventId').value,
         playerName: document.getElementById('rPlayerName').value,
-        status: `G1:${g1} | G2:${g2} | Bracket:${gb}`,
+        status: `${document.getElementById('rGameDetails').value} - ${document.getElementById('rGameStatus').value}`,
         armReadiness: document.getElementById('rArm').value,
         notes: document.getElementById('rNotes').value
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Availability submitted successfully!');
+      alert('Game availability submitted successfully!');
       toggleModal(false);
       loadData();
     }
 
     window.onload = function() {
+      buildAdminGameSlots();
       updateClock();
       onTeamChange();
     };
