@@ -1,16 +1,32 @@
-```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>South Texas Sliders 2028 Ops</title>
+  <link href="[suspicious link removed]" rel="stylesheet">
+  <style>
+    :root {
+      --sliders-navy: #002D62;
+      --sliders-gold: #D4AF37;
+      --sliders-bg: #F4F6F9;
+    }
+    body { background-color: var(--sliders-bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .navbar { background-color: var(--sliders-navy); border-bottom: 4px solid var(--sliders-gold); }
+    .navbar-brand { font-weight: 800; color: #fff !important; letter-spacing: 1px; }
+    .nav-tabs .nav-link.active { background-color: var(--sliders-navy); color: var(--sliders-gold) !important; font-weight: bold; }
+    .card-header-sliders { background-color: var(--sliders-navy); color: #fff; font-weight: 700; }
+    .btn-sliders { background-color: var(--sliders-navy); color: var(--sliders-gold); font-weight: 700; border: 1px solid var(--sliders-gold); }
+    .btn-sliders:hover { background-color: var(--sliders-gold); color: var(--sliders-navy); }
+  </style>
+</head>
+<body>
 
-  
-  
-  
-  <link rel="stylesheet" />
-  
-
-  
-  <nav>
-    <div>
-      <span>⚾ SOUTH TEXAS SLIDERS 2028</span>
-      <select>
+  <!-- HEADER NAVBAR -->
+  <nav class="navbar navbar-dark mb-4">
+    <div class="container">
+      <span class="navbar-brand">⚾ SOUTH TEXAS SLIDERS 2028</span>
+      <select id="teamSelector" class="form-select w-auto bg-dark text-white border-warning" onchange="loadData()">
         <option value="2028 Pierce">2028 Pierce</option>
         <option value="2028 Borden">2028 Borden</option>
         <option value="2028 Taylor">2028 Taylor</option>
@@ -18,79 +34,159 @@
     </div>
   </nav>
 
-  <div>
+  <div class="container mb-5">
     
-    
-    <ul role="tablist">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
+    <!-- NAVIGATION TABS -->
+    <ul class="nav nav-tabs mb-4" id="appTabs" role="tablist">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#parentView">📱 Parent & Player Hub</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminGames">➕ Insert Games</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminLineup">⚾ Set Lineup & Rotations</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminPitching">📊 PitchSmart Tracker</button></li>
     </ul>
 
-    <div>
+    <div class="tab-content">
       
-      
-      <div>
-        <div>
-          <div>
-            <div>
-              <div>
+      <!-- 1. PARENT & PLAYER PORTAL -->
+      <div class="tab-pane fade show active" id="parentView">
+        <div class="row">
+          <div class="col-md-7 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header card-header-sliders d-flex justify-content-between align-items-center">
                 <span>🗓️ Upcoming Tournament Schedule</span>
-                
+                <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#rsvpModal">RSVP / Availability</button>
               </div>
-              <div>
-                <div>Loading schedule...</div>
+              <div class="card-body" id="tournamentContainer">
+                <div class="text-center text-muted">Loading schedule...</div>
               </div>
             </div>
           </div>
-          <div>
-            <div>
-              <div>📋 Game Day Uniform &amp; Lineup</div>
-              <div>
-                <div>Select an upcoming game to view published lineups.</div>
+          <div class="col-md-5 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header card-header-sliders">📋 Game Day Uniform & Lineup</div>
+              <div class="card-body" id="rotationContainer">
+                <div class="text-center text-muted">Select an upcoming game to view published lineups.</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      
-      <div>
-        <div>
-          <div>➕ Insert Tournament Game Schedule</div>
-          <div>
-            
+      <!-- 2. INSERT GAMES & TOURNAMENTS -->
+      <div class="tab-pane fade" id="adminGames">
+        <div class="card shadow-sm col-md-8 mx-auto">
+          <div class="card-header card-header-sliders">➕ Insert Tournament Game Schedule</div>
+          <div class="card-body">
+            <form id="gameForm" onsubmit="submitGame(event)">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Event / Tournament ID</label>
+                  <input type="text" class="form-control" id="gEventId" placeholder="e.g. TR-PUDGE-01" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Game ID</label>
+                  <input type="text" class="form-control" id="gGameId" placeholder="e.g. GM-001" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Date</label>
+                  <input type="date" class="form-control" id="gDate" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Game Time</label>
+                  <input type="time" class="form-control" id="gTime" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Opponent</label>
+                  <input type="text" class="form-control" id="gOpponent" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Location / Field #</label>
+                  <input type="text" class="form-control" id="gField" placeholder="e.g. Premier Field 3" required>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Designated Uniform</label>
+                  <select class="form-select" id="gUniform">
+                    <option value="Orange Dri-Fit / Navy Custom">Orange Dri-Fit / Navy Custom Top</option>
+                    <option value="Navy Custom Top / White Pants">Navy Custom Top / White Pants</option>
+                    <option value="White Custom Jersey / Navy Pants">White Custom Jersey / Navy Pants</option>
+                  </select>
+                </div>
+                <div class="col-md-12 text-end">
+                  <button type="submit" class="btn btn-sliders">Publish Game Schedule</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
 
-      
-      <div>
-        <div>
-          <div>⚾ Set Pitching Rotation &amp; Defensive Lineup</div>
-          <div>
-            
+      <!-- 3. SET LINEUPS & ROTATIONS -->
+      <div class="tab-pane fade" id="adminLineup">
+        <div class="card shadow-sm col-md-10 mx-auto">
+          <div class="card-header card-header-sliders">⚾ Set Pitching Rotation & Defensive Lineup</div>
+          <div class="card-body">
+            <form id="rotationForm" onsubmit="submitRotation(event)">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">Game ID</label>
+                  <input type="text" class="form-control" id="rotGameId" placeholder="e.g. GM-001" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Starting Pitcher (SP)</label>
+                  <input type="text" class="form-control" id="rotSP" placeholder="Player Name" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Relief Pitchers (RP1, RP2)</label>
+                  <input type="text" class="form-control" id="rotRP" placeholder="e.g. Chapin / Colwell">
+                </div>
+                <hr>
+                <div class="col-md-3"><label class="form-label">Catcher (C)</label><input type="text" class="form-control" id="rotC"></div>
+                <div class="col-md-3"><label class="form-label">1st Base (1B)</label><input type="text" class="form-control" id="rot1B"></div>
+                <div class="col-md-3"><label class="form-label">2nd Base (2B)</label><input type="text" class="form-control" id="rot2B"></div>
+                <div class="col-md-3"><label class="form-label">3rd Base (3B)</label><input type="text" class="form-control" id="rot3B"></div>
+                <div class="col-md-3"><label class="form-label">Shortstop (SS)</label><input type="text" class="form-control" id="rotSS"></div>
+                <div class="col-md-3"><label class="form-label">Left Field (LF)</label><input type="text" class="form-control" id="rotLF"></div>
+                <div class="col-md-3"><label class="form-label">Center Field (CF)</label><input type="text" class="form-control" id="rotCF"></div>
+                <div class="col-md-3"><label class="form-label">Right Field (RF)</label><input type="text" class="form-control" id="rotRF"></div>
+                <div class="col-md-12 text-end">
+                  <button type="submit" class="btn btn-sliders">Publish Rotation & Lineup</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
 
-      
-      <div>
-        <div>
-          <div>
-            <div>
-              <div>📝 Log Pitch Outing</div>
-              <div>
-                
+      <!-- 4. PITCHSMART TRACKER -->
+      <div class="tab-pane fade" id="adminPitching">
+        <div class="row">
+          <div class="col-md-5 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header card-header-sliders">📝 Log Pitch Outing</div>
+              <div class="card-body">
+                <form id="pitchForm" onsubmit="submitPitchLog(event)">
+                  <div class="mb-3">
+                    <label class="form-label">Player ID / Name</label>
+                    <input type="text" class="form-control" id="pPlayerId" placeholder="e.g. Kai Anderson" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Outing Date</label>
+                    <input type="date" class="form-control" id="pDate" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Pitches Thrown</label>
+                    <input type="number" class="form-control" id="pCount" max="95" required>
+                    <small class="text-muted">PitchSmart Max: 95 pitches (15–16 Age Group)</small>
+                  </div>
+                  <button type="submit" class="btn btn-sliders w-100">Calculate Rest & Log</button>
+                </form>
               </div>
             </div>
           </div>
-          <div>
-            <div>
-              <div>🛡️ Rest Log &amp; Availability Status</div>
-              <div>
-                <table>
+          <div class="col-md-7 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header card-header-sliders">🛡️ Rest Log & Availability Status</div>
+              <div class="card-body">
+                <table class="table table-hover align-middle">
                   <thead>
                     <tr>
                       <th>Player</th>
@@ -99,8 +195,8 @@
                       <th>Next Eligible Date</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr><td colspan="4">No pitch logs recorded yet.</td></tr>
+                  <tbody id="pitchTrackerBody">
+                    <tr><td colspan="4" class="text-center text-muted">No pitch logs recorded yet.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -112,34 +208,173 @@
     </div>
   </div>
 
-  
-  <div>
-    <div>
-      <div>
-        <div>
-          <h5>Parent RSVP / Player Availability</h5>
-          
+  <!-- RSVP MODAL -->
+  <div class="modal fade" id="rsvpModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header card-header-sliders">
+          <h5 class="modal-title">Parent RSVP / Player Availability</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div>
-          
+        <div class="modal-body">
+          <form id="rsvpForm" onsubmit="submitRSVP(event)">
+            <div class="mb-3">
+              <label class="form-label">Event ID</label>
+              <input type="text" class="form-control" id="rEventId" placeholder="e.g. TR-PUDGE-01" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Player Name</label>
+              <input type="text" class="form-control" id="rPlayerName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Attendance Status</label>
+              <select class="form-select" id="rStatus">
+                <option value="Available">Available for all games</option>
+                <option value="Conflict">Conflict / Unavailable</option>
+                <option value="Partial">Partial Availability</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Pitcher Arm Readiness</label>
+              <select class="form-select" id="rArm">
+                <option value="Fresh">Fresh & Ready to Pitch</option>
+                <option value="Sore">Arm Soreness / Rest Recommended</option>
+                <option value="Restricted">PitchSmart Rest Restriction</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes / Time Conflicts</label>
+              <textarea class="form-control" id="rNotes" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-sliders w-100">Submit Availability</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
 
-  
-  
+  <script src="[suspicious link removed]"></script>
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
-```
+    async function loadData() {
+      const team = document.getElementById('teamSelector').value;
+      try {
+        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
+        const data = await res.json();
+        renderTournaments(data.tournaments);
+        renderPitchTracker(data.pitchSmart);
+      } catch (err) {
+        console.error("Error loading app data:", err);
+      }
+    }
 
----
+    function renderTournaments(tournaments) {
+      const container = document.getElementById('tournamentContainer');
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<div class="alert alert-info">No active tournaments listed yet.</div>`;
+        return;
+      }
+      let html = '';
+      tournaments.forEach(t => {
+        html += `
+          <div class="card mb-3 border-secondary">
+            <div class="card-body">
+              <h5 class="card-title text-primary">${t['Tournament Name'] || 'Tournament Event'}</h5>
+              <p class="card-text mb-1"><strong>Dates:</strong> ${t['Dates'] || 'TBD'} | <strong>Location:</strong> ${t['Location'] || 'TBD'}</p>
+              <div class="mt-2">
+                <a href="${t['Hotel Booking Link'] || '#'}" target="_blank" class="btn btn-sm btn-outline-primary">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>
+                <a href="${t['Facility Map Link'] || '#'}" target="_blank" class="btn btn-sm btn-outline-secondary">📍 Field Map</a>
+              </div>
+            </div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
 
-#### Step 3: Turn On GitHub Pages
+    function renderPitchTracker(pitchLogs) {
+      const tbody = document.getElementById('pitchTrackerBody');
+      if (!pitchLogs || pitchLogs.length === 0) return;
+      tbody.innerHTML = pitchLogs.map(p => `
+        <tr>
+          <td><strong>${p['Player ID']}</strong></td>
+          <td><span class="badge bg-secondary">${p['Pitches Thrown']}</span></td>
+          <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-danger' : 'bg-success'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
+          <td>${p['Next Eligible Pitch Date']}</td>
+        </tr>
+      `).join('');
+    }
 
-1. In your GitHub repository, click on **Settings** (tab along the top of the repository page).
-2. On the left sidebar menu, scroll down and click **Pages**.
-3. Under **Build and deployment** \&gt; **Branch**:
-  * Change `None` to **main** (or `master`).
-  * Select `/ (root)` folder.
-  * Click **Save**.
-4. Wait 1 to 2 minutes while GitHub builds your site. Refresh the page until you see a green box at the top that says:
+    async function submitGame(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'insertGame',
+        eventId: document.getElementById('gEventId').value,
+        gameId: document.getElementById('gGameId').value,
+        date: document.getElementById('gDate').value,
+        time: document.getElementById('gTime').value,
+        opponent: document.getElementById('gOpponent').value,
+        field: document.getElementById('gField').value,
+        uniform: document.getElementById('gUniform').value
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert('Game schedule added successfully!');
+      loadData();
+    }
+
+    async function submitRotation(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'publishRotation',
+        gameId: document.getElementById('rotGameId').value,
+        sp: document.getElementById('rotSP').value,
+        rp: document.getElementById('rotRP').value,
+        c: document.getElementById('rotC').value,
+        b1: document.getElementById('rot1B').value,
+        b2: document.getElementById('rot2B').value,
+        b3: document.getElementById('rot3B').value,
+        ss: document.getElementById('rotSS').value,
+        lf: document.getElementById('rotLF').value,
+        cf: document.getElementById('rotCF').value,
+        rf: document.getElementById('rotRF').value
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert('Rotation & lineup published!');
+      loadData();
+    }
+
+    async function submitPitchLog(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'logPitchCount',
+        playerId: document.getElementById('pPlayerId').value,
+        date: document.getElementById('pDate').value,
+        pitches: document.getElementById('pCount').value
+      };
+      const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      alert(`Pitch log recorded! Required rest: ${data.restDays} days.`);
+      loadData();
+    }
+
+    async function submitRSVP(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'submitRSVP',
+        eventId: document.getElementById('rEventId').value,
+        playerName: document.getElementById('rPlayerName').value,
+        status: document.getElementById('rStatus').value,
+        armReadiness: document.getElementById('rArm').value,
+        notes: document.getElementById('rNotes').value
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert('Availability submitted successfully!');
+      const modal = bootstrap.Modal.getInstance(document.getElementById('rsvpModal'));
+      modal.hide();
+      loadData();
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
