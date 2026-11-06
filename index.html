@@ -3,259 +3,420 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>South Texas Sliders 2028 Ops</title>
-  <link href="[suspicious link removed]" rel="stylesheet">
+  <title>South Texas Sliders 2028 Operations Manual</title>
   <style>
     :root {
-      --sliders-navy: #002D62;
-      --sliders-gold: #D4AF37;
-      --sliders-bg: #F4F6F9;
+      --navy: #002D62;
+      --gold: #D4AF37;
+      --bg: #F4F6F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1A202C;
+      --text-muted: #4A5568;
+      --border: #E2E8F0;
+      --success: #38A169;
+      --danger: #E53E3E;
     }
-    body { background-color: var(--sliders-bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .navbar { background-color: var(--sliders-navy); border-bottom: 4px solid var(--sliders-gold); }
-    .navbar-brand { font-weight: 800; color: #fff !important; letter-spacing: 1px; }
-    .nav-tabs .nav-link.active { background-color: var(--sliders-navy); color: var(--sliders-gold) !important; font-weight: bold; }
-    .card-header-sliders { background-color: var(--sliders-navy); color: #fff; font-weight: 700; }
-    .btn-sliders { background-color: var(--sliders-navy); color: var(--sliders-gold); font-weight: 700; border: 1px solid var(--sliders-gold); }
-    .btn-sliders:hover { background-color: var(--sliders-gold); color: var(--sliders-navy); }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-dark); padding-bottom: 50px; line-height: 1.5; }
+
+    /* HEADER & BRANDING */
+    header { background-color: var(--navy); border-bottom: 5px solid var(--gold); padding: 18px 20px; color: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    header .brand-title { font-size: 1.35rem; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; }
+    header .motto { font-size: 0.75rem; color: var(--gold); font-weight: 700; letter-spacing: 1px; display: block; margin-top: 2px; }
+    header select { background-color: rgba(255,255,255,0.12); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
+    header select option { background-color: var(--navy); color: #fff; }
+
+    /* NAVIGATION BAR & TABS */
+    .nav-wrapper { background: #fff; border-bottom: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.03); sticky: top: 0; z-index: 100; }
+    .tabs-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 4px; overflow-x: auto; padding: 0 12px; scrollbar-width: none; }
+    .tabs-container::-webkit-scrollbar { display: none; }
+    .tab-btn { padding: 12px 16px; border: none; background: none; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; font-size: 0.88rem; white-space: nowrap; transition: all 0.2s ease; }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); background-color: #F8FAFC; }
+
+    /* MAIN CONTAINER & PANELS */
+    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* LAYOUT GRIDS & CARDS */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 3px 6px rgba(0,0,0,0.04); overflow: hidden; margin-bottom: 20px; }
+    .card-header { background-color: var(--navy); color: #fff; padding: 14px 18px; font-weight: 800; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
+    .card-body { padding: 18px; }
+
+    /* TYPOGRAPHY & BADGES */
+    h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; display: inline-block; }
+    h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 12px 0 6px 0; }
+    p { margin-bottom: 10px; font-size: 0.92rem; color: #2D3748; }
+    ul { margin-left: 20px; margin-bottom: 12px; font-size: 0.9rem; }
+    li { margin-bottom: 4px; }
+    
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #fff; display: inline-block; }
+    .bg-gold { background-color: var(--gold); color: var(--navy); }
+    .bg-navy { background-color: var(--navy); }
+    .bg-green { background-color: var(--success); }
+    .bg-red { background-color: var(--danger); }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background-color: #EDF2F7; font-weight: 800; color: var(--navy); }
+    tr:nth-child(even) { background-color: #F8FAFC; }
+
+    /* FORMS & BUTTONS */
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
+    .form-control, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+    
+    .btn { display: inline-block; padding: 10px 18px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.88rem; text-align: center; transition: all 0.2s; }
+    .btn-gold { background-color: var(--gold); color: var(--navy); }
+    .btn-navy { background-color: var(--navy); color: #fff; }
+    .btn-navy:hover { opacity: 0.9; }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+
+    /* MODAL OVERLAY */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
+    .modal-content { background: #fff; width: 100%; max-width: 520px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
 
-  <!-- HEADER NAVBAR -->
-  <nav class="navbar navbar-dark mb-4">
-    <div class="container">
-      <span class="navbar-brand">⚾ SOUTH TEXAS SLIDERS 2028</span>
-      <select id="teamSelector" class="form-select w-auto bg-dark text-white border-warning" onchange="loadData()">
-        <option value="2028 Pierce">2028 Pierce</option>
-        <option value="2028 Borden">2028 Borden</option>
-        <option value="2028 Taylor">2028 Taylor</option>
-      </select>
+  <!-- HEADER -->
+  <header>
+    <div>
+      <span class="brand-title">⚾ SOUTH TEXAS SLIDERS 2028</span>
+      <span class="motto">EFFORT • DISCIPLINE • ACCOUNTABILITY • GROWTH • RESPECT</span>
     </div>
-  </nav>
+    <select id="teamSelector" onchange="loadData()">
+      <option value="2028 Pierce">2028 Pierce (Head Coach: Matt Pierce)</option>
+      <option value="2028 Borden">2028 Borden (Head Coach: Nathan Borden)</option>
+      <option value="2028 Taylor">2028 Taylor (Head Coach: Brandon Taylor)</option>
+    </select>
+  </header>
 
-  <div class="container mb-5">
-    
-    <!-- NAVIGATION TABS -->
-    <ul class="nav nav-tabs mb-4" id="appTabs" role="tablist">
-      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#parentView">📱 Parent & Player Hub</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminGames">➕ Insert Games</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminLineup">⚾ Set Lineup & Rotations</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#adminPitching">📊 PitchSmart Tracker</button></li>
-    </ul>
+  <!-- NAVIGATION BAR -->
+  <div class="nav-wrapper">
+    <div class="tabs-container">
+      <button class="tab-btn active" onclick="switchTab('welcomeTab')">✉️ Welcome & Values</button>
+      <button class="tab-btn" onclick="switchTab('springTrainingTab')">📑 2027 Spring Training</button>
+      <button class="tab-btn" onclick="switchTab('teamsHubTab')">🧢 Team Ops Hub</button>
+      <button class="tab-btn" onclick="switchTab('scheduleLogisticsTab')">🗓️ Schedules & Hotels</button>
+      <button class="tab-btn" onclick="switchTab('gameOpsRotationsTab')">⚾ Rotations & Lineups</button>
+      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart Rest</button>
+      <button class="tab-btn" onclick="switchTab('playerResourcesTab')">🎓 Media & Recruiting</button>
+      <button class="tab-btn" onclick="switchTab('parentResourcesTab')">👨‍👩‍👧 Parents & Culture</button>
+      <button class="tab-btn" onclick="switchTab('adminTab')">⚙️ Coordinator Console</button>
+    </div>
+  </div>
 
-    <div class="tab-content">
-      
-      <!-- 1. PARENT & PLAYER PORTAL -->
-      <div class="tab-pane fade show active" id="parentView">
-        <div class="row">
-          <div class="col-md-7 mb-4">
-            <div class="card shadow-sm">
-              <div class="card-header card-header-sliders d-flex justify-content-between align-items-center">
-                <span>🗓️ Upcoming Tournament Schedule</span>
-                <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#rsvpModal">RSVP / Availability</button>
-              </div>
-              <div class="card-body" id="tournamentContainer">
-                <div class="text-center text-muted">Loading schedule...</div>
-              </div>
-            </div>
+  <div class="container">
+
+    <!-- 1. WELCOME & PROGRAM OVERVIEW -->
+    <div id="welcomeTab" class="tab-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">✉️ Welcome from the President</div>
+          <div class="card-body">
+            <p><strong>Dear Sliders Families,</strong></p>
+            <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is simple: to develop great players, but more importantly, to raise young men who carry discipline, effort, and character on and off the field.</p>
+            <p><strong>Program Leadership:</strong></p>
+            <ul>
+              <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
+              <li><strong>2028 Graduation Class Coordinator:</strong> Matt Pierce (832-443-2715)</li>
+              <li><strong>Media & Highlight Coordinator:</strong> Jaxon Williams (jaxonwilliams42@gmail.com)</li>
+            </ul>
           </div>
-          <div class="col-md-5 mb-4">
-            <div class="card shadow-sm">
-              <div class="card-header card-header-sliders">📋 Game Day Uniform & Lineup</div>
-              <div class="card-body" id="rotationContainer">
-                <div class="text-center text-muted">Select an upcoming game to view published lineups.</div>
-              </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">⭐ Program Core Values</div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Effort:</strong> Give 100% in preparation, practice, and games. Hustle is non-negotiable.</li>
+              <li><strong>Discipline:</strong> Stay committed to routines, respect team rules, and maintain self-control.</li>
+              <li><strong>Accountability:</strong> Take ownership of performance and behavior. Be reliable for your teammates.</li>
+              <li><strong>Growth:</strong> Strive for daily improvement, embrace challenges, and learn from success and failure.</li>
+              <li><strong>Respect:</strong> Treat coaches, teammates, officials, opponents, and the game with honor.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 2027 SPRING TRAINING -->
+    <div id="springTrainingTab" class="tab-panel">
+      <div class="card">
+        <div class="card-header">📑 2027 Spring Training Operations (May 29 – May 31, 2027)</div>
+        <div class="card-body">
+          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
+          <div class="grid-3">
+            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
+              <h3>Weekend 1: Baseline Grading</h3>
+              <p>Station-based individual drill evaluations (infield/outfield, arm accuracy, machine BP) and controlled scrimmages.</p>
+            </div>
+            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
+              <h3>Weekend 2: Game Evaluation</h3>
+              <p>Preliminary 3-roster game play (2 games/team). Focus on game instincts, pitch count adherence, and execution.</p>
+            </div>
+            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
+              <h3>Weekend 3: Final Rosters</h3>
+              <p>Final confirmation of roster decisions across 2028 Pierce, 2028 Borden, and 2028 Taylor squads.</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 2. INSERT GAMES & TOURNAMENTS -->
-      <div class="tab-pane fade" id="adminGames">
-        <div class="card shadow-sm col-md-8 mx-auto">
-          <div class="card-header card-header-sliders">➕ Insert Tournament Game Schedule</div>
+    <!-- 3. TEAM OPS HUB -->
+    <div id="teamsHubTab" class="tab-panel">
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">⚡ 2028 Pierce</div>
           <div class="card-body">
-            <form id="gameForm" onsubmit="submitGame(event)">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Event / Tournament ID</label>
-                  <input type="text" class="form-control" id="gEventId" placeholder="e.g. TR-PUDGE-01" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Game ID</label>
-                  <input type="text" class="form-control" id="gGameId" placeholder="e.g. GM-001" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Date</label>
-                  <input type="date" class="form-control" id="gDate" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Game Time</label>
-                  <input type="time" class="form-control" id="gTime" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Opponent</label>
-                  <input type="text" class="form-control" id="gOpponent" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Location / Field #</label>
-                  <input type="text" class="form-control" id="gField" placeholder="e.g. Premier Field 3" required>
-                </div>
-                <div class="col-md-12">
-                  <label class="form-label">Designated Uniform</label>
-                  <select class="form-select" id="gUniform">
-                    <option value="Orange Dri-Fit / Navy Custom">Orange Dri-Fit / Navy Custom Top</option>
-                    <option value="Navy Custom Top / White Pants">Navy Custom Top / White Pants</option>
-                    <option value="White Custom Jersey / Navy Pants">White Custom Jersey / Navy Pants</option>
-                  </select>
-                </div>
-                <div class="col-md-12 text-end">
-                  <button type="submit" class="btn btn-sliders">Publish Game Schedule</button>
-                </div>
+            <p><strong>Head Coach:</strong> Matt Pierce (832-443-2715)</p>
+            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">GGVD-ZCSV</span></p>
+            <p><a href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">🔥 2028 Borden</div>
+          <div class="card-body">
+            <p><strong>Head Coach:</strong> Nathan Borden (361-228-3874)</p>
+            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">KRXJ-CK3C</span></p>
+            <p><a href="https://web.gc.com/teams/Ml3nTpzTsmZU" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">🛡️ 2028 Taylor</div>
+          <div class="card-body">
+            <p><strong>Head Coach:</strong> Brandon Taylor (210-850-6409)</p>
+            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">Q3EK-J7SS</span></p>
+            <p><a href="https://web.gc.com/teams/CgOvvexQuPjb" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SCHEDULES & LOGISTICS -->
+    <div id="scheduleLogisticsTab" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <span>🗓️ Tournament Schedule & Hotel Booking Links</span>
+          <button class="btn btn-gold btn-sm" onclick="toggleModal(true)">Parent RSVP / Availability</button>
+        </div>
+        <div class="card-body" id="tournamentContainer">
+          <p style="text-align: center; color: var(--text-muted);">Loading active tournament schedule...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. GAME OPS & ROTATIONS -->
+    <div id="gameOpsRotationsTab" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">📋 Game Pitching Rotation & Lineup</div>
+          <div class="card-body" id="rotationContainer">
+            <p style="text-align: center; color: var(--text-muted);">Select a game in admin console to view published lineups.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">⏱️ Starting Pitcher 60-Min Pre-Game Routine</div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Timeline</th><th>Action Item</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>60 min</strong></td><td>Mobility, light movement & stretching</td></tr>
+                <tr><td><strong>50 min</strong></td><td>Dynamic warm-up (bands, plyos, activation)</td></tr>
+                <tr><td><strong>40 min</strong></td><td>Flat-ground throwing progression</td></tr>
+                <tr><td><strong>30 min</strong></td><td>Mound bullpen session (FB command, spin)</td></tr>
+                <tr><td><strong>15 min</strong></td><td>Finish bullpen; stay loose with light bands</td></tr>
+                <tr><td><strong>10 min</strong></td><td>Mental prep – review game plan & 10 to Win</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. PITCHSMART REST & ARM CARE -->
+    <div id="pitchSmartTab" class="tab-panel">
+      <div class="card">
+        <div class="card-header">🛡️ PitchSmart Rest Guidelines & Live Tracker (15–16 Age Group)</div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr><th>Daily Max</th><th>0 Days Rest</th><th>1 Day Rest</th><th>2 Days Rest</th><th>3 Days Rest</th><th>4 Days Rest</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>95 Pitches</strong></td><td>1–30 Pitches</td><td>31–45 Pitches</td><td>46–60 Pitches</td><td>61–75 Pitches</td><td>76+ Pitches</td></tr>
+            </tbody>
+          </table>
+          <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--border);">
+          <h3>Pitch Rest Log</h3>
+          <table>
+            <thead>
+              <tr><th>Player</th><th>Pitches Thrown</th><th>Required Rest</th><th>Next Eligible Date</th></tr>
+            </thead>
+            <tbody id="pitchTrackerBody">
+              <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No pitch logs recorded yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. MEDIA & RECRUITING RESOURCES -->
+    <div id="playerResourcesTab" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">🎥 Highlight Edits & Custom Video Requests</div>
+          <div class="card-body">
+            <p>Upload raw footage/photos to team Dropbox. Send request details to Media Coordinator <strong>Jaxon Williams</strong> (jaxonwilliams42@gmail.com). Turnaround time is 5–7 business days.</p>
+            <p><strong>Required Info:</strong> Player Name, Jersey #, Grad Year (2028), Game Date & Opponent, Specific Clips requested.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">📈 College Baseball Benchmarks (2028 Grads)</div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Level</th><th>Exit Velo</th><th>60-Yd Dash</th><th>RHP Velo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Power 4 D1</strong></td><td>95–100+ mph</td><td>6.4–6.8 s</td><td>90–97+ mph</td></tr>
+                <tr><td><strong>Mid-Major D1</strong></td><td>88–95 mph</td><td>6.7–7.0 s</td><td>86–92 mph</td></tr>
+                <tr><td><strong>D2 / JUCO</strong></td><td>83–92 mph</td><td>6.8–7.2 s</td><td>82–88 mph</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. PARENT & CULTURE RESOURCES -->
+    <div id="parentResourcesTab" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">🤝 Parent Expectations</div>
+          <div class="card-body">
+            <ul>
+              <li>Support the team with a positive attitude regardless of game outcome.</li>
+              <li>Allow coaches to coach, players to play, and umpires to officiate (no coaching from stands).</li>
+              <li>Communicate constructively with coaches outside game windows.</li>
+              <li>Ensure players arrive on time in proper uniform.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">⚖️ Progressive Discipline Procedures</div>
+          <div class="card-body">
+            <ol style="margin-left: 20px;">
+              <li><strong>Verbal Warning:</strong> Coach addresses issue directly.</li>
+              <li><strong>Loss of Playing Time:</strong> Player sits part of practice/game.</li>
+              <li><strong>Parent/Player Conference:</strong> Structural review meeting.</li>
+              <li><strong>Suspension / Removal:</strong> Enforced for repeated or severe violations.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. COORDINATOR ADMIN CONSOLE -->
+    <div id="adminTab" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">➕ Insert Game Schedule</div>
+          <div class="card-body">
+            <form onsubmit="submitGame(event)">
+              <div class="form-group"><label>Event ID</label><input type="text" id="gEventId" class="form-control" placeholder="e.g. TR-PUDGE-01" required></div>
+              <div class="form-group"><label>Game ID</label><input type="text" id="gGameId" class="form-control" placeholder="e.g. GM-001" required></div>
+              <div class="form-group"><label>Date & Time</label><div style="display:flex; gap:10px;"><input type="date" id="gDate" class="form-control" required><input type="time" id="gTime" class="form-control" required></div></div>
+              <div class="form-group"><label>Opponent</label><input type="text" id="gOpponent" class="form-control" required></div>
+              <div class="form-group"><label>Field Location</label><input type="text" id="gField" class="form-control" placeholder="e.g. Premier Field 3" required></div>
+              <div class="form-group"><label>Uniform</label>
+                <select id="gUniform" class="form-select">
+                  <option value="Orange Dri-Fit / Navy Custom">Orange Dri-Fit / Navy Custom Top</option>
+                  <option value="Navy Custom Top / White Pants">Navy Custom Top / White Pants</option>
+                  <option value="White Custom Jersey / Navy Pants">White Custom Jersey / Navy Pants</option>
+                </select>
               </div>
+              <button type="submit" class="btn btn-navy" style="width:100%;">Publish Game</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">📝 Log Pitch Count</div>
+          <div class="card-body">
+            <form onsubmit="submitPitchLog(event)">
+              <div class="form-group"><label>Player Name / ID</label><input type="text" id="pPlayerId" class="form-control" required></div>
+              <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
+              <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
+              <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
             </form>
           </div>
         </div>
       </div>
-
-      <!-- 3. SET LINEUPS & ROTATIONS -->
-      <div class="tab-pane fade" id="adminLineup">
-        <div class="card shadow-sm col-md-10 mx-auto">
-          <div class="card-header card-header-sliders">⚾ Set Pitching Rotation & Defensive Lineup</div>
-          <div class="card-body">
-            <form id="rotationForm" onsubmit="submitRotation(event)">
-              <div class="row g-3">
-                <div class="col-md-4">
-                  <label class="form-label">Game ID</label>
-                  <input type="text" class="form-control" id="rotGameId" placeholder="e.g. GM-001" required>
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label">Starting Pitcher (SP)</label>
-                  <input type="text" class="form-control" id="rotSP" placeholder="Player Name" required>
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label">Relief Pitchers (RP1, RP2)</label>
-                  <input type="text" class="form-control" id="rotRP" placeholder="e.g. Chapin / Colwell">
-                </div>
-                <hr>
-                <div class="col-md-3"><label class="form-label">Catcher (C)</label><input type="text" class="form-control" id="rotC"></div>
-                <div class="col-md-3"><label class="form-label">1st Base (1B)</label><input type="text" class="form-control" id="rot1B"></div>
-                <div class="col-md-3"><label class="form-label">2nd Base (2B)</label><input type="text" class="form-control" id="rot2B"></div>
-                <div class="col-md-3"><label class="form-label">3rd Base (3B)</label><input type="text" class="form-control" id="rot3B"></div>
-                <div class="col-md-3"><label class="form-label">Shortstop (SS)</label><input type="text" class="form-control" id="rotSS"></div>
-                <div class="col-md-3"><label class="form-label">Left Field (LF)</label><input type="text" class="form-control" id="rotLF"></div>
-                <div class="col-md-3"><label class="form-label">Center Field (CF)</label><input type="text" class="form-control" id="rotCF"></div>
-                <div class="col-md-3"><label class="form-label">Right Field (RF)</label><input type="text" class="form-control" id="rotRF"></div>
-                <div class="col-md-12 text-end">
-                  <button type="submit" class="btn btn-sliders">Publish Rotation & Lineup</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. PITCHSMART TRACKER -->
-      <div class="tab-pane fade" id="adminPitching">
-        <div class="row">
-          <div class="col-md-5 mb-4">
-            <div class="card shadow-sm">
-              <div class="card-header card-header-sliders">📝 Log Pitch Outing</div>
-              <div class="card-body">
-                <form id="pitchForm" onsubmit="submitPitchLog(event)">
-                  <div class="mb-3">
-                    <label class="form-label">Player ID / Name</label>
-                    <input type="text" class="form-control" id="pPlayerId" placeholder="e.g. Kai Anderson" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Outing Date</label>
-                    <input type="date" class="form-control" id="pDate" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Pitches Thrown</label>
-                    <input type="number" class="form-control" id="pCount" max="95" required>
-                    <small class="text-muted">PitchSmart Max: 95 pitches (15–16 Age Group)</small>
-                  </div>
-                  <button type="submit" class="btn btn-sliders w-100">Calculate Rest & Log</button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-7 mb-4">
-            <div class="card shadow-sm">
-              <div class="card-header card-header-sliders">🛡️ Rest Log & Availability Status</div>
-              <div class="card-body">
-                <table class="table table-hover align-middle">
-                  <thead>
-                    <tr>
-                      <th>Player</th>
-                      <th>Pitches</th>
-                      <th>Rest Days</th>
-                      <th>Next Eligible Date</th>
-                    </tr>
-                  </thead>
-                  <tbody id="pitchTrackerBody">
-                    <tr><td colspan="4" class="text-center text-muted">No pitch logs recorded yet.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+
   </div>
 
   <!-- RSVP MODAL -->
-  <div class="modal fade" id="rsvpModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header card-header-sliders">
-          <h5 class="modal-title">Parent RSVP / Player Availability</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="rsvpForm" onsubmit="submitRSVP(event)">
-            <div class="mb-3">
-              <label class="form-label">Event ID</label>
-              <input type="text" class="form-control" id="rEventId" placeholder="e.g. TR-PUDGE-01" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Player Name</label>
-              <input type="text" class="form-control" id="rPlayerName" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Attendance Status</label>
-              <select class="form-select" id="rStatus">
-                <option value="Available">Available for all games</option>
-                <option value="Conflict">Conflict / Unavailable</option>
-                <option value="Partial">Partial Availability</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Pitcher Arm Readiness</label>
-              <select class="form-select" id="rArm">
-                <option value="Fresh">Fresh & Ready to Pitch</option>
-                <option value="Sore">Arm Soreness / Rest Recommended</option>
-                <option value="Restricted">PitchSmart Rest Restriction</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Notes / Time Conflicts</label>
-              <textarea class="form-control" id="rNotes" rows="2"></textarea>
-            </div>
-            <button type="submit" class="btn btn-sliders w-100">Submit Availability</button>
-          </form>
-        </div>
+  <div id="rsvpModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="card-header">
+        <span>Parent Availability & RSVP</span>
+        <button onclick="toggleModal(false)" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <div class="card-body">
+        <form onsubmit="submitRSVP(event)">
+          <div class="form-group"><label>Event ID</label><input type="text" id="rEventId" class="form-control" placeholder="e.g. TR-PUDGE-01" required></div>
+          <div class="form-group"><label>Player Name</label><input type="text" id="rPlayerName" class="form-control" required></div>
+          <div class="form-group"><label>Attendance Status</label>
+            <select id="rStatus" class="form-select">
+              <option value="Available">Available for all games</option>
+              <option value="Conflict">Conflict / Unavailable</option>
+              <option value="Partial">Partial Availability</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Pitcher Arm Readiness</label>
+            <select id="rArm" class="form-select">
+              <option value="Fresh">Fresh & Ready to Pitch</option>
+              <option value="Sore">Arm Soreness / Rest Recommended</option>
+              <option value="Restricted">PitchSmart Rest Restriction</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Notes / Time Conflicts</label><input type="text" id="rNotes" class="form-control"></div>
+          <button type="submit" class="btn btn-navy" style="width:100%;">Submit Availability</button>
+        </form>
       </div>
     </div>
   </div>
 
-  <script src="[suspicious link removed]"></script>
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
+
+    function switchTab(panelId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+
+    function toggleModal(show) {
+      document.getElementById('rsvpModal').style.display = show ? 'flex' : 'none';
+    }
 
     async function loadData() {
       const team = document.getElementById('teamSelector').value;
@@ -272,24 +433,19 @@
     function renderTournaments(tournaments) {
       const container = document.getElementById('tournamentContainer');
       if (!tournaments || tournaments.length === 0) {
-        container.innerHTML = `<div class="alert alert-info">No active tournaments listed yet.</div>`;
+        container.innerHTML = `<p style="text-align: center; color: var(--text-muted);">No active tournaments listed in Google Sheets for this squad.</p>`;
         return;
       }
-      let html = '';
-      tournaments.forEach(t => {
-        html += `
-          <div class="card mb-3 border-secondary">
-            <div class="card-body">
-              <h5 class="card-title text-primary">${t['Tournament Name'] || 'Tournament Event'}</h5>
-              <p class="card-text mb-1"><strong>Dates:</strong> ${t['Dates'] || 'TBD'} | <strong>Location:</strong> ${t['Location'] || 'TBD'}</p>
-              <div class="mt-2">
-                <a href="${t['Hotel Booking Link'] || '#'}" target="_blank" class="btn btn-sm btn-outline-primary">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>
-                <a href="${t['Facility Map Link'] || '#'}" target="_blank" class="btn btn-sm btn-outline-secondary">📍 Field Map</a>
-              </div>
-            </div>
-          </div>`;
-      });
-      container.innerHTML = html;
+      container.innerHTML = tournaments.map(t => `
+        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; background: #fff;">
+          <h3 style="margin-top:0;">${t['Tournament Name'] || 'Tournament Event'}</h3>
+          <p><strong>Dates:</strong> ${t['Dates'] || 'TBD'} | <strong>Location:</strong> ${t['Location'] || 'TBD'}</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
+            ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderPitchTracker(pitchLogs) {
@@ -298,8 +454,8 @@
       tbody.innerHTML = pitchLogs.map(p => `
         <tr>
           <td><strong>${p['Player ID']}</strong></td>
-          <td><span class="badge bg-secondary">${p['Pitches Thrown']}</span></td>
-          <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-danger' : 'bg-success'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
+          <td><span class="badge bg-navy">${p['Pitches Thrown']}</span></td>
+          <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-red' : 'bg-green'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
           <td>${p['Next Eligible Pitch Date']}</td>
         </tr>
       `).join('');
@@ -318,28 +474,7 @@
         uniform: document.getElementById('gUniform').value
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Game schedule added successfully!');
-      loadData();
-    }
-
-    async function submitRotation(e) {
-      e.preventDefault();
-      const payload = {
-        action: 'publishRotation',
-        gameId: document.getElementById('rotGameId').value,
-        sp: document.getElementById('rotSP').value,
-        rp: document.getElementById('rotRP').value,
-        c: document.getElementById('rotC').value,
-        b1: document.getElementById('rot1B').value,
-        b2: document.getElementById('rot2B').value,
-        b3: document.getElementById('rot3B').value,
-        ss: document.getElementById('rotSS').value,
-        lf: document.getElementById('rotLF').value,
-        cf: document.getElementById('rotCF').value,
-        rf: document.getElementById('rotRF').value
-      };
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Rotation & lineup published!');
+      alert('Game schedule added successfully to Google Sheets!');
       loadData();
     }
 
@@ -353,7 +488,7 @@
       };
       const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
       const data = await res.json();
-      alert(`Pitch log recorded! Required rest: ${data.restDays} days.`);
+      alert(`Pitch log recorded! Required PitchSmart rest: ${data.restDays} days.`);
       loadData();
     }
 
@@ -368,9 +503,8 @@
         notes: document.getElementById('rNotes').value
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Availability submitted successfully!');
-      const modal = bootstrap.Modal.getInstance(document.getElementById('rsvpModal'));
-      modal.hide();
+      alert('Availability submitted!');
+      toggleModal(false);
       loadData();
     }
 
