@@ -388,6 +388,104 @@
         </div>
       </div>
 
+      <!-- ADD NEW TOURNAMENT TO SCHEDULE CARD -->
+      <div class="card">
+        <div class="card-header">🏆 Add New Tournament to Schedule</div>
+        <div class="card-body">
+          <form onsubmit="submitNewTournament(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Assigned Team</label>
+                <select id="ntTeam" class="form-select" required>
+                  <option value="All">All Teams</option>
+                  <option value="2028 Pierce">2028 Pierce</option>
+                  <option value="2028 Borden">2028 Borden</option>
+                  <option value="2028 Taylor">2028 Taylor</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Tournament Name</label>
+                <input type="text" id="ntName" class="form-control" placeholder="e.g. Five Tool Pudge World Classic" required>
+              </div>
+              <div class="form-group">
+                <label>Dates</label>
+                <input type="text" id="ntDates" class="form-control" placeholder="e.g. June 16 - June 20, 2027" required>
+              </div>
+              <div class="form-group">
+                <label>Location / City</label>
+                <input type="text" id="ntLocation" class="form-control" placeholder="e.g. Melissa, TX" required>
+              </div>
+              <div class="form-group">
+                <label>Facility / Field Map Link</label>
+                <input type="url" id="ntMapLink" class="form-control" placeholder="https://maps.google.com/...">
+              </div>
+              <div class="form-group">
+                <label>Hotel Booking Link</label>
+                <input type="url" id="ntHotelLink" class="form-control" placeholder="[suspicious link removed]...">
+              </div>
+              <div class="form-group">
+                <label>Hotel Cutoff Date</label>
+                <input type="date" id="ntCutoffDate" class="form-control">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Tournament to Operations Manual</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADD NEW PLAYER TO ROSTER CARD -->
+      <div class="card">
+        <div class="card-header">🧢 Add New Player to Roster</div>
+        <div class="card-body">
+          <form onsubmit="submitNewPlayer(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Assigned Team</label>
+                <select id="npTeam" class="form-select" required>
+                  <option value="2028 Pierce">2028 Pierce</option>
+                  <option value="2028 Borden">2028 Borden</option>
+                  <option value="2028 Taylor">2028 Taylor</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Player Full Name</label>
+                <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
+              </div>
+              <div class="form-group">
+                <label>Jersey #</label>
+                <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
+              </div>
+              <div class="form-group">
+                <label>Primary Position</label>
+                <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
+              </div>
+              <div class="form-group">
+                <label>Secondary Position</label>
+                <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
+              </div>
+              <div class="form-group">
+                <label>Pitcher Capability</label>
+                <select id="npPitcherStatus" class="form-select">
+                  <option value="RHP">RHP</option>
+                  <option value="LHP">LHP</option>
+                  <option value="Both">RHP / LHP</option>
+                  <option value="Position Only">Position Only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>High School</label>
+                <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
+              </div>
+              <div class="form-group">
+                <label>Parent Contact Info</label>
+                <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
+          </form>
+        </div>
+      </div>
+
       <!-- BATCH TOURNAMENT SCHEDULE CREATOR (UP TO 20 GAMES) -->
       <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
@@ -396,11 +494,7 @@
             <div class="form-group mb-3">
               <label>Select Tournament</label>
               <select id="gAdminTournamentSelect" class="form-select" required>
-                <option value="Spring Training Evaluation">Spring Training Evaluation</option>
-                <option value="Five Tool Pudge Rodriguez World Classic">Five Tool Pudge Rodriguez World Classic</option>
-                <option value="USA Baseball West Championships">USA Baseball West Championships</option>
-                <option value="VTOOL 16U World Series">VTOOL 16U World Series</option>
-                <option value="Perfect Game State Championship">Perfect Game State Championship</option>
+                <!-- Populated dynamically from Google Sheet tournaments -->
               </select>
             </div>
 
@@ -628,6 +722,7 @@
         currentGames = data.games || [];
 
         populatePlayerDropdowns(currentRoster);
+        populateTournamentDropdowns(currentTournaments);
         renderAgenda(currentTournaments, currentGames);
         renderRoster(currentRoster);
         renderTournaments(currentTournaments, currentGames);
@@ -636,6 +731,22 @@
       } catch (err) {
         console.error("Error loading app data:", err);
       }
+    }
+
+    function populateTournamentDropdowns(tournaments) {
+      const select = document.getElementById('gAdminTournamentSelect');
+      if (!select) return;
+
+      if (!tournaments || tournaments.length === 0) {
+        select.innerHTML = `<option value="">No tournaments found - add one above</option>`;
+        return;
+      }
+
+      select.innerHTML = tournaments.map(t => {
+        const tName = t['Tournament Name'] || t['Event ID'];
+        const tDates = t['Dates'] ? ` (${t['Dates']})` : '';
+        return `<option value="${tName}">${tName}${tDates}</option>`;
+      }).join('');
     }
 
     function renderAgenda(tournaments, games) {
@@ -868,6 +979,43 @@
           </div>`;
       }
       alert('Welcome page updated!');
+    }
+
+    async function submitNewTournament(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'addTournament',
+        team: document.getElementById('ntTeam').value,
+        tournamentName: document.getElementById('ntName').value,
+        dates: document.getElementById('ntDates').value,
+        location: document.getElementById('ntLocation').value,
+        mapLink: document.getElementById('ntMapLink').value,
+        hotelLink: document.getElementById('ntHotelLink').value,
+        cutoffDate: document.getElementById('ntCutoffDate').value
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert(`Tournament "${payload.tournamentName}" added to Operations Manual successfully!`);
+      e.target.reset();
+      loadData();
+    }
+
+    async function submitNewPlayer(e) {
+      e.preventDefault();
+      const payload = {
+        action: 'addPlayer',
+        team: document.getElementById('npTeam').value,
+        fullName: document.getElementById('npFullName').value,
+        jersey: document.getElementById('npJersey').value,
+        primaryPos: document.getElementById('npPrimaryPos').value,
+        secondaryPos: document.getElementById('npSecondaryPos').value,
+        pitcherStatus: document.getElementById('npPitcherStatus').value,
+        highSchool: document.getElementById('npHighSchool').value,
+        contactInfo: document.getElementById('npContactInfo').value
+      };
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert(`Player ${payload.fullName} added to ${payload.team} roster successfully!`);
+      e.target.reset();
+      loadData();
     }
 
     async function submitBatchGames(e) {
