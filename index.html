@@ -12,7 +12,7 @@
       --card-bg: #FFFFFF;
       --text-dark: #1A202C;
       --text-muted: #4A5568;
-      --border: #E2E8F0;
+      --border: #CBD5E0;
       --success: #38A169;
       --danger: #E53E3E;
     }
@@ -21,19 +21,18 @@
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-dark); padding-bottom: 50px; line-height: 1.5; }
 
     /* HEADER & BRANDING */
-    header { background-color: var(--navy); border-bottom: 5px solid var(--gold); padding: 18px 20px; color: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    header { background-color: var(--navy); border-bottom: 5px solid var(--gold); padding: 16px 20px; color: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     header .brand-title { font-size: 1.35rem; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; }
     header .motto { font-size: 0.75rem; color: var(--gold); font-weight: 700; letter-spacing: 1px; display: block; margin-top: 2px; }
-    header select { background-color: rgba(255,255,255,0.12); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
+    header select { background-color: rgba(255,255,255,0.15); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
     header select option { background-color: var(--navy); color: #fff; }
 
-    /* NAVIGATION BAR */
-    .nav-wrapper { background: #fff; border-bottom: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; }
-    .tabs-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 4px; overflow-x: auto; padding: 0 12px; scrollbar-width: none; }
-    .tabs-container::-webkit-scrollbar { display: none; }
-    .tab-btn { padding: 12px 16px; border: none; background: none; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; font-size: 0.88rem; white-space: nowrap; transition: all 0.2s ease; }
-    .tab-btn:hover { color: var(--navy); }
-    .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); background-color: #F8FAFC; }
+    /* NAVIGATION BAR - WRAPPING TABLET & MOBILE COMPATIBLE */
+    .nav-wrapper { background: var(--navy); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .tabs-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }
+    .tab-btn { padding: 8px 14px; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 6px; background: rgba(255, 255, 255, 0.08); font-weight: 700; color: #FFFFFF; cursor: pointer; font-size: 0.85rem; white-space: nowrap; transition: all 0.2s ease; }
+    .tab-btn:hover { background: var(--gold); color: var(--navy); }
+    .tab-btn.active { color: var(--navy); background-color: var(--gold); border-color: var(--gold); font-weight: 800; }
 
     /* CONTAINER & PANELS */
     .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
@@ -70,6 +69,12 @@
     th { background-color: #EDF2F7; font-weight: 800; color: var(--navy); }
     tr:nth-child(even) { background-color: #F8FAFC; }
 
+    /* VERTICAL LINEUP CARD STYLING */
+    .lineup-vertical-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .lineup-vertical-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 6px; }
+    .lineup-pos-tag { font-weight: 800; color: var(--navy); min-width: 65px; }
+    .lineup-player-name { font-weight: 700; color: #2D3748; }
+
     /* FORMS & BUTTONS */
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
@@ -82,9 +87,9 @@
     .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
     .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
 
-    /* MODAL OVERLAY */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-    .modal-content { background: #fff; width: 100%; max-width: 520px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    /* MODALS */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; }
+    .modal-content { background: #fff; width: 100%; max-width: 560px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -102,18 +107,18 @@
     </select>
   </header>
 
-  <!-- NAVIGATION BAR -->
+  <!-- NAVIGATION BAR (WRAPPING TABS) -->
   <div class="nav-wrapper">
     <div class="tabs-container">
       <button class="tab-btn active" onclick="switchTab('welcomeTab')">✉️ Welcome & Values</button>
       <button class="tab-btn" onclick="switchTab('springTrainingTab')">📑 2027 Spring Training</button>
       <button class="tab-btn" onclick="switchTab('teamsHubTab')">🧢 Team Ops Hub</button>
       <button class="tab-btn" onclick="switchTab('scheduleLogisticsTab')">🗓️ Schedules & Hotels</button>
-      <button class="tab-btn" onclick="switchTab('gameOpsRotationsTab')">⚾ Rotations & Lineups</button>
-      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart & Recovery</button>
+      <button class="tab-btn" onclick="switchTab('gameOpsRotationsTab')">⚾ Lineups & Rotations</button>
+      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart Rest</button>
       <button class="tab-btn" onclick="switchTab('playerResourcesTab')">🎓 Media & Recruiting</button>
       <button class="tab-btn" onclick="switchTab('parentResourcesTab')">👨‍👩‍👧 Parents & Culture</button>
-      <button class="tab-btn" onclick="switchTab('adminTab')">⚙️ Coordinator Console</button>
+      <button class="tab-btn" onclick="switchTab('adminTab')">⚙️ Admin Console</button>
     </div>
   </div>
 
@@ -122,7 +127,7 @@
     <!-- 1. WELCOME & PROGRAM OVERVIEW -->
     <div id="welcomeTab" class="tab-panel active">
       
-      <!-- COACH ANNOUNCEMENTS BOX -->
+      <!-- ANNOUNCEMENT BANNER -->
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
         <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Please review upcoming tournament dates and ensure player availability is submitted on time.</p>
@@ -132,33 +137,41 @@
         <div class="card">
           <div class="card-header">✉️ Welcome from the President</div>
           <div class="card-body">
-            <div id="welcomeLetterDisplay">
-              <p><strong>Dear Sliders Families,</strong></p>
-              <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is simple: to develop great players, but more importantly, to raise young men who carry discipline, effort, and character on and off the field.</p>
-              <p><strong>Program Leadership:</strong></p>
-              <ul>
-                <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
-                <li><strong>2028 Grad Class Coordinator:</strong> Matt Pierce (832-443-2715)</li>
-                <li><strong>Media Coordinator:</strong> Jaxon Williams (jaxonwilliams42@gmail.com)</li>
-              </ul>
-            </div>
+            <p><strong>Dear Sliders Families,</strong></p>
+            <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is to develop elite baseball players while instilling character, discipline, and effort.</p>
+            <p><strong>Program Leadership:</strong></p>
+            <ul>
+              <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
+              <li><strong>2028 Grad Class Coordinator:</strong> Matt Pierce (832-443-2715)</li>
+              <li><strong>Media Coordinator:</strong> Jaxon Williams (jaxonwilliams42@gmail.com)</li>
+            </ul>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header">📅 Date & Time / Upcoming Events</div>
+          <div class="card-header">
+            <span>📅 Live Ticker & Agenda</span>
+            <span id="clockDisplay" style="font-weight: 800; color: var(--gold); font-size: 0.85rem;"></span>
+          </div>
           <div class="card-body">
-            <p><strong>Current Local Time:</strong> <span id="clockDisplay" style="font-weight: 800; color: var(--navy);">Loading time...</span></p>
-            <hr style="margin: 10px 0; border: none; border-top: 1px solid var(--border);">
-            <h3>Upcoming Events & Key Milestones</h3>
-            <div id="eventsDisplay">
-              <div style="border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 10px;">
-                <strong>May 29–31, 2027</strong><br>
-                <span>Sliders Spring Training Evaluation (Tri-County)</span>
+            <h3>Upcoming Events Agenda</h3>
+            <div id="agendaListContainer">
+              <div style="border-left: 4px solid var(--gold); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong>May 29–31, 2027</strong>
+                  <a href="[suspicious link removed]" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>
+                </div>
+                <div style="font-weight:700; color:var(--navy);">Sliders Spring Training Evaluation</div>
+                <div style="font-size:0.82rem; color:var(--text-muted);">Tri-County Fields (Mandatory Evaluation)</div>
               </div>
-              <div style="border-left: 3px solid var(--navy); padding-left: 10px; margin-bottom: 10px;">
-                <strong>June 16–20, 2027</strong><br>
-                <span>Five Tool Pudge Rodriguez World Classic (Melissa, TX)</span>
+
+              <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong>June 16–20, 2027</strong>
+                  <a href="[suspicious link removed]" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>
+                </div>
+                <div style="font-weight:700; color:var(--navy);">Five Tool Pudge Rodriguez World Classic</div>
+                <div style="font-size:0.82rem; color:var(--text-muted);">Melissa Z-Plex (Melissa, TX)</div>
               </div>
             </div>
           </div>
@@ -171,12 +184,11 @@
       <div class="card">
         <div class="card-header">📑 2027 Spring Training Operations (May 29 – May 31, 2027)</div>
         <div class="card-body">
-          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency across three structured weekends.</p>
-          
+          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
           <h3 style="margin-top: 16px;">Spring Training Master Schedule</h3>
           <table>
             <thead>
-              <tr><th>Date</th><th>Day(s)</th><th>Event / Focus Area</th><th>Location</th><th>Notes / Attendance</th></tr>
+              <tr><th>Date</th><th>Day</th><th>Event / Focus Area</th><th>Location</th><th>Notes</th></tr>
             </thead>
             <tbody id="springTrainingScheduleBody">
               <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
@@ -188,7 +200,7 @@
       </div>
     </div>
 
-    <!-- 3. TEAM OPS HUB (DROPDOWN FILTERED) -->
+    <!-- 3. TEAM OPS HUB -->
     <div id="teamsHubTab" class="tab-panel">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -215,7 +227,6 @@
                 </thead>
                 <tbody id="staffTableBody">
                   <tr><td>Head Coach</td><td>Matt Pierce</td><td>(832) 443-2715</td><td>pierce.matt.c@gmail.com</td></tr>
-                  <tr><td>Assistant Coach</td><td>Kendrick Perkins</td><td>(832) 242-2466</td><td>ospstrong10@gmail.com</td></tr>
                 </tbody>
               </table>
             </div>
@@ -224,10 +235,10 @@
           <h3>📋 Official Squad Roster</h3>
           <table>
             <thead>
-              <tr><th>Player ID</th><th>Full Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
+              <tr><th>Player Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
             </thead>
             <tbody id="teamRosterBody">
-              <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
             </tbody>
           </table>
         </div>
@@ -241,14 +252,14 @@
       </div>
     </div>
 
-    <!-- 5. GAME OPS & ROTATIONS -->
+    <!-- 5. LINEUPS & ROTATIONS -->
     <div id="gameOpsRotationsTab" class="tab-panel">
       <div id="rotationsListContainer">
-        <p style="text-align: center; color: var(--text-muted);">Loading published game rotations...</p>
+        <p style="text-align: center; color: var(--text-muted);">Loading published game lineups...</p>
       </div>
     </div>
 
-    <!-- 6. PITCHSMART REST & ARM CARE PROTOCOL -->
+    <!-- 6. PITCHSMART REST & RECOVERY -->
     <div id="pitchSmartTab" class="tab-panel">
       <div class="card">
         <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (15–16 Age Group)</div>
@@ -265,41 +276,12 @@
           <h3 style="margin-top: 20px;">Staff Pitching Rest Tracker</h3>
           <table>
             <thead>
-              <tr><th>Player Name</th><th>Outing Date</th><th>Pitches Thrown</th><th>Required Rest Days</th><th>Next Eligible Date</th><th>Status</th></tr>
+              <tr><th>Pitcher Name</th><th>Outing Date</th><th>Pitches Thrown</th><th>Rest Days Required</th><th>Next Eligible Date</th><th>Actions</th></tr>
             </thead>
             <tbody id="pitchTrackerBody">
               <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading pitch logs...</td></tr>
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <!-- PITCHER PROTOCOL ON REST DAYS -->
-      <div class="card">
-        <div class="card-header">💪 Pitcher Protocol on Rest Days & Arm Recovery Routine</div>
-        <div class="card-body">
-          <div class="grid-2">
-            <div>
-              <h3>Daily Rest-Day Throwing Plan</h3>
-              <ul>
-                <li><strong>Day 0 (Game Day):</strong> Normal game workload + post-game arm care (bands + light flush).</li>
-                <li><strong>Day 1 (Rest Day):</strong> Bands & mobility routine + 60–75 ft light toss (NO mound work).</li>
-                <li><strong>Day 2 (Light Toss & Recovery):</strong> Throw 45–75 ft, Jaeger band circuit, wrist weight drills.</li>
-                <li><strong>Day 3 (Touch-and-Feel):</strong> Throw 75–100 ft, optional short touch-and-feel pen (15–20 pitches).</li>
-                <li><strong>Day 4 (Pre-Game Prep):</strong> Light toss only (45–60 ft), mental game review.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3>Arm Care & Mobility Drills</h3>
-              <ul>
-                <li><strong>Wrist Weights (5 reps/set):</strong> Arm swings, 2-arm throw, Cuban press, pivot picks.</li>
-                <li><strong>Jaeger Bands (10 reps/set):</strong> External rotations, forward shoulder raises, reverse flys.</li>
-                <li><strong>Plyometrics:</strong> Reverse throws (2x10), pivot picks (2x10).</li>
-                <li><strong>Post-Outing Rule:</strong> If pitch count exceeded 60 pitches, reduce lower-body lifting by 50%.</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -381,21 +363,6 @@
           </div>
         </div>
 
-        <!-- UPDATE SPRING TRAINING SCHEDULE -->
-        <div class="card">
-          <div class="card-header">📑 Update Spring Training Schedule</div>
-          <div class="card-body">
-            <form onsubmit="addSpringTrainingRow(event)">
-              <div class="form-group"><label>Date</label><input type="text" id="stDate" class="form-control" placeholder="e.g. May 29, 2027" required></div>
-              <div class="form-group"><label>Day</label><input type="text" id="stDay" class="form-control" placeholder="e.g. Saturday" required></div>
-              <div class="form-group"><label>Event / Focus Area</label><input type="text" id="stEvent" class="form-control" required></div>
-              <div class="form-group"><label>Location</label><input type="text" id="stLocation" class="form-control" required></div>
-              <div class="form-group"><label>Notes</label><input type="text" id="stNotes" class="form-control"></div>
-              <button type="submit" class="btn btn-navy" style="width: 100%;">Add Spring Training Event</button>
-            </form>
-          </div>
-        </div>
-
         <!-- INSERT GAME SCHEDULE -->
         <div class="card">
           <div class="card-header">➕ Insert Tournament Game Schedule</div>
@@ -423,7 +390,10 @@
           <div class="card-header">📝 Log Pitch Count</div>
           <div class="card-body">
             <form onsubmit="submitPitchLog(event)">
-              <div class="form-group"><label>Player Name / ID</label><input type="text" id="pPlayerId" class="form-control" required></div>
+              <div class="form-group">
+                <label>Pitcher Name</label>
+                <select id="pPlayerName" class="form-select" required></select>
+              </div>
               <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
               <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
               <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
@@ -435,24 +405,47 @@
 
   </div>
 
-  <!-- RSVP MODAL -->
+  <!-- RSVP / AVAILABILITY MODAL -->
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
-        <span>Parent Availability & RSVP</span>
+        <span>Parent RSVP / Game Availability</span>
         <button onclick="toggleModal(false)" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
       </div>
       <div class="card-body">
         <form onsubmit="submitRSVP(event)">
-          <div class="form-group"><label>Tournament Name</label><input type="text" id="rEventId" class="form-control" placeholder="e.g. Five Tool Pudge WS" required></div>
-          <div class="form-group"><label>Player Name</label><input type="text" id="rPlayerName" class="form-control" required></div>
-          <div class="form-group"><label>Attendance Status</label>
-            <select id="rStatus" class="form-select">
-              <option value="Available">Available for all games</option>
-              <option value="Conflict">Conflict / Unavailable</option>
-              <option value="Partial">Partial Availability</option>
+          <div class="form-group">
+            <label>Tournament Name</label>
+            <input type="text" id="rEventId" class="form-control" readonly style="background:#EDF2F7;">
+          </div>
+          <div class="form-group">
+            <label>Select Player Name</label>
+            <select id="rPlayerName" class="form-select" required></select>
+          </div>
+          
+          <div class="form-group">
+            <label>Game 1 / Day 1 Availability</label>
+            <select id="rGame1" class="form-select">
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Game 2 / Day 2 Availability</label>
+            <select id="rGame2" class="form-select">
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Bracket Play Days (Sat/Sun)</label>
+            <select id="rGameBracket" class="form-select">
+              <option value="Available">Available for Bracket Play</option>
+              <option value="Partial">Partial / Conflict</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+          </div>
+          
           <div class="form-group"><label>Pitcher Arm Readiness</label>
             <select id="rArm" class="form-select">
               <option value="Fresh">Fresh & Ready to Pitch</option>
@@ -467,40 +460,53 @@
     </div>
   </div>
 
+  <!-- PITCHER OUTINGS HISTORY MODAL -->
+  <div id="pitcherHistoryModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="card-header">
+        <span id="pitcherHistoryTitle">Pitcher Outings Log</span>
+        <button onclick="toggleHistoryModal(false)" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead>
+            <tr><th>Outing Date</th><th>Pitches</th><th>Rest Required</th><th>Eligible Date</th></tr>
+          </thead>
+          <tbody id="pitcherHistoryTableBody">
+            <tr><td colspan="4" style="text-align:center;">No history recorded.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
-    // Team Metadata Lookup
+    let currentRoster = [];
+    let currentPitchLogs = [];
+
     const TEAM_DATA = {
       "2028 Pierce": {
         coach: "Matt Pierce",
         code: "GGVD-ZCSV",
         gc: "https://web.gc.com/teams/XlmuG2vLD7gg",
         cal: "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [
-          { role: "Head Coach", name: "Matt Pierce", phone: "(832) 443-2715", email: "pierce.matt.c@gmail.com" },
-          { role: "Assistant Coach", name: "Kendrick Perkins", phone: "(832) 242-2466", email: "ospstrong10@gmail.com" }
-        ]
+        staff: [{ role: "Head Coach", name: "Matt Pierce", phone: "(832) 443-2715", email: "pierce.matt.c@gmail.com" }]
       },
       "2028 Borden": {
         coach: "Nathan Borden",
         code: "KRXJ-CK3C",
         gc: "https://web.gc.com/teams/Ml3nTpzTsmZU",
         cal: "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [
-          { role: "Head Coach", name: "Nathan Borden", phone: "(361) 228-3874", email: "nathanborden07@gmail.com" },
-          { role: "Assistant Coach", name: "Peyton Borden", phone: "N/A", email: "N/A" }
-        ]
+        staff: [{ role: "Head Coach", name: "Nathan Borden", phone: "(361) 228-3874", email: "nathanborden07@gmail.com" }]
       },
       "2028 Taylor": {
         coach: "Brandon Taylor",
         code: "Q3EK-J7SS",
         gc: "https://web.gc.com/teams/CgOvvexQuPjb",
         cal: "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
-        staff: [
-          { role: "Head Coach", name: "Brandon Taylor", phone: "(210) 850-6409", email: "bwt243@gmail.com" },
-          { role: "Assistant Coach", name: "Mathew Elizondo", phone: "(830) 776-9505", email: "N/A" }
-        ]
+        staff: [{ role: "Head Coach", name: "Brandon Taylor", phone: "(210) 850-6409", email: "bwt243@gmail.com" }]
       }
     };
 
@@ -511,8 +517,16 @@
       document.getElementById(panelId).classList.add('active');
     }
 
-    function toggleModal(show) {
-      document.getElementById('rsvpModal').style.display = show ? 'flex' : 'none';
+    function toggleModal(show, tournamentName = '') {
+      const modal = document.getElementById('rsvpModal');
+      modal.style.display = show ? 'flex' : 'none';
+      if (show && tournamentName) {
+        document.getElementById('rEventId').value = tournamentName;
+      }
+    }
+
+    function toggleHistoryModal(show) {
+      document.getElementById('pitcherHistoryModal').style.display = show ? 'flex' : 'none';
     }
 
     function updateClock() {
@@ -531,7 +545,6 @@
       document.getElementById('gameChangerBtn').href = meta.gc;
       document.getElementById('calendarBtn').href = meta.cal;
 
-      // Staff table
       document.getElementById('staffTableBody').innerHTML = meta.staff.map(s => `
         <tr><td>${s.role}</td><td>${s.name}</td><td>${s.phone}</td><td>${s.email}</td></tr>
       `).join('');
@@ -544,25 +557,40 @@
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         const data = await res.json();
-        renderRoster(data.roster);
+        currentRoster = data.roster || [];
+        currentPitchLogs = data.pitchSmart || [];
+
+        populatePlayerDropdowns(currentRoster);
+        renderRoster(currentRoster);
         renderTournaments(data.tournaments, data.games);
-        renderRotations(data.tournaments, data.rotations);
-        renderPitchTracker(data.pitchSmart);
+        renderRotations(data.tournaments, data.rotations, data.games);
+        renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
       }
     }
 
+    function populatePlayerDropdowns(roster) {
+      const rSelect = document.getElementById('rPlayerName');
+      const pSelect = document.getElementById('pPlayerName');
+      
+      const optionsHTML = roster.length > 0 
+        ? roster.map(r => `<option value="${r['Full Name']}">${r['Full Name']} (#${r['Jersey #']})</option>`).join('')
+        : `<option value="">No players found</option>`;
+
+      if (rSelect) rSelect.innerHTML = optionsHTML;
+      if (pSelect) pSelect.innerHTML = optionsHTML;
+    }
+
     function renderRoster(roster) {
       const tbody = document.getElementById('teamRosterBody');
       if (!roster || roster.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No roster records found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No roster records found.</td></tr>`;
         return;
       }
       tbody.innerHTML = roster.map(r => `
         <tr>
-          <td><strong>${r['Player ID'] || '-'}</strong></td>
-          <td>${r['Full Name']}</td>
+          <td><strong>${r['Full Name']}</strong></td>
           <td><span class="badge bg-navy">#${r['Jersey #']}</span></td>
           <td>${r['Primary Pos']}</td>
           <td>${r['Secondary Pos'] || '-'}</td>
@@ -590,10 +618,10 @@
               <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
                 ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
                 ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
-                <button class="btn btn-outline btn-sm" onclick="toggleModal(true)">RSVP Availability</button>
+                <button class="btn btn-outline btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}')">RSVP / Game Availability</button>
               </div>
               
-              <h3>Game Schedule Matrix</h3>
+              <h3>Game Schedule</h3>
               <table>
                 <thead>
                   <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform</th></tr>
@@ -616,57 +644,93 @@
       }).join('');
     }
 
-    function renderRotations(tournaments, rotations) {
+    function renderRotations(tournaments, rotations, games) {
       const container = document.getElementById('rotationsListContainer');
-      if (!rotations || rotations.length === 0) {
-        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No game lineups published yet.</div></div>`;
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No tournament lineups published yet.</div></div>`;
         return;
       }
-      container.innerHTML = rotations.map(r => `
-        <div class="card">
-          <div class="card-header">
-            <span>⚾ Game Lineup Card: ${r['Game ID']}</span>
-            <button class="btn btn-gold btn-sm" onclick="toggleModal(true)">Player Availability Form</button>
-          </div>
-          <div class="card-body">
-            <p><strong>Starting Pitcher (SP):</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span> | <strong>Relief Pitchers (RP):</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</p>
-            <table>
-              <thead>
-                <tr><th>C</th><th>1B</th><th>2B</th><th>3B</th><th>SS</th><th>LF</th><th>CF</th><th>RF</th><th>EH</th><th>DH</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>${r['C'] || '-'}</td>
-                  <td>${r['1B'] || '-'}</td>
-                  <td>${r['2B'] || '-'}</td>
-                  <td>${r['3B'] || '-'}</td>
-                  <td>${r['SS'] || '-'}</td>
-                  <td>${r['LF'] || '-'}</td>
-                  <td>${r['CF'] || '-'}</td>
-                  <td>${r['RF'] || '-'}</td>
-                  <td>${r['EH'] || '-'}</td>
-                  <td>${r['DH'] || '-'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `).join('');
+      container.innerHTML = tournaments.map(t => {
+        const eventRotations = (rotations || []).filter(r => {
+          const game = (games || []).find(g => g['Game ID'] === r['Game ID']);
+          return game && (game['Event ID'] === t['Event ID'] || game['Event ID'] === t['Tournament Name']);
+        });
+
+        return `
+          <div class="card">
+            <div class="card-header">
+              <span>🏟️ ${t['Tournament Name']} - Lineup Cards</span>
+              <span>${t['Dates']}</span>
+            </div>
+            <div class="card-body">
+              ${eventRotations.length > 0 ? eventRotations.map(r => `
+                <div style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px; background: #fff;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                    <h4 style="color:var(--navy); font-size:1.05rem;">⚾ Game Lineup Card: ${r['Game ID']}</h4>
+                    <span class="badge bg-navy">SP: ${r['Starting Pitcher (SP)']}</span>
+                  </div>
+                  <p><strong>Relief Pitchers:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</p>
+                  
+                  <div class="lineup-vertical-list">
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">C</span><span class="lineup-player-name">${r['C'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">1B</span><span class="lineup-player-name">${r['1B'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">2B</span><span class="lineup-player-name">${r['2B'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">3B</span><span class="lineup-player-name">${r['3B'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">SS</span><span class="lineup-player-name">${r['SS'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">LF</span><span class="lineup-player-name">${r['LF'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">CF</span><span class="lineup-player-name">${r['CF'] || 'TBD'}</span></div>
+                    <div class="lineup-vertical-item"><span class="lineup-pos-tag">RF</span><span class="lineup-player-name">${r['RF'] || 'TBD'}</span></div>
+                    ${r['EH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">EH</span><span class="lineup-player-name">${r['EH']}</span></div>` : ''}
+                    ${r['DH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">DH</span><span class="lineup-player-name">${r['DH']}</span></div>` : ''}
+                  </div>
+                </div>
+              `).join('') : `<p style="color:var(--text-muted); text-align:center;">No published lineups for this tournament yet.</p>`}
+            </div>
+          </div>`;
+      }).join('');
     }
 
     function renderPitchTracker(pitchLogs) {
       const tbody = document.getElementById('pitchTrackerBody');
-      if (!pitchLogs || pitchLogs.length === 0) return;
-      tbody.innerHTML = pitchLogs.map(p => `
-        <tr>
-          <td><strong>${p['Player ID']}</strong></td>
-          <td>${p['Outing Date'] || '-'}</td>
-          <td><span class="badge bg-navy">${p['Pitches Thrown']}</span></td>
-          <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-red' : 'bg-green'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
-          <td>${p['Next Eligible Pitch Date']}</td>
-          <td>${p['isRestricted'] ? '<span class="badge bg-red">Rest Restricted</span>' : '<span class="badge bg-green">Eligible</span>'}</td>
-        </tr>
-      `).join('');
+      if (!pitchLogs || pitchLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No pitch logs recorded yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = pitchLogs.map(p => {
+        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
+        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
+        return `
+          <tr>
+            <td><strong>${p['Player ID']}</strong></td>
+            <td>${outingDate}</td>
+            <td><span class="badge bg-navy">${p['Pitches Thrown']}</span></td>
+            <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-red' : 'bg-green'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
+            <td><strong>${cleanDate}</strong></td>
+            <td>
+              <button class="btn btn-navy btn-sm" onclick="viewPitcherHistory('${p['Player ID']}')">View Outings</button>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function viewPitcherHistory(playerName) {
+      const history = currentPitchLogs.filter(p => p['Player ID'] === playerName);
+      document.getElementById('pitcherHistoryTitle').innerText = `${playerName} - Pitching Outings Log`;
+      
+      const tbody = document.getElementById('pitcherHistoryTableBody');
+      if (!history || history.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No past outings logged.</td></tr>`;
+      } else {
+        tbody.innerHTML = history.map(h => `
+          <tr>
+            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
+            <td>${h['Pitches Thrown']}</td>
+            <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
+            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
+          </tr>
+        `).join('');
+      }
+      toggleHistoryModal(true);
     }
 
     function saveAnnouncements(e) {
@@ -675,23 +739,13 @@
       const ev = document.getElementById('adminNewEvent').value;
       if (txt) document.getElementById('announcementText').innerText = txt;
       if (ev) {
-        document.getElementById('eventsDisplay').innerHTML += `<div style="border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 10px;"><strong>Added Event</strong><br><span>${ev}</span></div>`;
+        document.getElementById('agendaListContainer').innerHTML += `
+          <div style="border-left: 4px solid var(--gold); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
+            <div style="font-weight:700; color:var(--navy);">New Event Added</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">${ev}</div>
+          </div>`;
       }
-      alert('Welcome page announcements and events updated!');
-    }
-
-    function addSpringTrainingRow(e) {
-      e.preventDefault();
-      const dt = document.getElementById('stDate').value;
-      const dy = document.getElementById('stDay').value;
-      const ev = document.getElementById('stEvent').value;
-      const lc = document.getElementById('stLocation').value;
-      const nt = document.getElementById('stNotes').value;
-
-      document.getElementById('springTrainingScheduleBody').innerHTML += `
-        <tr><td>${dt}</td><td>${dy}</td><td>${ev}</td><td>${lc}</td><td>${nt || '-'}</td></tr>
-      `;
-      alert('Spring Training schedule row added!');
+      alert('Welcome page updated!');
     }
 
     async function submitGame(e) {
@@ -715,7 +769,7 @@
       e.preventDefault();
       const payload = {
         action: 'logPitchCount',
-        playerId: document.getElementById('pPlayerId').value,
+        playerId: document.getElementById('pPlayerName').value,
         date: document.getElementById('pDate').value,
         pitches: document.getElementById('pCount').value
       };
@@ -727,16 +781,20 @@
 
     async function submitRSVP(e) {
       e.preventDefault();
+      const g1 = document.getElementById('rGame1').value;
+      const g2 = document.getElementById('rGame2').value;
+      const gb = document.getElementById('rGameBracket').value;
+      
       const payload = {
         action: 'submitRSVP',
         eventId: document.getElementById('rEventId').value,
         playerName: document.getElementById('rPlayerName').value,
-        status: document.getElementById('rStatus').value,
+        status: `G1:${g1} | G2:${g2} | Bracket:${gb}`,
         armReadiness: document.getElementById('rArm').value,
         notes: document.getElementById('rNotes').value
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Availability submitted!');
+      alert('Availability submitted successfully!');
       toggleModal(false);
       loadData();
     }
