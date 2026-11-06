@@ -637,8 +637,8 @@
                 <input type="date" id="bgDate_${i}" class="form-control">
               </div>
               <div class="form-group">
-                <label>Time</label>
-                <input type="time" id="bgTime_${i}" class="form-control">
+                <label>Game Time (or TBD)</label>
+                <input type="text" id="bgTime_${i}" class="form-control" placeholder="e.g. 9:00 AM, 2:30 PM, or TBD">
               </div>
               <div class="form-group">
                 <label>Opponent</label>
@@ -796,7 +796,7 @@
                 <strong style="font-size:0.78rem; color:var(--navy);">Scheduled Games:</strong>
                 ${eventGames.map(g => `
                   <div style="font-size:0.75rem; border-top:1px solid #EDF2F7; padding-top:2px; margin-top:2px;">
-                    • <strong>${g['Game ID']} (${g['Date']} @ ${g['Game Time']}):</strong> vs. ${g['Opponent']} (${g['Location/Field #']})
+                    • <strong>${g['Game ID']} (${g['Date']} @ ${g['Game Time'] || 'TBD'}):</strong> vs. ${g['Opponent']} (${g['Location/Field #']})
                   </div>
                 `).join('')}
               </div>` : ''}
@@ -868,7 +868,7 @@
                       <tr>
                         <td><strong>${g['Game ID']}</strong></td>
                         <td>${g['Date']}</td>
-                        <td>${g['Game Time']}</td>
+                        <td>${g['Game Time'] || 'TBD'}</td>
                         <td><strong>vs. ${g['Opponent']}</strong></td>
                         <td>${g['Location/Field #']}</td>
                         <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
@@ -907,7 +907,7 @@
               ${eventRotations.length > 0 ? eventRotations.map(r => {
                 const gameInfo = (games || []).find(g => g['Game ID'] === r['Game ID']) || {};
                 const gDate = gameInfo['Date'] || '';
-                const gTime = gameInfo['Game Time'] || '';
+                const gTime = gameInfo['Game Time'] || 'TBD';
                 const gOpponent = gameInfo['Opponent'] ? `vs. ${gameInfo['Opponent']}` : '';
                 const gLocation = gameInfo['Location/Field #'] || '';
                 const gUniform = gameInfo['Designated Uniform'] || '';
@@ -1063,8 +1063,9 @@
         
         if (opponent && date) {
           const gameType = document.getElementById(`bgType_${i}`).value;
-          const time = document.getElementById(`bgTime_${i}`).value;
-          const field = document.getElementById(`bgField_${i}`).value || 'TBD';
+          const timeInput = document.getElementById(`bgTime_${i}`).value.trim();
+          const time = timeInput ? timeInput : 'TBD';
+          const field = document.getElementById(`bgField_${i}`).value.trim() || 'TBD';
           const top = document.getElementById(`bgTop_${i}`).value;
           const bottom = document.getElementById(`bgBottom_${i}`).value;
           
