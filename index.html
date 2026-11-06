@@ -165,7 +165,7 @@
             <span id="clockDisplay" style="font-weight: 800; color: var(--gold); font-size: 0.8rem;"></span>
           </div>
           <div class="card-body">
-            <h3>Upcoming Events & Game Agenda</h3>
+            <h3>Upcoming Events & Game Agenda (Chronological Order)</h3>
             <div id="agendaListContainer">
               <p style="text-align:center; color:var(--text-muted);">Loading upcoming events...</p>
             </div>
@@ -250,7 +250,7 @@
     <!-- 4. SCHEDULES & HOTELS -->
     <div id="scheduleLogisticsTab" class="tab-panel">
       <div id="tournamentsListContainer">
-        <p style="text-align: center; color: var(--text-muted);">Loading tournament schedule cards...</p>
+        <p style="text-align: center; color: var(--text-muted);">Loading tournament schedule cards (Sorted by Next Tournament)...</p>
       </div>
     </div>
 
@@ -408,20 +408,24 @@
                 <input type="text" id="ntName" class="form-control" placeholder="e.g. Five Tool Pudge World Classic" required>
               </div>
               <div class="form-group">
-                <label>Dates</label>
-                <input type="text" id="ntDates" class="form-control" placeholder="e.g. June 16 - June 20, 2027" required>
+                <label>Start Date</label>
+                <input type="date" id="ntStartDate" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" id="ntEndDate" class="form-control" required>
               </div>
               <div class="form-group">
                 <label>Location / City</label>
                 <input type="text" id="ntLocation" class="form-control" placeholder="e.g. Melissa, TX" required>
               </div>
               <div class="form-group">
-                <label>Facility / Field Map Link</label>
-                <input type="url" id="ntMapLink" class="form-control" placeholder="https://maps.google.com/...">
+                <label>Facility / Field Map Link (or TBA)</label>
+                <input type="text" id="ntMapLink" class="form-control" placeholder="e.g. https://maps.google.com/... or TBA">
               </div>
               <div class="form-group">
-                <label>Hotel Booking Link</label>
-                <input type="url" id="ntHotelLink" class="form-control" placeholder="[suspicious link removed]...">
+                <label>Hotel Booking Link (or TBA)</label>
+                <input type="text" id="ntHotelLink" class="form-control" placeholder="e.g. [suspicious link removed]... or TBA">
               </div>
               <div class="form-group">
                 <label>Hotel Cutoff Date</label>
@@ -711,6 +715,25 @@
       loadData();
     }
 
+    function parseTournamentDate(t) {
+      if (t['Start Date']) {
+        const d = new Date(t['Start Date'] + 'T00:00:00');
+        if (!isNaN(d.getTime())) return d;
+      }
+      const datesStr = t['Dates'] || '';
+      if (datesStr) {
+        const firstPart = datesStr.split(' - ')[0].split(' to ')[0].trim();
+        const d = new Date(firstPart);
+        if (!isNaN(d.getTime())) return d;
+      }
+      return new Date('2099-12-31');
+    }
+
+    function sortTournamentsChronologically(tournaments) {
+      if (!tournaments || tournaments.length === 0) return [];
+      return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
+    }
+
     async function loadData() {
       const team = document.getElementById('teamSelector').value;
       try {
@@ -718,7 +741,7 @@
         const data = await res.json();
         currentRoster = data.roster || [];
         currentPitchLogs = data.pitchSmart || [];
-        currentTournaments = data.tournaments || [];
+        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
         currentGames = data.games || [];
 
         populatePlayerDropdowns(currentRoster);
@@ -757,11 +780,13 @@
       }
       container.innerHTML = tournaments.map(t => {
         const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
+        const hasValidMap = t['Facility Map Link'] && t['Facility Map Link'].startsWith('http');
+
         return `
           <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 10px; background: #F8FAFC; padding: 8px 10px; border-radius: 0 6px 6px 0;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong>${t['Dates'] || 'TBD'}</strong>
-              ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>` : ''}
+              ${hasValidMap ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>` : `<span class="badge bg-gold">Map: ${t['Facility Map Link'] || 'TBA'}</span>`}
             </div>
             <div style="font-weight:800; color:var(--navy); font-size:0.9rem;">${t['Tournament Name']}</div>
             <div style="font-size:0.8rem; color:var(--text-muted);">${t['Location'] || 'TBD'}</div>
@@ -817,6 +842,9 @@
       }
       container.innerHTML = tournaments.map(t => {
         const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
+        const hasValidHotel = t['Hotel Booking Link'] && t['Hotel Booking Link'].startsWith('http');
+        const hasValidMap = t['Facility Map Link'] && t['Facility Map Link'].startsWith('http');
+
         return `
           <div class="card">
             <div class="card-header">
@@ -824,9 +852,9 @@
               <span>${t['Location']}</span>
             </div>
             <div class="card-body">
-              <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-                ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
-                ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
+              <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
+                ${hasValidHotel ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : `<span class="badge bg-navy">Hotel Link: ${t['Hotel Booking Link'] || 'TBA'}</span>`}
+                ${hasValidMap ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : `<span class="badge bg-gold">Field Map: ${t['Facility Map Link'] || 'TBA'}</span>`}
               </div>
               
               <h3>Game Schedule & Player RSVP</h3>
@@ -930,8 +958,8 @@
       });
 
       tbody.innerHTML = sortedLogs.map(p => {
-        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T') : 'Eligible';
-        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T') : '-';
+        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
+        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
         return `
           <tr>
             <td><strong>${p['Player ID']}</strong></td>
@@ -956,10 +984,10 @@
       } else {
         tbody.innerHTML = history.map(h => `
           <tr>
-            <td>${h['Outing Date'] ? h['Outing Date'].split('T') : '-'}</td>
+            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
             <td>${h['Pitches Thrown']}</td>
             <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
-            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T') : '-'}</td>
+            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
           </tr>
         `).join('');
       }
@@ -983,18 +1011,24 @@
 
     async function submitNewTournament(e) {
       e.preventDefault();
+      const startDate = document.getElementById('ntStartDate').value;
+      const endDate = document.getElementById('ntEndDate').value;
+      const formattedDates = `${startDate} to ${endDate}`;
+
       const payload = {
         action: 'addTournament',
         team: document.getElementById('ntTeam').value,
         tournamentName: document.getElementById('ntName').value,
-        dates: document.getElementById('ntDates').value,
+        startDate: startDate,
+        endDate: endDate,
+        dates: formattedDates,
         location: document.getElementById('ntLocation').value,
-        mapLink: document.getElementById('ntMapLink').value,
-        hotelLink: document.getElementById('ntHotelLink').value,
-        cutoffDate: document.getElementById('ntCutoffDate').value
+        mapLink: document.getElementById('ntMapLink').value || 'TBA',
+        hotelLink: document.getElementById('ntHotelLink').value || 'TBA',
+        cutoffDate: document.getElementById('ntCutoffDate').value || 'N/A'
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert(`Tournament "${payload.tournamentName}" added to Operations Manual successfully!`);
+      alert(`Tournament "${payload.tournamentName}" added successfully!`);
       e.target.reset();
       loadData();
     }
