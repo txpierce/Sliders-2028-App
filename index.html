@@ -107,9 +107,11 @@
       <span class="brand-title">⚾ SOUTH TEXAS SLIDERS</span>
       <span class="motto">EFFORT • DISCIPLINE • ACCOUNTABILITY • GROWTH • RESPECT</span>
     </div>
-    <!-- Dynamically Populated Header Team Dropdown -->
+    <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Pierce">Loading Teams...</option>
+      <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
+      <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
+      <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
     </select>
   </header>
 
@@ -599,12 +601,12 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
     const DEFAULT_TEAMS = [
-      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "[suspicious link removed]", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
     ];
 
-    let fetchedTeams = [];
+    let fetchedTeams = DEFAULT_TEAMS;
     let currentRoster = [];
     let currentPitchLogs = [];
     let currentTournaments = [];
@@ -693,19 +695,21 @@
     setInterval(updateClock, 1000);
 
     function renderDynamicTeams(teams) {
-      const activeTeams = (teams && teams.length > 0) ? teams : DEFAULT_TEAMS;
+      const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
 
       const teamSelect = document.getElementById('teamSelector');
       const ntTeamSelect = document.getElementById('ntTeam');
       const npTeamSelect = document.getElementById('npTeam');
 
-      const currentSelected = teamSelect.value;
+      const currentSelected = teamSelect ? teamSelect.value : '2028 Pierce';
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
-      teamSelect.innerHTML = optionsHTML;
-      if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
-        teamSelect.value = currentSelected;
+      if (teamSelect) {
+        teamSelect.innerHTML = optionsHTML;
+        if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
+          teamSelect.value = currentSelected;
+        }
       }
 
       const adminOptionsHTML = `<option value="All">All Teams</option>` + activeTeams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
@@ -754,8 +758,8 @@
         if (!isNaN(d.getTime())) return d;
       }
       const datesStr = t['Dates'] || '';
-      if (datesStr) {
-        const firstPart = datesStr.split(' - ').split(' to ').trim();
+      if (datesStr && typeof datesStr === 'string') {
+        const firstPart = datesStr.split(' - ')[0].split(' to ')[0].trim();
         const d = new Date(firstPart);
         if (!isNaN(d.getTime())) return d;
       }
@@ -763,14 +767,17 @@
     }
 
     function sortTournamentsChronologically(tournaments) {
-      if (!tournaments || tournaments.length === 0) return [];
+      if (!tournaments || !Array.isArray(tournaments) || tournaments.length === 0) return [];
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
     async function loadData() {
-      const team = document.getElementById('teamSelector').value;
+      const teamSelect = document.getElementById('teamSelector');
+      const team = teamSelect ? teamSelect.value : '2028 Pierce';
+      
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
         renderDynamicTeams(data.teams);
@@ -791,6 +798,7 @@
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS);
+        updateSelectedTeamOps(team);
       }
     }
 
@@ -816,7 +824,7 @@
       }
       container.innerHTML = tournaments.map(t => {
         const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
-        const hasValidMap = t['Facility Map Link'] && t['Facility Map Link'].startsWith('http');
+        const hasValidMap = t['Facility Map Link'] && typeof t['Facility Map Link'] === 'string' && t['Facility Map Link'].startsWith('http');
 
         return `
           <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 10px; background: #F8FAFC; padding: 8px 10px; border-radius: 0 6px 6px 0;">
@@ -877,8 +885,8 @@
       }
       container.innerHTML = tournaments.map(t => {
         const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
-        const hasValidHotel = t['Hotel Booking Link'] && t['Hotel Booking Link'].startsWith('http');
-        const hasValidMap = t['Facility Map Link'] && t['Facility Map Link'].startsWith('http');
+        const hasValidHotel = t['Hotel Booking Link'] && typeof t['Hotel Booking Link'] === 'string' && t['Hotel Booking Link'].startsWith('http');
+        const hasValidMap = t['Facility Map Link'] && typeof t['Facility Map Link'] === 'string' && t['Facility Map Link'].startsWith('http');
 
         return `
           <div class="card">
@@ -993,8 +1001,8 @@
       });
 
       tbody.innerHTML = sortedLogs.map(p => {
-        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T') : 'Eligible';
-        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T') : '-';
+        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
+        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
         return `
           <tr>
             <td><strong>${p['Player ID']}</strong></td>
@@ -1019,10 +1027,10 @@
       } else {
         tbody.innerHTML = history.map(h => `
           <tr>
-            <td>${h['Outing Date'] ? h['Outing Date'].split('T') : '-'}</td>
+            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
             <td>${h['Pitches Thrown']}</td>
             <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
-            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T') : '-'}</td>
+            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
           </tr>
         `).join('');
       }
@@ -1177,6 +1185,8 @@
 
     window.onload = function() {
       buildAdminGameSlots();
+      renderDynamicTeams(DEFAULT_TEAMS);
+      updateSelectedTeamOps('2028 Pierce');
       updateClock();
       loadData();
     };
