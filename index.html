@@ -27,25 +27,29 @@
     header select { background-color: rgba(255,255,255,0.12); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
     header select option { background-color: var(--navy); color: #fff; }
 
-    /* NAVIGATION BAR & TABS */
-    .nav-wrapper { background: #fff; border-bottom: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.03); sticky: top: 0; z-index: 100; }
+    /* NAVIGATION BAR */
+    .nav-wrapper { background: #fff; border-bottom: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; }
     .tabs-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 4px; overflow-x: auto; padding: 0 12px; scrollbar-width: none; }
     .tabs-container::-webkit-scrollbar { display: none; }
     .tab-btn { padding: 12px 16px; border: none; background: none; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; font-size: 0.88rem; white-space: nowrap; transition: all 0.2s ease; }
     .tab-btn:hover { color: var(--navy); }
     .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); background-color: #F8FAFC; }
 
-    /* MAIN CONTAINER & PANELS */
+    /* CONTAINER & PANELS */
     .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* LAYOUT GRIDS & CARDS */
+    /* GRIDS & CARDS */
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 3px 6px rgba(0,0,0,0.04); overflow: hidden; margin-bottom: 20px; }
     .card-header { background-color: var(--navy); color: #fff; padding: 14px 18px; font-weight: 800; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
     .card-body { padding: 18px; }
+
+    /* ANNOUNCEMENT BANNER */
+    .announcement-box { background: #FEFCBF; border-left: 6px solid var(--gold); padding: 14px 18px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; color: #744210; }
+    .announcement-box h4 { font-weight: 800; color: #975A16; margin-bottom: 4px; text-transform: uppercase; font-size: 0.85rem; }
 
     /* TYPOGRAPHY & BADGES */
     h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; display: inline-block; }
@@ -91,7 +95,7 @@
       <span class="brand-title">⚾ SOUTH TEXAS SLIDERS 2028</span>
       <span class="motto">EFFORT • DISCIPLINE • ACCOUNTABILITY • GROWTH • RESPECT</span>
     </div>
-    <select id="teamSelector" onchange="loadData()">
+    <select id="teamSelector" onchange="onTeamChange()">
       <option value="2028 Pierce">2028 Pierce (Head Coach: Matt Pierce)</option>
       <option value="2028 Borden">2028 Borden (Head Coach: Nathan Borden)</option>
       <option value="2028 Taylor">2028 Taylor (Head Coach: Brandon Taylor)</option>
@@ -106,7 +110,7 @@
       <button class="tab-btn" onclick="switchTab('teamsHubTab')">🧢 Team Ops Hub</button>
       <button class="tab-btn" onclick="switchTab('scheduleLogisticsTab')">🗓️ Schedules & Hotels</button>
       <button class="tab-btn" onclick="switchTab('gameOpsRotationsTab')">⚾ Rotations & Lineups</button>
-      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart Rest</button>
+      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart & Recovery</button>
       <button class="tab-btn" onclick="switchTab('playerResourcesTab')">🎓 Media & Recruiting</button>
       <button class="tab-btn" onclick="switchTab('parentResourcesTab')">👨‍👩‍👧 Parents & Culture</button>
       <button class="tab-btn" onclick="switchTab('adminTab')">⚙️ Coordinator Console</button>
@@ -117,31 +121,46 @@
 
     <!-- 1. WELCOME & PROGRAM OVERVIEW -->
     <div id="welcomeTab" class="tab-panel active">
+      
+      <!-- COACH ANNOUNCEMENTS BOX -->
+      <div class="announcement-box" id="announcementDisplay">
+        <h4>📢 Head Coach Announcement</h4>
+        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Please review upcoming tournament dates and ensure player availability is submitted on time.</p>
+      </div>
+
       <div class="grid-2">
         <div class="card">
           <div class="card-header">✉️ Welcome from the President</div>
           <div class="card-body">
-            <p><strong>Dear Sliders Families,</strong></p>
-            <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is simple: to develop great players, but more importantly, to raise young men who carry discipline, effort, and character on and off the field.</p>
-            <p><strong>Program Leadership:</strong></p>
-            <ul>
-              <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
-              <li><strong>2028 Graduation Class Coordinator:</strong> Matt Pierce (832-443-2715)</li>
-              <li><strong>Media & Highlight Coordinator:</strong> Jaxon Williams (jaxonwilliams42@gmail.com)</li>
-            </ul>
+            <div id="welcomeLetterDisplay">
+              <p><strong>Dear Sliders Families,</strong></p>
+              <p>On behalf of our entire organization, welcome to the South Texas Sliders 2028 family. Our mission is simple: to develop great players, but more importantly, to raise young men who carry discipline, effort, and character on and off the field.</p>
+              <p><strong>Program Leadership:</strong></p>
+              <ul>
+                <li><strong>President:</strong> Jeff Quillin (361-522-5609)</li>
+                <li><strong>2028 Grad Class Coordinator:</strong> Matt Pierce (832-443-2715)</li>
+                <li><strong>Media Coordinator:</strong> Jaxon Williams (jaxonwilliams42@gmail.com)</li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header">⭐ Program Core Values</div>
+          <div class="card-header">📅 Date & Time / Upcoming Events</div>
           <div class="card-body">
-            <ul>
-              <li><strong>Effort:</strong> Give 100% in preparation, practice, and games. Hustle is non-negotiable.</li>
-              <li><strong>Discipline:</strong> Stay committed to routines, respect team rules, and maintain self-control.</li>
-              <li><strong>Accountability:</strong> Take ownership of performance and behavior. Be reliable for your teammates.</li>
-              <li><strong>Growth:</strong> Strive for daily improvement, embrace challenges, and learn from success and failure.</li>
-              <li><strong>Respect:</strong> Treat coaches, teammates, officials, opponents, and the game with honor.</li>
-            </ul>
+            <p><strong>Current Local Time:</strong> <span id="clockDisplay" style="font-weight: 800; color: var(--navy);">Loading time...</span></p>
+            <hr style="margin: 10px 0; border: none; border-top: 1px solid var(--border);">
+            <h3>Upcoming Events & Key Milestones</h3>
+            <div id="eventsDisplay">
+              <div style="border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 10px;">
+                <strong>May 29–31, 2027</strong><br>
+                <span>Sliders Spring Training Evaluation (Tri-County)</span>
+              </div>
+              <div style="border-left: 3px solid var(--navy); padding-left: 10px; margin-bottom: 10px;">
+                <strong>June 16–20, 2027</strong><br>
+                <span>Five Tool Pudge Rodriguez World Classic (Melissa, TX)</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -152,105 +171,87 @@
       <div class="card">
         <div class="card-header">📑 2027 Spring Training Operations (May 29 – May 31, 2027)</div>
         <div class="card-body">
-          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
-          <div class="grid-3">
-            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
-              <h3>Weekend 1: Baseline Grading</h3>
-              <p>Station-based individual drill evaluations (infield/outfield, arm accuracy, machine BP) and controlled scrimmages.</p>
-            </div>
-            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
-              <h3>Weekend 2: Game Evaluation</h3>
-              <p>Preliminary 3-roster game play (2 games/team). Focus on game instincts, pitch count adherence, and execution.</p>
-            </div>
-            <div style="background: #EDF2F7; padding: 12px; border-radius: 6px;">
-              <h3>Weekend 3: Final Rosters</h3>
-              <p>Final confirmation of roster decisions across 2028 Pierce, 2028 Borden, and 2028 Taylor squads.</p>
-            </div>
-          </div>
+          <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency across three structured weekends.</p>
+          
+          <h3 style="margin-top: 16px;">Spring Training Master Schedule</h3>
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Day(s)</th><th>Event / Focus Area</th><th>Location</th><th>Notes / Attendance</th></tr>
+            </thead>
+            <tbody id="springTrainingScheduleBody">
+              <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
+              <tr><td>May 30, 2027</td><td>Sunday</td><td>Offensive Evaluation & Controlled Machine Scrimmages</td><td>Tri-County Fields</td><td>Full BP & In/Out Flow</td></tr>
+              <tr><td>May 31, 2027</td><td>Monday</td><td>Final Scrimmage Play & Roster Confirmation</td><td>Tri-County Fields</td><td>Final Team Assignments</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- 3. TEAM OPS HUB -->
+    <!-- 3. TEAM OPS HUB (DROPDOWN FILTERED) -->
     <div id="teamsHubTab" class="tab-panel">
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-header">⚡ 2028 Pierce</div>
-          <div class="card-body">
-            <p><strong>Head Coach:</strong> Matt Pierce (832-443-2715)</p>
-            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">GGVD-ZCSV</span></p>
-            <p><a href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
-          </div>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <span id="selectedTeamTitle">🧢 2028 Pierce Operations Hub</span>
+          <span id="selectedTeamBadge" class="badge bg-gold">Matt Pierce - Head Coach</span>
         </div>
+        <div class="card-body">
+          <div class="grid-2 mb-4">
+            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 14px; border-radius: 8px;">
+              <h3>📱 Communication & Live Platforms</h3>
+              <p><strong>sportsYou Team Code:</strong> <span id="teamSportsYouCode" class="badge bg-gold" style="font-size: 0.9rem;">GGVD-ZCSV</span></p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                <a id="sportsYouBtn" href="https://sportsyou.app" target="_blank" class="btn btn-navy btn-sm">sportsYou Login</a>
+                <a id="gameChangerBtn" href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-gold btn-sm">Follow Live on GameChanger</a>
+                <a id="calendarBtn" href="#" target="_blank" class="btn btn-navy btn-sm">Google Calendar Link</a>
+              </div>
+            </div>
 
-        <div class="card">
-          <div class="card-header">🔥 2028 Borden</div>
-          <div class="card-body">
-            <p><strong>Head Coach:</strong> Nathan Borden (361-228-3874)</p>
-            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">KRXJ-CK3C</span></p>
-            <p><a href="https://web.gc.com/teams/Ml3nTpzTsmZU" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
+            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 14px; border-radius: 8px;">
+              <h3>👔 Coaching Staff Information</h3>
+              <table style="margin-top: 4px;">
+                <thead>
+                  <tr><th>Role</th><th>Name</th><th>Phone</th><th>Email</th></tr>
+                </thead>
+                <tbody id="staffTableBody">
+                  <tr><td>Head Coach</td><td>Matt Pierce</td><td>(832) 443-2715</td><td>pierce.matt.c@gmail.com</td></tr>
+                  <tr><td>Assistant Coach</td><td>Kendrick Perkins</td><td>(832) 242-2466</td><td>ospstrong10@gmail.com</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-header">🛡️ 2028 Taylor</div>
-          <div class="card-body">
-            <p><strong>Head Coach:</strong> Brandon Taylor (210-850-6409)</p>
-            <p><strong>sportsYou Code:</strong> <span class="badge bg-gold">Q3EK-J7SS</span></p>
-            <p><a href="https://web.gc.com/teams/CgOvvexQuPjb" target="_blank" class="btn btn-navy btn-sm" style="width:100%; margin-top:6px;">Follow Live on GameChanger</a></p>
-          </div>
+          <h3>📋 Official Squad Roster</h3>
+          <table>
+            <thead>
+              <tr><th>Player ID</th><th>Full Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
+            </thead>
+            <tbody id="teamRosterBody">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- 4. SCHEDULES & LOGISTICS -->
+    <!-- 4. SCHEDULES & HOTELS -->
     <div id="scheduleLogisticsTab" class="tab-panel">
-      <div class="card">
-        <div class="card-header">
-          <span>🗓️ Tournament Schedule & Hotel Booking Links</span>
-          <button class="btn btn-gold btn-sm" onclick="toggleModal(true)">Parent RSVP / Availability</button>
-        </div>
-        <div class="card-body" id="tournamentContainer">
-          <p style="text-align: center; color: var(--text-muted);">Loading active tournament schedule...</p>
-        </div>
+      <div id="tournamentsListContainer">
+        <p style="text-align: center; color: var(--text-muted);">Loading tournament schedule cards...</p>
       </div>
     </div>
 
     <!-- 5. GAME OPS & ROTATIONS -->
     <div id="gameOpsRotationsTab" class="tab-panel">
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header">📋 Game Pitching Rotation & Lineup</div>
-          <div class="card-body" id="rotationContainer">
-            <p style="text-align: center; color: var(--text-muted);">Select a game in admin console to view published lineups.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">⏱️ Starting Pitcher 60-Min Pre-Game Routine</div>
-          <div class="card-body">
-            <table>
-              <thead>
-                <tr><th>Timeline</th><th>Action Item</th></tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>60 min</strong></td><td>Mobility, light movement & stretching</td></tr>
-                <tr><td><strong>50 min</strong></td><td>Dynamic warm-up (bands, plyos, activation)</td></tr>
-                <tr><td><strong>40 min</strong></td><td>Flat-ground throwing progression</td></tr>
-                <tr><td><strong>30 min</strong></td><td>Mound bullpen session (FB command, spin)</td></tr>
-                <tr><td><strong>15 min</strong></td><td>Finish bullpen; stay loose with light bands</td></tr>
-                <tr><td><strong>10 min</strong></td><td>Mental prep – review game plan & 10 to Win</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div id="rotationsListContainer">
+        <p style="text-align: center; color: var(--text-muted);">Loading published game rotations...</p>
       </div>
     </div>
 
-    <!-- 6. PITCHSMART REST & ARM CARE -->
+    <!-- 6. PITCHSMART REST & ARM CARE PROTOCOL -->
     <div id="pitchSmartTab" class="tab-panel">
       <div class="card">
-        <div class="card-header">🛡️ PitchSmart Rest Guidelines & Live Tracker (15–16 Age Group)</div>
+        <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (15–16 Age Group)</div>
         <div class="card-body">
           <table>
             <thead>
@@ -260,16 +261,45 @@
               <tr><td><strong>95 Pitches</strong></td><td>1–30 Pitches</td><td>31–45 Pitches</td><td>46–60 Pitches</td><td>61–75 Pitches</td><td>76+ Pitches</td></tr>
             </tbody>
           </table>
-          <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--border);">
-          <h3>Pitch Rest Log</h3>
+          
+          <h3 style="margin-top: 20px;">Staff Pitching Rest Tracker</h3>
           <table>
             <thead>
-              <tr><th>Player</th><th>Pitches Thrown</th><th>Required Rest</th><th>Next Eligible Date</th></tr>
+              <tr><th>Player Name</th><th>Outing Date</th><th>Pitches Thrown</th><th>Required Rest Days</th><th>Next Eligible Date</th><th>Status</th></tr>
             </thead>
             <tbody id="pitchTrackerBody">
-              <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No pitch logs recorded yet.</td></tr>
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading pitch logs...</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- PITCHER PROTOCOL ON REST DAYS -->
+      <div class="card">
+        <div class="card-header">💪 Pitcher Protocol on Rest Days & Arm Recovery Routine</div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div>
+              <h3>Daily Rest-Day Throwing Plan</h3>
+              <ul>
+                <li><strong>Day 0 (Game Day):</strong> Normal game workload + post-game arm care (bands + light flush).</li>
+                <li><strong>Day 1 (Rest Day):</strong> Bands & mobility routine + 60–75 ft light toss (NO mound work).</li>
+                <li><strong>Day 2 (Light Toss & Recovery):</strong> Throw 45–75 ft, Jaeger band circuit, wrist weight drills.</li>
+                <li><strong>Day 3 (Touch-and-Feel):</strong> Throw 75–100 ft, optional short touch-and-feel pen (15–20 pitches).</li>
+                <li><strong>Day 4 (Pre-Game Prep):</strong> Light toss only (45–60 ft), mental game review.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>Arm Care & Mobility Drills</h3>
+              <ul>
+                <li><strong>Wrist Weights (5 reps/set):</strong> Arm swings, 2-arm throw, Cuban press, pivot picks.</li>
+                <li><strong>Jaeger Bands (10 reps/set):</strong> External rotations, forward shoulder raises, reverse flys.</li>
+                <li><strong>Plyometrics:</strong> Reverse throws (2x10), pivot picks (2x10).</li>
+                <li><strong>Post-Outing Rule:</strong> If pitch count exceeded 60 pitches, reduce lower-body lifting by 50%.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -281,7 +311,6 @@
           <div class="card-header">🎥 Highlight Edits & Custom Video Requests</div>
           <div class="card-body">
             <p>Upload raw footage/photos to team Dropbox. Send request details to Media Coordinator <strong>Jaxon Williams</strong> (jaxonwilliams42@gmail.com). Turnaround time is 5–7 business days.</p>
-            <p><strong>Required Info:</strong> Player Name, Jersey #, Grad Year (2028), Game Date & Opponent, Specific Clips requested.</p>
           </div>
         </div>
 
@@ -311,9 +340,8 @@
           <div class="card-body">
             <ul>
               <li>Support the team with a positive attitude regardless of game outcome.</li>
-              <li>Allow coaches to coach, players to play, and umpires to officiate (no coaching from stands).</li>
-              <li>Communicate constructively with coaches outside game windows.</li>
-              <li>Ensure players arrive on time in proper uniform.</li>
+              <li>Allow coaches to coach, players to play, and umpires to officiate.</li>
+              <li>Communicate respectfully outside game windows.</li>
             </ul>
           </div>
         </div>
@@ -322,10 +350,10 @@
           <div class="card-header">⚖️ Progressive Discipline Procedures</div>
           <div class="card-body">
             <ol style="margin-left: 20px;">
-              <li><strong>Verbal Warning:</strong> Coach addresses issue directly.</li>
-              <li><strong>Loss of Playing Time:</strong> Player sits part of practice/game.</li>
-              <li><strong>Parent/Player Conference:</strong> Structural review meeting.</li>
-              <li><strong>Suspension / Removal:</strong> Enforced for repeated or severe violations.</li>
+              <li><strong>Verbal Warning:</strong> Direct coach conversation.</li>
+              <li><strong>Loss of Playing Time:</strong> Bench reflection.</li>
+              <li><strong>Parent Conference:</strong> Formal review meeting.</li>
+              <li><strong>Suspension / Dismissal:</strong> Enforced for severe violations.</li>
             </ol>
           </div>
         </div>
@@ -335,15 +363,49 @@
     <!-- 9. COORDINATOR ADMIN CONSOLE -->
     <div id="adminTab" class="tab-panel">
       <div class="grid-2">
+        <!-- EDIT WELCOME & ANNOUNCEMENTS -->
         <div class="card">
-          <div class="card-header">➕ Insert Game Schedule</div>
+          <div class="card-header">✏️ Edit Announcements & Welcome Content</div>
+          <div class="card-body">
+            <form onsubmit="saveAnnouncements(event)">
+              <div class="form-group">
+                <label>Coach Announcement Banner</label>
+                <textarea id="adminAnnouncementText" class="form-control" rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Add Upcoming Event (Date & Title)</label>
+                <input type="text" id="adminNewEvent" class="form-control" placeholder="e.g. June 10 - Team Practice at 5pm">
+              </div>
+              <button type="submit" class="btn btn-navy" style="width: 100%;">Update Welcome Page</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- UPDATE SPRING TRAINING SCHEDULE -->
+        <div class="card">
+          <div class="card-header">📑 Update Spring Training Schedule</div>
+          <div class="card-body">
+            <form onsubmit="addSpringTrainingRow(event)">
+              <div class="form-group"><label>Date</label><input type="text" id="stDate" class="form-control" placeholder="e.g. May 29, 2027" required></div>
+              <div class="form-group"><label>Day</label><input type="text" id="stDay" class="form-control" placeholder="e.g. Saturday" required></div>
+              <div class="form-group"><label>Event / Focus Area</label><input type="text" id="stEvent" class="form-control" required></div>
+              <div class="form-group"><label>Location</label><input type="text" id="stLocation" class="form-control" required></div>
+              <div class="form-group"><label>Notes</label><input type="text" id="stNotes" class="form-control"></div>
+              <button type="submit" class="btn btn-navy" style="width: 100%;">Add Spring Training Event</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- INSERT GAME SCHEDULE -->
+        <div class="card">
+          <div class="card-header">➕ Insert Tournament Game Schedule</div>
           <div class="card-body">
             <form onsubmit="submitGame(event)">
-              <div class="form-group"><label>Event ID</label><input type="text" id="gEventId" class="form-control" placeholder="e.g. TR-PUDGE-01" required></div>
+              <div class="form-group"><label>Tournament Name</label><input type="text" id="gEventId" class="form-control" placeholder="e.g. Five Tool Pudge WS" required></div>
               <div class="form-group"><label>Game ID</label><input type="text" id="gGameId" class="form-control" placeholder="e.g. GM-001" required></div>
               <div class="form-group"><label>Date & Time</label><div style="display:flex; gap:10px;"><input type="date" id="gDate" class="form-control" required><input type="time" id="gTime" class="form-control" required></div></div>
               <div class="form-group"><label>Opponent</label><input type="text" id="gOpponent" class="form-control" required></div>
-              <div class="form-group"><label>Field Location</label><input type="text" id="gField" class="form-control" placeholder="e.g. Premier Field 3" required></div>
+              <div class="form-group"><label>Location / Field #</label><input type="text" id="gField" class="form-control" placeholder="e.g. Premier Field 3" required></div>
               <div class="form-group"><label>Uniform</label>
                 <select id="gUniform" class="form-select">
                   <option value="Orange Dri-Fit / Navy Custom">Orange Dri-Fit / Navy Custom Top</option>
@@ -356,6 +418,7 @@
           </div>
         </div>
 
+        <!-- LOG PITCH COUNT -->
         <div class="card">
           <div class="card-header">📝 Log Pitch Count</div>
           <div class="card-body">
@@ -381,7 +444,7 @@
       </div>
       <div class="card-body">
         <form onsubmit="submitRSVP(event)">
-          <div class="form-group"><label>Event ID</label><input type="text" id="rEventId" class="form-control" placeholder="e.g. TR-PUDGE-01" required></div>
+          <div class="form-group"><label>Tournament Name</label><input type="text" id="rEventId" class="form-control" placeholder="e.g. Five Tool Pudge WS" required></div>
           <div class="form-group"><label>Player Name</label><input type="text" id="rPlayerName" class="form-control" required></div>
           <div class="form-group"><label>Attendance Status</label>
             <select id="rStatus" class="form-select">
@@ -407,6 +470,40 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
+    // Team Metadata Lookup
+    const TEAM_DATA = {
+      "2028 Pierce": {
+        coach: "Matt Pierce",
+        code: "GGVD-ZCSV",
+        gc: "https://web.gc.com/teams/XlmuG2vLD7gg",
+        cal: "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
+        staff: [
+          { role: "Head Coach", name: "Matt Pierce", phone: "(832) 443-2715", email: "pierce.matt.c@gmail.com" },
+          { role: "Assistant Coach", name: "Kendrick Perkins", phone: "(832) 242-2466", email: "ospstrong10@gmail.com" }
+        ]
+      },
+      "2028 Borden": {
+        coach: "Nathan Borden",
+        code: "KRXJ-CK3C",
+        gc: "https://web.gc.com/teams/Ml3nTpzTsmZU",
+        cal: "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
+        staff: [
+          { role: "Head Coach", name: "Nathan Borden", phone: "(361) 228-3874", email: "nathanborden07@gmail.com" },
+          { role: "Assistant Coach", name: "Peyton Borden", phone: "N/A", email: "N/A" }
+        ]
+      },
+      "2028 Taylor": {
+        coach: "Brandon Taylor",
+        code: "Q3EK-J7SS",
+        gc: "https://web.gc.com/teams/CgOvvexQuPjb",
+        cal: "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
+        staff: [
+          { role: "Head Coach", name: "Brandon Taylor", phone: "(210) 850-6409", email: "bwt243@gmail.com" },
+          { role: "Assistant Coach", name: "Mathew Elizondo", phone: "(830) 776-9505", email: "N/A" }
+        ]
+      }
+    };
+
     function switchTab(panelId) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -418,31 +515,140 @@
       document.getElementById('rsvpModal').style.display = show ? 'flex' : 'none';
     }
 
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clockDisplay').innerText = now.toLocaleString();
+    }
+    setInterval(updateClock, 1000);
+
+    function onTeamChange() {
+      const team = document.getElementById('teamSelector').value;
+      const meta = TEAM_DATA[team];
+      
+      document.getElementById('selectedTeamTitle').innerText = `🧢 ${team} Operations Hub`;
+      document.getElementById('selectedTeamBadge').innerText = `${meta.coach} - Head Coach`;
+      document.getElementById('teamSportsYouCode').innerText = meta.code;
+      document.getElementById('gameChangerBtn').href = meta.gc;
+      document.getElementById('calendarBtn').href = meta.cal;
+
+      // Staff table
+      document.getElementById('staffTableBody').innerHTML = meta.staff.map(s => `
+        <tr><td>${s.role}</td><td>${s.name}</td><td>${s.phone}</td><td>${s.email}</td></tr>
+      `).join('');
+
+      loadData();
+    }
+
     async function loadData() {
       const team = document.getElementById('teamSelector').value;
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         const data = await res.json();
-        renderTournaments(data.tournaments);
+        renderRoster(data.roster);
+        renderTournaments(data.tournaments, data.games);
+        renderRotations(data.tournaments, data.rotations);
         renderPitchTracker(data.pitchSmart);
       } catch (err) {
         console.error("Error loading app data:", err);
       }
     }
 
-    function renderTournaments(tournaments) {
-      const container = document.getElementById('tournamentContainer');
-      if (!tournaments || tournaments.length === 0) {
-        container.innerHTML = `<p style="text-align: center; color: var(--text-muted);">No active tournaments listed in Google Sheets for this squad.</p>`;
+    function renderRoster(roster) {
+      const tbody = document.getElementById('teamRosterBody');
+      if (!roster || roster.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No roster records found.</td></tr>`;
         return;
       }
-      container.innerHTML = tournaments.map(t => `
-        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; background: #fff;">
-          <h3 style="margin-top:0;">${t['Tournament Name'] || 'Tournament Event'}</h3>
-          <p><strong>Dates:</strong> ${t['Dates'] || 'TBD'} | <strong>Location:</strong> ${t['Location'] || 'TBD'}</p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
-            ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
-            ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
+      tbody.innerHTML = roster.map(r => `
+        <tr>
+          <td><strong>${r['Player ID'] || '-'}</strong></td>
+          <td>${r['Full Name']}</td>
+          <td><span class="badge bg-navy">#${r['Jersey #']}</span></td>
+          <td>${r['Primary Pos']}</td>
+          <td>${r['Secondary Pos'] || '-'}</td>
+          <td>${r['Pitcher Status']}</td>
+          <td>${r['High School']}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTournaments(tournaments, games) {
+      const container = document.getElementById('tournamentsListContainer');
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No tournaments published yet.</div></div>`;
+        return;
+      }
+      container.innerHTML = tournaments.map(t => {
+        const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
+        return `
+          <div class="card">
+            <div class="card-header">
+              <span>🏟️ ${t['Tournament Name']} (${t['Dates']})</span>
+              <span>${t['Location']}</span>
+            </div>
+            <div class="card-body">
+              <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
+                ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
+                <button class="btn btn-outline btn-sm" onclick="toggleModal(true)">RSVP Availability</button>
+              </div>
+              
+              <h3>Game Schedule Matrix</h3>
+              <table>
+                <thead>
+                  <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform</th></tr>
+                </thead>
+                <tbody>
+                  ${eventGames.length > 0 ? eventGames.map(g => `
+                    <tr>
+                      <td><strong>${g['Game ID']}</strong></td>
+                      <td>${g['Date']}</td>
+                      <td>${g['Game Time']}</td>
+                      <td>${g['Opponent']}</td>
+                      <td>${g['Location/Field #']}</td>
+                      <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
+                    </tr>
+                  `).join('') : `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderRotations(tournaments, rotations) {
+      const container = document.getElementById('rotationsListContainer');
+      if (!rotations || rotations.length === 0) {
+        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No game lineups published yet.</div></div>`;
+        return;
+      }
+      container.innerHTML = rotations.map(r => `
+        <div class="card">
+          <div class="card-header">
+            <span>⚾ Game Lineup Card: ${r['Game ID']}</span>
+            <button class="btn btn-gold btn-sm" onclick="toggleModal(true)">Player Availability Form</button>
+          </div>
+          <div class="card-body">
+            <p><strong>Starting Pitcher (SP):</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span> | <strong>Relief Pitchers (RP):</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</p>
+            <table>
+              <thead>
+                <tr><th>C</th><th>1B</th><th>2B</th><th>3B</th><th>SS</th><th>LF</th><th>CF</th><th>RF</th><th>EH</th><th>DH</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>${r['C'] || '-'}</td>
+                  <td>${r['1B'] || '-'}</td>
+                  <td>${r['2B'] || '-'}</td>
+                  <td>${r['3B'] || '-'}</td>
+                  <td>${r['SS'] || '-'}</td>
+                  <td>${r['LF'] || '-'}</td>
+                  <td>${r['CF'] || '-'}</td>
+                  <td>${r['RF'] || '-'}</td>
+                  <td>${r['EH'] || '-'}</td>
+                  <td>${r['DH'] || '-'}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       `).join('');
@@ -454,11 +660,38 @@
       tbody.innerHTML = pitchLogs.map(p => `
         <tr>
           <td><strong>${p['Player ID']}</strong></td>
+          <td>${p['Outing Date'] || '-'}</td>
           <td><span class="badge bg-navy">${p['Pitches Thrown']}</span></td>
           <td><span class="badge ${p['Auto-Calculated Mandatory Rest Days'] > 0 ? 'bg-red' : 'bg-green'}">${p['Auto-Calculated Mandatory Rest Days']} Days</span></td>
           <td>${p['Next Eligible Pitch Date']}</td>
+          <td>${p['isRestricted'] ? '<span class="badge bg-red">Rest Restricted</span>' : '<span class="badge bg-green">Eligible</span>'}</td>
         </tr>
       `).join('');
+    }
+
+    function saveAnnouncements(e) {
+      e.preventDefault();
+      const txt = document.getElementById('adminAnnouncementText').value;
+      const ev = document.getElementById('adminNewEvent').value;
+      if (txt) document.getElementById('announcementText').innerText = txt;
+      if (ev) {
+        document.getElementById('eventsDisplay').innerHTML += `<div style="border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 10px;"><strong>Added Event</strong><br><span>${ev}</span></div>`;
+      }
+      alert('Welcome page announcements and events updated!');
+    }
+
+    function addSpringTrainingRow(e) {
+      e.preventDefault();
+      const dt = document.getElementById('stDate').value;
+      const dy = document.getElementById('stDay').value;
+      const ev = document.getElementById('stEvent').value;
+      const lc = document.getElementById('stLocation').value;
+      const nt = document.getElementById('stNotes').value;
+
+      document.getElementById('springTrainingScheduleBody').innerHTML += `
+        <tr><td>${dt}</td><td>${dy}</td><td>${ev}</td><td>${lc}</td><td>${nt || '-'}</td></tr>
+      `;
+      alert('Spring Training schedule row added!');
     }
 
     async function submitGame(e) {
@@ -474,7 +707,7 @@
         uniform: document.getElementById('gUniform').value
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Game schedule added successfully to Google Sheets!');
+      alert('Game schedule added successfully!');
       loadData();
     }
 
@@ -508,7 +741,10 @@
       loadData();
     }
 
-    window.onload = loadData;
+    window.onload = function() {
+      updateClock();
+      onTeamChange();
+    };
   </script>
 </body>
 </html>
