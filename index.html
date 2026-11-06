@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>South Texas Sliders 2028 Operations Manual</title>
   <style>
     :root {
@@ -18,86 +18,86 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-dark); padding-bottom: 50px; line-height: 1.5; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-dark); padding-bottom: 50px; line-height: 1.4; -webkit-text-size-adjust: 100%; }
 
     /* HEADER & BRANDING */
-    header { background-color: var(--navy); border-bottom: 5px solid var(--gold); padding: 16px 20px; color: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    header .brand-title { font-size: 1.35rem; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; }
-    header .motto { font-size: 0.75rem; color: var(--gold); font-weight: 700; letter-spacing: 1px; display: block; margin-top: 2px; }
-    header select { background-color: rgba(255,255,255,0.15); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
+    header { background-color: var(--navy); border-bottom: 4px solid var(--gold); padding: 12px 16px; color: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    header .brand-title { font-size: 1.15rem; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
+    header .motto { font-size: 0.7rem; color: var(--gold); font-weight: 700; letter-spacing: 0.8px; display: block; margin-top: 2px; }
+    header select { background-color: rgba(255,255,255,0.15); color: #fff; border: 1px solid var(--gold); border-radius: 6px; padding: 6px 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; max-width: 100%; }
     header select option { background-color: var(--navy); color: #fff; }
 
-    /* NAVIGATION BAR - WRAPPING TABLET & MOBILE COMPATIBLE */
-    .nav-wrapper { background: var(--navy); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .tabs-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }
-    .tab-btn { padding: 8px 14px; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 6px; background: rgba(255, 255, 255, 0.08); font-weight: 700; color: #FFFFFF; cursor: pointer; font-size: 0.85rem; white-space: nowrap; transition: all 0.2s ease; }
-    .tab-btn:hover { background: var(--gold); color: var(--navy); }
-    .tab-btn.active { color: var(--navy); background-color: var(--gold); border-color: var(--gold); font-weight: 800; }
+    /* STICKY NAVIGATION DROPDOWN BAR */
+    .nav-wrapper { background: var(--navy); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.15); padding: 8px 16px; }
+    .nav-dropdown-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+    .nav-label { color: var(--gold); font-weight: 800; font-size: 0.85rem; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
+    .nav-select { width: 100%; background: #FFFFFF; color: var(--navy); font-weight: 800; border: 2px solid var(--gold); border-radius: 6px; padding: 10px 12px; font-size: 0.95rem; cursor: pointer; outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
     /* CONTAINER & PANELS */
-    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+    .container { max-width: 1200px; margin: 16px auto; padding: 0 12px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* GRIDS & CARDS */
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 3px 6px rgba(0,0,0,0.04); overflow: hidden; margin-bottom: 20px; }
-    .card-header { background-color: var(--navy); color: #fff; padding: 12px 16px; font-weight: 800; font-size: 0.92rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); flex-wrap: wrap; gap: 8px; }
-    .card-body { padding: 16px; }
-
-    /* TIGHT LINEUP CARD CONTAINER */
-    .tight-lineup-card { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; background: #fff; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
-    .tight-lineup-header { background: #EDF2F7; padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 0.88rem; }
+    /* RESPONSIVE GRIDS & CARDS */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.04); overflow: hidden; margin-bottom: 16px; }
+    .card-header { background-color: var(--navy); color: #fff; padding: 10px 14px; font-weight: 800; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); flex-wrap: wrap; gap: 6px; }
+    .card-body { padding: 14px; }
 
     /* ANNOUNCEMENT BANNER */
-    .announcement-box { background: #FEFCBF; border-left: 6px solid var(--gold); padding: 14px 18px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; color: #744210; }
-    .announcement-box h4 { font-weight: 800; color: #975A16; margin-bottom: 4px; text-transform: uppercase; font-size: 0.85rem; }
+    .announcement-box { background: #FEFCBF; border-left: 5px solid var(--gold); padding: 12px 14px; border-radius: 6px; margin-bottom: 16px; font-weight: 600; color: #744210; font-size: 0.88rem; }
+    .announcement-box h4 { font-weight: 800; color: #975A16; margin-bottom: 2px; text-transform: uppercase; font-size: 0.8rem; }
 
     /* TYPOGRAPHY & BADGES */
-    h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; display: inline-block; }
-    h3 { font-size: 1.02rem; font-weight: 700; color: var(--navy); margin: 12px 0 6px 0; }
-    p { margin-bottom: 10px; font-size: 0.92rem; color: #2D3748; }
-    ul { margin-left: 20px; margin-bottom: 12px; font-size: 0.9rem; }
-    li { margin-bottom: 4px; }
+    h2 { font-size: 1.15rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; display: inline-block; }
+    h3 { font-size: 0.98rem; font-weight: 700; color: var(--navy); margin: 10px 0 6px 0; }
+    p { margin-bottom: 8px; font-size: 0.88rem; color: #2D3748; }
+    ul { margin-left: 18px; margin-bottom: 10px; font-size: 0.88rem; }
+    li { margin-bottom: 3px; }
     
-    .badge { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #fff; display: inline-block; }
+    .badge { padding: 3px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #fff; display: inline-block; }
     .bg-gold { background-color: var(--gold); color: var(--navy); }
     .bg-navy { background-color: var(--navy); }
     .bg-green { background-color: var(--success); }
     .bg-red { background-color: var(--danger); }
 
-    /* TABLES */
-    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px; }
+    /* RESPONSIVE TABLE WRAPPER */
+    .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 6px; border-radius: 6px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; white-space: nowrap; }
     th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
     th { background-color: #EDF2F7; font-weight: 800; color: var(--navy); }
     tr:nth-child(even) { background-color: #F8FAFC; }
 
+    /* TIGHT LINEUP CARD CONTAINER */
+    .tight-lineup-card { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; background: #fff; overflow: hidden; }
+    .tight-lineup-header { background: #EDF2F7; padding: 8px 12px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-size: 0.84rem; }
+
     /* VERTICAL LINEUP LIST */
-    .lineup-vertical-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; padding: 12px; }
-    .lineup-vertical-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; }
-    .lineup-pos-tag { font-weight: 800; color: var(--navy); min-width: 50px; }
+    .lineup-vertical-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; padding: 10px; }
+    .lineup-vertical-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 4px; font-size: 0.82rem; }
+    .lineup-pos-tag { font-weight: 800; color: var(--navy); min-width: 40px; }
     .lineup-player-name { font-weight: 700; color: #2D3748; }
 
     /* ADMIN GAME ROW ENTRY BLOCK */
-    .admin-game-row { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; background: #F8FAFC; }
-    .admin-game-row-title { font-weight: 800; color: var(--navy); margin-bottom: 8px; font-size: 0.85rem; display: flex; justify-content: space-between; }
+    .admin-game-row { border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-bottom: 10px; background: #F8FAFC; }
+    .admin-game-row-title { font-weight: 800; color: var(--navy); margin-bottom: 6px; font-size: 0.82rem; display: flex; justify-content: space-between; }
 
-    /* FORMS & BUTTONS */
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.83rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
-    .form-control, .form-select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.88rem; }
+    /* FORMS & BUTTONS (MOBILE ACCESSIBLE TOUCH TARGETS) */
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 3px; color: var(--navy); }
+    .form-control, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; /* Prevents mobile browser zoom */ }
     
-    .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.85rem; text-align: center; transition: all 0.2s; }
+    .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 0.82rem; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
     .btn-gold { background-color: var(--gold); color: var(--navy); }
     .btn-navy { background-color: var(--navy); color: #fff; }
     .btn-navy:hover { opacity: 0.9; }
-    .btn-sm { padding: 4px 10px; font-size: 0.78rem; }
+    .btn-sm { padding: 5px 10px; font-size: 0.75rem; }
     .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
 
     /* MODALS */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; }
-    .modal-content { background: #fff; width: 100%; max-width: 560px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 12px; }
+    .modal-content { background: #fff; width: 100%; max-width: 520px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -115,18 +115,21 @@
     </select>
   </header>
 
-  <!-- NAVIGATION BAR (WRAPPING TABS) -->
+  <!-- MOBILE-FRIENDLY DROPDOWN NAVIGATION BAR -->
   <div class="nav-wrapper">
-    <div class="tabs-container">
-      <button class="tab-btn active" onclick="switchTab('welcomeTab')">✉️ Welcome & Values</button>
-      <button class="tab-btn" onclick="switchTab('springTrainingTab')">📑 2027 Spring Training</button>
-      <button class="tab-btn" onclick="switchTab('teamsHubTab')">🧢 Team Ops Hub</button>
-      <button class="tab-btn" onclick="switchTab('scheduleLogisticsTab')">🗓️ Schedules & Hotels</button>
-      <button class="tab-btn" onclick="switchTab('gameOpsRotationsTab')">⚾ Lineups & Rotations</button>
-      <button class="tab-btn" onclick="switchTab('pitchSmartTab')">📊 PitchSmart Rest</button>
-      <button class="tab-btn" onclick="switchTab('playerResourcesTab')">🎓 Media & Recruiting</button>
-      <button class="tab-btn" onclick="switchTab('parentResourcesTab')">👨‍👩‍👧 Parents & Culture</button>
-      <button class="tab-btn" onclick="switchTab('adminTab')">⚙️ Admin Console</button>
+    <div class="nav-dropdown-container">
+      <span class="nav-label">📍 Menu:</span>
+      <select id="navTabDropdown" class="nav-select" onchange="switchTabFromDropdown(this.value)">
+        <option value="welcomeTab">✉️ Welcome & Values</option>
+        <option value="springTrainingTab">📑 2027 Spring Training</option>
+        <option value="teamsHubTab">🧢 Team Ops Hub</option>
+        <option value="scheduleLogisticsTab">🗓️ Schedules & Hotels</option>
+        <option value="gameOpsRotationsTab">⚾ Lineups & Rotations</option>
+        <option value="pitchSmartTab">📊 PitchSmart Rest</option>
+        <option value="playerResourcesTab">🎓 Media & Recruiting</option>
+        <option value="parentResourcesTab">👨‍👩‍👧 Parents & Culture</option>
+        <option value="adminTab">⚙️ Admin Console</option>
+      </select>
     </div>
   </div>
 
@@ -138,7 +141,7 @@
       <!-- ANNOUNCEMENT BANNER -->
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
-        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Please review upcoming tournament dates and submit player availability per game.</p>
+        <p id="announcementText">Welcome to the 2028 South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.</p>
       </div>
 
       <div class="grid-2">
@@ -159,7 +162,7 @@
         <div class="card">
           <div class="card-header">
             <span>📅 Live Ticker & Agenda</span>
-            <span id="clockDisplay" style="font-weight: 800; color: var(--gold); font-size: 0.85rem;"></span>
+            <span id="clockDisplay" style="font-weight: 800; color: var(--gold); font-size: 0.8rem;"></span>
           </div>
           <div class="card-body">
             <h3>Upcoming Events & Game Agenda</h3>
@@ -177,17 +180,20 @@
         <div class="card-header">📑 2027 Spring Training Operations (May 29 – May 31, 2027)</div>
         <div class="card-body">
           <p>Spring Training provides a progressive evaluation model to establish final 2028 team rosters based on talent, performance, and consistency.</p>
-          <h3 style="margin-top: 16px;">Spring Training Master Schedule</h3>
-          <table>
-            <thead>
-              <tr><th>Date</th><th>Day</th><th>Event / Focus Area</th><th>Location</th><th>Notes</th></tr>
-            </thead>
-            <tbody id="springTrainingScheduleBody">
-              <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
-              <tr><td>May 30, 2027</td><td>Sunday</td><td>Offensive Evaluation & Controlled Machine Scrimmages</td><td>Tri-County Fields</td><td>Full BP & In/Out Flow</td></tr>
-              <tr><td>May 31, 2027</td><td>Monday</td><td>Final Scrimmage Play & Roster Confirmation</td><td>Tri-County Fields</td><td>Final Team Assignments</td></tr>
-            </tbody>
-          </table>
+          <h3 style="margin-top: 12px;">Spring Training Master Schedule</h3>
+          
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Day</th><th>Event / Focus Area</th><th>Location</th><th>Notes</th></tr>
+              </thead>
+              <tbody id="springTrainingScheduleBody">
+                <tr><td>May 29, 2027</td><td>Saturday</td><td>Baseline Drills, Infield/Outfield & Machine BP</td><td>Tri-County Fields</td><td>All 2028 Players Attend</td></tr>
+                <tr><td>May 30, 2027</td><td>Sunday</td><td>Offensive Evaluation & Controlled Machine Scrimmages</td><td>Tri-County Fields</td><td>Full BP & In/Out Flow</td></tr>
+                <tr><td>May 31, 2027</td><td>Monday</td><td>Final Scrimmage Play & Roster Confirmation</td><td>Tri-County Fields</td><td>Final Team Assignments</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -200,39 +206,43 @@
           <span id="selectedTeamBadge" class="badge bg-gold">Matt Pierce - Head Coach</span>
         </div>
         <div class="card-body">
-          <div class="grid-2 mb-4">
-            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 14px; border-radius: 8px;">
+          <div class="grid-2 mb-3">
+            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
               <h3>📱 Communication & Live Platforms</h3>
-              <p><strong>sportsYou Team Code:</strong> <span id="teamSportsYouCode" class="badge bg-gold" style="font-size: 0.9rem;">GGVD-ZCSV</span></p>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+              <p><strong>sportsYou Team Code:</strong> <span id="teamSportsYouCode" class="badge bg-gold" style="font-size: 0.85rem;">GGVD-ZCSV</span></p>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                 <a id="sportsYouBtn" href="https://sportsyou.app" target="_blank" class="btn btn-navy btn-sm">sportsYou Login</a>
-                <a id="gameChangerBtn" href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-gold btn-sm">Follow Live on GameChanger</a>
+                <a id="gameChangerBtn" href="https://web.gc.com/teams/XlmuG2vLD7gg" target="_blank" class="btn btn-gold btn-sm">GameChanger</a>
                 <a id="calendarBtn" href="#" target="_blank" class="btn btn-navy btn-sm">Google Calendar Link</a>
               </div>
             </div>
 
-            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 14px; border-radius: 8px;">
+            <div style="background: #F8FAFC; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
               <h3>👔 Coaching Staff Information</h3>
-              <table style="margin-top: 4px;">
-                <thead>
-                  <tr><th>Role</th><th>Name</th><th>Phone</th><th>Email</th></tr>
-                </thead>
-                <tbody id="staffTableBody">
-                  <tr><td>Head Coach</td><td>Matt Pierce</td><td>(832) 443-2715</td><td>pierce.matt.c@gmail.com</td></tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr><th>Role</th><th>Name</th><th>Phone</th><th>Email</th></tr>
+                  </thead>
+                  <tbody id="staffTableBody">
+                    <tr><td>Head Coach</td><td>Matt Pierce</td><td>(832) 443-2715</td><td>pierce.matt.c@gmail.com</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
           <h3>📋 Official Squad Roster</h3>
-          <table>
-            <thead>
-              <tr><th>Player Full Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
-            </thead>
-            <tbody id="teamRosterBody">
-              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>Player Full Name</th><th>Jersey #</th><th>Primary Pos</th><th>Secondary Pos</th><th>Pitcher Status</th><th>High School</th></tr>
+              </thead>
+              <tbody id="teamRosterBody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading team roster...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -256,24 +266,28 @@
       <div class="card">
         <div class="card-header">🛡️ Staff Pitcher Rest Status & PitchSmart Rules (Ordered by Next Available)</div>
         <div class="card-body">
-          <table>
-            <thead>
-              <tr><th>Daily Max</th><th>0 Days Rest</th><th>1 Day Rest</th><th>2 Days Rest</th><th>3 Days Rest</th><th>4 Days Rest</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>95 Pitches</strong></td><td>1–30 Pitches</td><td>31–45 Pitches</td><td>46–60 Pitches</td><td>61–75 Pitches</td><td>76+ Pitches</td></tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>Daily Max</th><th>0 Days Rest</th><th>1 Day Rest</th><th>2 Days Rest</th><th>3 Days Rest</th><th>4 Days Rest</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>95 Pitches</strong></td><td>1–30 Pitches</td><td>31–45 Pitches</td><td>46–60 Pitches</td><td>61–75 Pitches</td><td>76+ Pitches</td></tr>
+              </tbody>
+            </table>
+          </div>
           
-          <h3 style="margin-top: 20px;">Pitcher Rest Status (Sorted by Next Availability Date)</h3>
-          <table>
-            <thead>
-              <tr><th>Pitcher Full Name</th><th>Last Outing Date</th><th>Pitches Thrown</th><th>Rest Days Required</th><th>Next Eligible Date</th><th>Outing History</th></tr>
-            </thead>
-            <tbody id="pitchTrackerBody">
-              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading pitch logs...</td></tr>
-            </tbody>
-          </table>
+          <h3 style="margin-top: 16px;">Pitcher Rest Status (Sorted by Next Availability Date)</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>Pitcher Full Name</th><th>Last Outing Date</th><th>Pitches Thrown</th><th>Rest Days Required</th><th>Next Eligible Date</th><th>Outing History</th></tr>
+              </thead>
+              <tbody id="pitchTrackerBody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading pitch logs...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -291,16 +305,18 @@
         <div class="card">
           <div class="card-header">📈 College Baseball Benchmarks (2028 Grads)</div>
           <div class="card-body">
-            <table>
-              <thead>
-                <tr><th>Level</th><th>Exit Velo</th><th>60-Yd Dash</th><th>RHP Velo</th></tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>Power 4 D1</strong></td><td>95–100+ mph</td><td>6.4–6.8 s</td><td>90–97+ mph</td></tr>
-                <tr><td><strong>Mid-Major D1</strong></td><td>88–95 mph</td><td>6.7–7.0 s</td><td>86–92 mph</td></tr>
-                <tr><td><strong>D2 / JUCO</strong></td><td>83–92 mph</td><td>6.8–7.2 s</td><td>82–88 mph</td></tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr><th>Level</th><th>Exit Velo</th><th>60-Yd Dash</th><th>RHP Velo</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Power 4 D1</strong></td><td>95–100+ mph</td><td>6.4–6.8 s</td><td>90–97+ mph</td></tr>
+                  <tr><td><strong>Mid-Major D1</strong></td><td>88–95 mph</td><td>6.7–7.0 s</td><td>86–92 mph</td></tr>
+                  <tr><td><strong>D2 / JUCO</strong></td><td>83–92 mph</td><td>6.8–7.2 s</td><td>82–88 mph</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -323,7 +339,7 @@
         <div class="card">
           <div class="card-header">⚖️ Progressive Discipline Procedures</div>
           <div class="card-body">
-            <ol style="margin-left: 20px;">
+            <ol style="margin-left: 18px;">
               <li><strong>Verbal Warning:</strong> Direct coach conversation.</li>
               <li><strong>Loss of Playing Time:</strong> Bench reflection.</li>
               <li><strong>Parent Conference:</strong> Formal review meeting.</li>
@@ -453,14 +469,16 @@
         <button onclick="toggleHistoryModal(false)" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
       </div>
       <div class="card-body">
-        <table>
-          <thead>
-            <tr><th>Outing Date</th><th>Pitches</th><th>Rest Required</th><th>Eligible Date</th></tr>
-          </thead>
-          <tbody id="pitcherHistoryTableBody">
-            <tr><td colspan="4" style="text-align:center;">No history recorded.</td></tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr><th>Outing Date</th><th>Pitches</th><th>Rest Required</th><th>Eligible Date</th></tr>
+            </thead>
+            <tbody id="pitcherHistoryTableBody">
+              <tr><td colspan="4" style="text-align:center;">No history recorded.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -505,7 +523,7 @@
           <div class="admin-game-row">
             <div class="admin-game-row-title">
               <span>Game #${i} Slot</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">(Leave blank to skip)</span>
+              <span style="font-size:0.72rem; color:var(--text-muted);">(Leave blank to skip)</span>
             </div>
             <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
               <div class="form-group">
@@ -555,11 +573,12 @@
       container.innerHTML = html;
     }
 
-    function switchTab(panelId) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    function switchTabFromDropdown(panelId) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(panelId).classList.add('active');
+      const targetPanel = document.getElementById(panelId);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
     }
 
     function toggleModal(show, tournamentName = '', gameDetails = '') {
@@ -628,19 +647,19 @@
       container.innerHTML = tournaments.map(t => {
         const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
         return `
-          <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
+          <div style="border-left: 4px solid var(--navy); padding-left: 10px; margin-bottom: 10px; background: #F8FAFC; padding: 8px 10px; border-radius: 0 6px 6px 0;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong>${t['Dates'] || 'TBD'}</strong>
               ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>` : ''}
             </div>
-            <div style="font-weight:800; color:var(--navy); font-size:0.95rem;">${t['Tournament Name']}</div>
-            <div style="font-size:0.82rem; color:var(--text-muted); mb-1">${t['Location'] || 'TBD'}</div>
+            <div style="font-weight:800; color:var(--navy); font-size:0.9rem;">${t['Tournament Name']}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">${t['Location'] || 'TBD'}</div>
             
             ${eventGames.length > 0 ? `
-              <div style="margin-top:6px; background:#fff; border:1px solid var(--border); border-radius:6px; padding:6px 10px;">
-                <strong style="font-size:0.8rem; color:var(--navy);">Scheduled Games:</strong>
+              <div style="margin-top:6px; background:#fff; border:1px solid var(--border); border-radius:4px; padding:6px 8px;">
+                <strong style="font-size:0.78rem; color:var(--navy);">Scheduled Games:</strong>
                 ${eventGames.map(g => `
-                  <div style="font-size:0.78rem; border-top:1px solid #EDF2F7; padding-top:2px; margin-top:2px;">
+                  <div style="font-size:0.75rem; border-top:1px solid #EDF2F7; padding-top:2px; margin-top:2px;">
                     • <strong>${g['Game ID']} (${g['Date']} @ ${g['Game Time']}):</strong> vs. ${g['Opponent']} (${g['Location/Field #']})
                   </div>
                 `).join('')}
@@ -694,32 +713,34 @@
               <span>${t['Location']}</span>
             </div>
             <div class="card-body">
-              <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+              <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
                 ${t['Hotel Booking Link'] ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : ''}
                 ${t['Facility Map Link'] ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : ''}
               </div>
               
               <h3>Game Schedule & Player RSVP</h3>
-              <table>
-                <thead>
-                  <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
-                </thead>
-                <tbody>
-                  ${eventGames.length > 0 ? eventGames.map(g => `
-                    <tr>
-                      <td><strong>${g['Game ID']}</strong></td>
-                      <td>${g['Date']}</td>
-                      <td>${g['Game Time']}</td>
-                      <td><strong>vs. ${g['Opponent']}</strong></td>
-                      <td>${g['Location/Field #']}</td>
-                      <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
-                      <td>
-                        <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${g['Game ID']} - vs. ${g['Opponent']}')">RSVP Game</button>
-                      </td>
-                    </tr>
-                  `).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
+                  </thead>
+                  <tbody>
+                    ${eventGames.length > 0 ? eventGames.map(g => `
+                      <tr>
+                        <td><strong>${g['Game ID']}</strong></td>
+                        <td>${g['Date']}</td>
+                        <td>${g['Game Time']}</td>
+                        <td><strong>vs. ${g['Opponent']}</strong></td>
+                        <td>${g['Location/Field #']}</td>
+                        <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
+                        <td>
+                          <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${g['Game ID']} - vs. ${g['Opponent']}')">RSVP Game</button>
+                        </td>
+                      </tr>
+                    `).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>`;
       }).join('');
@@ -758,10 +779,10 @@
                       <span>⚾ ${r['Game ID']} | ${gDate} @ ${gTime} ${gOpponent} (${gLocation})</span>
                       <span class="badge bg-gold">${gUniform}</span>
                     </div>
-                    <div style="padding: 10px 14px; background: #fff;">
-                      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:8px; font-size:0.85rem;">
-                        <span><strong>Starting Pitcher (SP):</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span></span>
-                        <span><strong>Relief Pitchers:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</span>
+                    <div style="padding: 10px 12px; background: #fff;">
+                      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:8px; font-size:0.82rem;">
+                        <span><strong>SP:</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span></span>
+                        <span><strong>Relief:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</span>
                       </div>
                       
                       <div class="lineup-vertical-list">
@@ -791,7 +812,6 @@
         return;
       }
 
-      // SORT PITCHERS BY NEXT AVAILABLE DATE ASCENDING (EARLIEST / ELIGIBLE FIRST)
       const sortedLogs = [...pitchLogs].sort((a, b) => {
         const dateA = a['Next Eligible Pitch Date'] || '';
         const dateB = b['Next Eligible Pitch Date'] || '';
@@ -799,8 +819,8 @@
       });
 
       tbody.innerHTML = sortedLogs.map(p => {
-        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
-        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
+        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T') : 'Eligible';
+        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T') : '-';
         return `
           <tr>
             <td><strong>${p['Player ID']}</strong></td>
@@ -825,10 +845,10 @@
       } else {
         tbody.innerHTML = history.map(h => `
           <tr>
-            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
+            <td>${h['Outing Date'] ? h['Outing Date'].split('T') : '-'}</td>
             <td>${h['Pitches Thrown']}</td>
             <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
-            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
+            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T') : '-'}</td>
           </tr>
         `).join('');
       }
@@ -842,9 +862,9 @@
       if (txt) document.getElementById('announcementText').innerText = txt;
       if (ev) {
         document.getElementById('agendaListContainer').innerHTML += `
-          <div style="border-left: 4px solid var(--gold); padding-left: 10px; margin-bottom: 12px; background: #F8FAFC; padding: 10px; border-radius: 0 6px 6px 0;">
-            <div style="font-weight:700; color:var(--navy);">New Event Added</div>
-            <div style="font-size:0.82rem; color:var(--text-muted);">${ev}</div>
+          <div style="border-left: 4px solid var(--gold); padding-left: 10px; margin-bottom: 10px; background: #F8FAFC; padding: 8px 10px; border-radius: 0 6px 6px 0;">
+            <div style="font-weight:700; color:var(--navy); font-size:0.85rem;">New Event Added</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">${ev}</div>
           </div>`;
       }
       alert('Welcome page updated!');
