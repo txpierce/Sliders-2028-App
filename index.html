@@ -601,7 +601,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
 
     const DEFAULT_TEAMS = [
-      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "[suspicious link removed]", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
     ];
@@ -611,6 +611,46 @@
     let currentPitchLogs = [];
     let currentTournaments = [];
     let currentGames = [];
+
+    // --- HELPER FORMATTING FUNCTIONS FOR CLEAN DATE & TIME DISPLAY ---
+    function formatCleanDate(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return 'TBD';
+      let str = dateStr.trim();
+      if (str.includes('T')) str = str.split('T')[0];
+      
+      const match = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (match) {
+        const y = parseInt(match[1], 10);
+        const m = parseInt(match[2], 10) - 1;
+        const d = parseInt(match[3], 10);
+        const dateObj = new Date(y, m, d);
+        if (!isNaN(dateObj.getTime())) {
+          return dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+      }
+      return str;
+    }
+
+    function formatCleanTime(timeStr) {
+      if (!timeStr || typeof timeStr !== 'string') return 'TBD';
+      let str = timeStr.trim();
+      if (str.includes('T')) {
+        const d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        }
+        str = str.split('T')[1].substring(0, 5);
+      }
+      return str || 'TBD';
+    }
+
+    function formatGameLabel(gameId) {
+      if (!gameId) return 'Game';
+      if (gameId.startsWith('GM-P')) return `Game #${gameId.replace('GM-P', '')} (Pool)`;
+      if (gameId.startsWith('GM-B')) return `Game #${gameId.replace('GM-B', '')} (Bracket)`;
+      if (gameId.startsWith('GM-C')) return `Game #${gameId.replace('GM-C', '')} (Consolation)`;
+      return gameId.replace('GM-', 'Game #');
+    }
 
     function buildAdminGameSlots() {
       const container = document.getElementById('batchGamesContainer');
@@ -759,8 +799,8 @@
       }
       const datesStr = t['Dates'] || '';
       if (datesStr && typeof datesStr === 'string') {
-        const firstPart = datesStr.split(' - ')[0].split(' to ')[0].trim();
-        const d = new Date(firstPart);
+        const parts = datesStr.split(' to ');
+        const d = new Date(parts[0]);
         if (!isNaN(d.getTime())) return d;
       }
       return new Date('2099-12-31');
@@ -816,6 +856,7 @@
       }).join('');
     }
 
+    /* CLEAN & READABLE AGENDA WINDOW ON WELCOME TAB */
     function renderAgenda(tournaments, games) {
       const container = document.getElementById('agendaListContainer');
       if (!tournaments || tournaments.length === 0) {
@@ -832,17 +873,21 @@
               <strong>${t['Dates'] || 'TBD'}</strong>
               ${hasValidMap ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-navy btn-sm">📍 Map Link</a>` : `<span class="badge bg-gold">Map: ${t['Facility Map Link'] || 'TBA'}</span>`}
             </div>
-            <div style="font-weight:800; color:var(--navy); font-size:0.9rem;">${t['Tournament Name']}</div>
+            <div style="font-weight:800; color:var(--navy); font-size:0.9rem; margin-top:2px;">${t['Tournament Name']}</div>
             <div style="font-size:0.8rem; color:var(--text-muted);">${t['Location'] || 'TBD'}</div>
             
             ${eventGames.length > 0 ? `
               <div style="margin-top:6px; background:#fff; border:1px solid var(--border); border-radius:4px; padding:6px 8px;">
                 <strong style="font-size:0.78rem; color:var(--navy);">Scheduled Games:</strong>
-                ${eventGames.map(g => `
-                  <div style="font-size:0.75rem; border-top:1px solid #EDF2F7; padding-top:2px; margin-top:2px;">
-                    • <strong>${g['Game ID']} (${g['Date']} @ ${g['Game Time'] || 'TBD'}):</strong> vs. ${g['Opponent']} (${g['Location/Field #']})
-                  </div>
-                `).join('')}
+                ${eventGames.map(g => {
+                  const cDate = formatCleanDate(g['Date']);
+                  const cTime = formatCleanTime(g['Game Time']);
+                  return `
+                    <div style="font-size:0.78rem; border-top:1px solid #EDF2F7; padding-top:4px; margin-top:4px;">
+                      • <strong>${cDate} @ ${cTime}:</strong> vs. <strong>${g['Opponent']}</strong> (${g['Location/Field #'] || 'TBD'})
+                    </div>
+                  `;
+                }).join('')}
               </div>` : ''}
           </div>`;
       }).join('');
@@ -877,6 +922,7 @@
       `).join('');
     }
 
+    /* CLEAN & READABLE SCHEDULES & HOTELS TAB */
     function renderTournaments(tournaments, games) {
       const container = document.getElementById('tournamentsListContainer');
       if (!tournaments || tournaments.length === 0) {
@@ -904,22 +950,28 @@
               <div class="table-responsive">
                 <table>
                   <thead>
-                    <tr><th>Game ID</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
+                    <tr><th>Game</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
                   </thead>
                   <tbody>
-                    ${eventGames.length > 0 ? eventGames.map(g => `
-                      <tr>
-                        <td><strong>${g['Game ID']}</strong></td>
-                        <td>${g['Date']}</td>
-                        <td>${g['Game Time'] || 'TBD'}</td>
-                        <td><strong>vs. ${g['Opponent']}</strong></td>
-                        <td>${g['Location/Field #']}</td>
-                        <td><span class="badge bg-gold">${g['Designated Uniform']}</span></td>
-                        <td>
-                          <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${g['Game ID']} - vs. ${g['Opponent']}')">RSVP Game</button>
-                        </td>
-                      </tr>
-                    `).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
+                    ${eventGames.length > 0 ? eventGames.map(g => {
+                      const cleanDate = formatCleanDate(g['Date']);
+                      const cleanTime = formatCleanTime(g['Game Time']);
+                      const gameLabel = formatGameLabel(g['Game ID']);
+                      
+                      return `
+                        <tr>
+                          <td><span class="badge bg-navy">${gameLabel}</span></td>
+                          <td><strong>${cleanDate}</strong></td>
+                          <td><strong>${cleanTime}</strong></td>
+                          <td><strong>vs. ${g['Opponent']}</strong></td>
+                          <td>${g['Location/Field #'] || 'TBD'}</td>
+                          <td><span class="badge bg-gold">${g['Designated Uniform'] || 'TBD'}</span></td>
+                          <td>
+                            <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${gameLabel} - vs. ${g['Opponent']}')">RSVP Game</button>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
                   </tbody>
                 </table>
               </div>
@@ -928,6 +980,7 @@
       }).join('');
     }
 
+    /* CLEAN & READABLE ROTATIONS TAB */
     function renderRotations(tournaments, rotations, games) {
       const container = document.getElementById('rotationsListContainer');
       if (!tournaments || tournaments.length === 0) {
@@ -949,8 +1002,9 @@
             <div class="card-body">
               ${eventRotations.length > 0 ? eventRotations.map(r => {
                 const gameInfo = (games || []).find(g => g['Game ID'] === r['Game ID']) || {};
-                const gDate = gameInfo['Date'] || '';
-                const gTime = gameInfo['Game Time'] || 'TBD';
+                const gDate = formatCleanDate(gameInfo['Date']);
+                const gTime = formatCleanTime(gameInfo['Game Time']);
+                const gLabel = formatGameLabel(r['Game ID']);
                 const gOpponent = gameInfo['Opponent'] ? `vs. ${gameInfo['Opponent']}` : '';
                 const gLocation = gameInfo['Location/Field #'] || '';
                 const gUniform = gameInfo['Designated Uniform'] || '';
@@ -958,7 +1012,7 @@
                 return `
                   <div class="tight-lineup-card">
                     <div class="tight-lineup-header">
-                      <span>⚾ ${r['Game ID']} | ${gDate} @ ${gTime} ${gOpponent} (${gLocation})</span>
+                      <span>⚾ ${gLabel} | ${gDate} @ ${gTime} ${gOpponent} (${gLocation})</span>
                       <span class="badge bg-gold">${gUniform}</span>
                     </div>
                     <div style="padding: 10px 12px; background: #fff;">
@@ -1001,8 +1055,8 @@
       });
 
       tbody.innerHTML = sortedLogs.map(p => {
-        const cleanDate = p['Next Eligible Pitch Date'] ? p['Next Eligible Pitch Date'].split('T')[0] : 'Eligible';
-        const outingDate = p['Outing Date'] ? p['Outing Date'].split('T')[0] : '-';
+        const cleanDate = formatCleanDate(p['Next Eligible Pitch Date']);
+        const outingDate = formatCleanDate(p['Outing Date']);
         return `
           <tr>
             <td><strong>${p['Player ID']}</strong></td>
@@ -1027,10 +1081,10 @@
       } else {
         tbody.innerHTML = history.map(h => `
           <tr>
-            <td>${h['Outing Date'] ? h['Outing Date'].split('T')[0] : '-'}</td>
+            <td>${formatCleanDate(h['Outing Date'])}</td>
             <td>${h['Pitches Thrown']}</td>
             <td>${h['Auto-Calculated Mandatory Rest Days']} Days</td>
-            <td>${h['Next Eligible Pitch Date'] ? h['Next Eligible Pitch Date'].split('T')[0] : '-'}</td>
+            <td>${formatCleanDate(h['Next Eligible Pitch Date'])}</td>
           </tr>
         `).join('');
       }
