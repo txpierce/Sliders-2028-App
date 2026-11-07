@@ -983,15 +983,27 @@
         renderDynamicTeams(data.teams);
         updateSelectedTeamOps(team);
 
-        // Render Announcement Banner
-        if (data.announcement) {
+        // Render Announcement Banner (Check Array or String)
+        if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
+          const latestAnn = data.announcements[data.announcements.length - 1];
+          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+        } else if (typeof data.announcement === 'string' && data.announcement) {
           document.getElementById('announcementText').innerText = data.announcement;
         } else {
           document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
-        // Render Spring Training Itinerary
-        if (data.springTraining) {
+        // Render Spring Training Itinerary (Check Array or String)
+        if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
+          const latestSt = data.springTraining[data.springTraining.length - 1];
+          const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
+          if (stText) {
+            document.getElementById('springTrainingContent').innerHTML = `
+              <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+                ${stText}
+              </div>`;
+          }
+        } else if (typeof data.springTraining === 'string' && data.springTraining) {
           document.getElementById('springTrainingContent').innerHTML = `
             <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
               ${data.springTraining}
@@ -1039,14 +1051,20 @@
 
       // Add Custom Events (Practices, Workouts, Dinners, etc.)
       (events || []).forEach(ev => {
+        const rawDate = ev['Date'] || ev['Event Date'] || '';
+        const rawTitle = ev['Event Name'] || ev['Event Title'] || 'Event';
+        const rawType = ev['Event Type'] || 'Event';
+        const rawTime = ev['Time'] || ev['Event Time'] || 'TBD';
+        const rawLoc = ev['Location'] || 'TBD';
+
         allAgendaItems.push({
           type: 'event',
-          sortDate: ev['Event Date'] ? new Date(ev['Event Date'] + 'T00:00:00') : new Date('2099-12-31'),
-          dateStr: formatCleanDate(ev['Event Date']),
-          title: ev['Event Title'],
-          eventType: ev['Event Type'] || 'Event',
-          time: ev['Event Time'] || 'TBD',
-          location: ev['Location'] || 'TBD'
+          sortDate: rawDate ? new Date(rawDate + 'T00:00:00') : new Date('2099-12-31'),
+          dateStr: formatCleanDate(rawDate),
+          title: rawTitle,
+          eventType: rawType,
+          time: rawTime,
+          location: rawLoc
         });
       });
 
@@ -1324,7 +1342,8 @@
 
       const payload = {
         action: 'addAnnouncement',
-        announcementText: text
+        announcementText: text,
+        text: text
       };
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
       document.getElementById('announcementText').innerText = text;
@@ -1348,6 +1367,7 @@
         team: team,
         eventType: type,
         eventTitle: title,
+        eventName: title,
         date: date,
         time: time,
         location: location
@@ -1367,7 +1387,8 @@
 
       const payload = {
         action: 'updateSpringTraining',
-        itineraryText: text
+        itineraryText: text,
+        text: text
       };
 
       await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -1381,7 +1402,7 @@
       e.preventDefault();
       const team = document.getElementById('teamSelector').value;
       const payload = {
-        action: 'addMediaRequest',
+        action: 'submitMediaRequest',
         team: team,
         playerName: document.getElementById('mPlayerName').value,
         requestType: document.getElementById('mRequestType').value,
