@@ -681,7 +681,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
       { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
@@ -1334,23 +1334,6 @@
       toggleHistoryModal(true);
     }
 
-        /* BULLETPROOF API SEND FUNCTION (SURVIVES GOOGLE APPS SCRIPT REDIRECTS) */
-    async function sendApiRequest(payload) {
-      try {
-        const queryParams = new URLSearchParams(payload).toString();
-        const url = `${API_URL}?${queryParams}`;
-        const res = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-      } catch (err) {
-        console.warn("Primary POST fetch failed, falling back to GET:", err);
-        const queryParams = new URLSearchParams(payload).toString();
-        const url = `${API_URL}?${queryParams}`;
-        const res = await fetch(url);
-        return await res.json();
-      }
-    }
-
     /* PERSISTENT ANNOUNCEMENT PUBLISH FUNCTION */
     async function submitAnnouncement(e) {
       e.preventDefault();
@@ -1359,20 +1342,14 @@
 
       const payload = {
         action: 'addAnnouncement',
-        team: document.getElementById('teamSelector') ? document.getElementById('teamSelector').value : 'All',
         announcementText: text,
         text: text
       };
-
-      try {
-        const result = await sendApiRequest(payload);
-        document.getElementById('announcementText').innerText = text;
-        alert(result && result.message ? result.message : 'Announcement published and saved to Google Sheets!');
-        e.target.reset();
-        loadData();
-      } catch (err) {
-        alert('Error publishing announcement: ' + err.message);
-      }
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      document.getElementById('announcementText').innerText = text;
+      alert('Announcement published and saved to Google Sheets!');
+      e.target.reset();
+      loadData();
     }
 
     /* PERSISTENT UPCOMING EVENT SUBMIT FUNCTION */
@@ -1396,14 +1373,10 @@
         location: location
       };
 
-      try {
-        const result = await sendApiRequest(payload);
-        alert(result && result.message ? result.message : `Event "${title}" added to agenda!`);
-        e.target.reset();
-        loadData();
-      } catch (err) {
-        alert('Error adding event: ' + err.message);
-      }
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert(`Event "${title}" added to agenda!`);
+      e.target.reset();
+      loadData();
     }
 
     /* PERSISTENT SPRING TRAINING ITINERARY UPDATE FUNCTION */
@@ -1414,19 +1387,14 @@
 
       const payload = {
         action: 'updateSpringTraining',
-        team: document.getElementById('teamSelector') ? document.getElementById('teamSelector').value : 'All',
         itineraryText: text,
         text: text
       };
 
-      try {
-        const result = await sendApiRequest(payload);
-        alert(result && result.message ? result.message : 'Spring Training details saved and published!');
-        e.target.reset();
-        loadData();
-      } catch (err) {
-        alert('Error updating Spring Training: ' + err.message);
-      }
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert('Spring Training details saved and published!');
+      e.target.reset();
+      loadData();
     }
 
     /* MEDIA REQUEST SUBMIT FUNCTION */
@@ -1442,13 +1410,9 @@
         details: document.getElementById('mDetails').value
       };
 
-      try {
-        const result = await sendApiRequest(payload);
-        alert(result && result.message ? result.message : 'Media request submitted successfully!');
-        e.target.reset();
-      } catch (err) {
-        alert('Error submitting media request: ' + err.message);
-      }
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      alert('Media request submitted successfully!');
+      e.target.reset();
     }
 
     async function submitNewTeam(e) {
