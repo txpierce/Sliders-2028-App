@@ -980,7 +980,7 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        renderDynamicTeams(data.teams || DEFAULT_TEAMS);
+        renderDynamicTeams(data.teams);
         updateSelectedTeamOps(team);
 
         // Render Announcement Banner (Check Array or String)
@@ -1021,24 +1021,16 @@
         renderAgenda(currentTournaments, currentGames, currentEvents);
         renderRoster(currentRoster);
         renderTournaments(currentTournaments, currentGames);
-        renderRotations(currentTournaments, data.rotations || [], currentGames);
+        renderRotations(currentTournaments, data.rotations, currentGames);
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS);
         updateSelectedTeamOps(team);
-
-        // Fallback UI rendering to prevent 'Loading...' state from freezing tabs
-        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
-        renderAgenda(currentTournaments, currentGames, currentEvents);
-        renderRoster(currentRoster);
-        renderTournaments(currentTournaments, currentGames);
-        renderRotations(currentTournaments, [], currentGames);
-        renderPitchTracker(currentPitchLogs);
       }
     }
 
-        function populateTournamentDropdowns(tournaments) {
+    function populateTournamentDropdowns(tournaments) {
       const select = document.getElementById('gAdminTournamentSelect');
       if (!select) return;
       if (!tournaments || tournaments.length === 0) {
@@ -1342,6 +1334,23 @@
       toggleHistoryModal(true);
     }
 
+        /* BULLETPROOF API SEND FUNCTION (SURVIVES GOOGLE APPS SCRIPT REDIRECTS) */
+    async function sendApiRequest(payload) {
+      try {
+        const queryParams = new URLSearchParams(payload).toString();
+        const url = `${API_URL}?${queryParams}`;
+        const res = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        console.warn("Primary POST fetch failed, falling back to GET:", err);
+        const queryParams = new URLSearchParams(payload).toString();
+        const url = `${API_URL}?${queryParams}`;
+        const res = await fetch(url);
+        return await res.json();
+      }
+    }
+
     /* PERSISTENT ANNOUNCEMENT PUBLISH FUNCTION */
     async function submitAnnouncement(e) {
       e.preventDefault();
@@ -1350,14 +1359,20 @@
 
       const payload = {
         action: 'addAnnouncement',
+        team: document.getElementById('teamSelector') ? document.getElementById('teamSelector').value : 'All',
         announcementText: text,
         text: text
       };
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      document.getElementById('announcementText').innerText = text;
-      alert('Announcement published and saved to Google Sheets!');
-      e.target.reset();
-      loadData();
+
+      try {
+        const result = await sendApiRequest(payload);
+        document.getElementById('announcementText').innerText = text;
+        alert(result && result.message ? result.message : 'Announcement published and saved to Google Sheets!');
+        e.target.reset();
+        loadData();
+      } catch (err) {
+        alert('Error publishing announcement: ' + err.message);
+      }
     }
 
     /* PERSISTENT UPCOMING EVENT SUBMIT FUNCTION */
@@ -1381,10 +1396,14 @@
         location: location
       };
 
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert(`Event "${title}" added to agenda!`);
-      e.target.reset();
-      loadData();
+      try {
+        const result = await sendApiRequest(payload);
+        alert(result && result.message ? result.message : `Event "${title}" added to agenda!`);
+        e.target.reset();
+        loadData();
+      } catch (err) {
+        alert('Error adding event: ' + err.message);
+      }
     }
 
     /* PERSISTENT SPRING TRAINING ITINERARY UPDATE FUNCTION */
@@ -1395,14 +1414,19 @@
 
       const payload = {
         action: 'updateSpringTraining',
+        team: document.getElementById('teamSelector') ? document.getElementById('teamSelector').value : 'All',
         itineraryText: text,
         text: text
       };
 
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Spring Training details saved and published!');
-      e.target.reset();
-      loadData();
+      try {
+        const result = await sendApiRequest(payload);
+        alert(result && result.message ? result.message : 'Spring Training details saved and published!');
+        e.target.reset();
+        loadData();
+      } catch (err) {
+        alert('Error updating Spring Training: ' + err.message);
+      }
     }
 
     /* MEDIA REQUEST SUBMIT FUNCTION */
@@ -1418,9 +1442,13 @@
         details: document.getElementById('mDetails').value
       };
 
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      alert('Media request submitted successfully!');
-      e.target.reset();
+      try {
+        const result = await sendApiRequest(payload);
+        alert(result && result.message ? result.message : 'Media request submitted successfully!');
+        e.target.reset();
+      } catch (err) {
+        alert('Error submitting media request: ' + err.message);
+      }
     }
 
     async function submitNewTeam(e) {
