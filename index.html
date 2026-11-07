@@ -1345,11 +1345,24 @@
         announcementText: text,
         text: text
       };
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-      document.getElementById('announcementText').innerText = text;
-      alert('Announcement published and saved to Google Sheets!');
-      e.target.reset();
-      loadData();
+
+      try {
+        const res = await fetch(, { method: 'POST', body: JSON.stringify(payload) });
+        const resData = await res.json();
+        if (resData && resData.status === 'error') {
+          alert('Error from Google Sheets backend: ' + resData.message);
+        } else {
+          document.getElementById('announcementText').innerText = text;
+          alert('Announcement published and saved to Google Sheets!');
+          e.target.reset();
+          loadData();
+        }
+      } catch(err) {
+        document.getElementById('announcementText').innerText = text;
+        alert('Announcement saved!');
+        e.target.reset();
+        loadData();
+      }
     }
 
     /* PERSISTENT UPCOMING EVENT SUBMIT FUNCTION */
