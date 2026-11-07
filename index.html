@@ -381,6 +381,7 @@
     </div>
 
     <!-- 9. COORDINATOR ADMIN CONSOLE -->
+        <!-- 9. COORDINATOR ADMIN CONSOLE -->
     <div id="adminTab" class="tab-panel">
       <div class="grid-2">
         <!-- EDIT ANNOUNCEMENTS -->
@@ -452,22 +453,6 @@
       </div>
 
       <div class="grid-2">
-        <!-- LOG PITCH COUNT -->
-        <div class="card">
-          <div class="card-header">📝 Log Pitch Count</div>
-          <div class="card-body">
-            <form onsubmit="submitPitchLog(event)">
-              <div class="form-group">
-                <label>Pitcher Full Name</label>
-                <select id="pPlayerName" class="form-select" required></select>
-              </div>
-              <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
-              <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
-              <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
-            </form>
-          </div>
-        </div>
-
         <!-- ADD NEW TEAM CARD -->
         <div class="card">
           <div class="card-header">➕ Add New Team to Program</div>
@@ -498,6 +483,55 @@
                 <input type="text" id="ntCoachPhone" class="form-control" placeholder="(555) 555-5555 / coach@email.com">
               </div>
               <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Team to Program</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ADD NEW PLAYER CARD -->
+        <div class="card">
+          <div class="card-header">🧢 Add New Player to Roster</div>
+          <div class="card-body">
+            <form onsubmit="submitNewPlayer(event)">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label>Assigned Team</label>
+                  <select id="npTeam" class="form-select" required></select>
+                </div>
+                <div class="form-group">
+                  <label>Player Full Name</label>
+                  <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
+                </div>
+                <div class="form-group">
+                  <label>Jersey #</label>
+                  <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
+                </div>
+                <div class="form-group">
+                  <label>Primary Position</label>
+                  <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
+                </div>
+                <div class="form-group">
+                  <label>Secondary Position</label>
+                  <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
+                </div>
+                <div class="form-group">
+                  <label>Pitcher Capability</label>
+                  <select id="npPitcherStatus" class="form-select">
+                    <option value="RHP">RHP</option>
+                    <option value="LHP">LHP</option>
+                    <option value="Both">RHP / LHP</option>
+                    <option value="Position Only">Position Only</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>High School</label>
+                  <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
+                </div>
+                <div class="form-group">
+                  <label>Parent Contact Info</label>
+                  <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
             </form>
           </div>
         </div>
@@ -547,55 +581,6 @@
         </div>
       </div>
 
-      <!-- ADD NEW PLAYER CARD -->
-      <div class="card">
-        <div class="card-header">🧢 Add New Player to Roster</div>
-        <div class="card-body">
-          <form onsubmit="submitNewPlayer(event)">
-            <div class="grid-2">
-              <div class="form-group">
-                <label>Assigned Team</label>
-                <select id="npTeam" class="form-select" required></select>
-              </div>
-              <div class="form-group">
-                <label>Player Full Name</label>
-                <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
-              </div>
-              <div class="form-group">
-                <label>Jersey #</label>
-                <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
-              </div>
-              <div class="form-group">
-                <label>Primary Position</label>
-                <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
-              </div>
-              <div class="form-group">
-                <label>Secondary Position</label>
-                <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
-              </div>
-              <div class="form-group">
-                <label>Pitcher Capability</label>
-                <select id="npPitcherStatus" class="form-select">
-                  <option value="RHP">RHP</option>
-                  <option value="LHP">LHP</option>
-                  <option value="Both">RHP / LHP</option>
-                  <option value="Position Only">Position Only</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>High School</label>
-                <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
-              </div>
-              <div class="form-group">
-                <label>Parent Contact Info</label>
-                <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
-          </form>
-        </div>
-      </div>
-
       <!-- BATCH GAMES CARD -->
       <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
@@ -610,11 +595,23 @@
           </form>
         </div>
       </div>
-    </div>
 
-  </div>
-
-  <!-- RSVP MODAL -->
+      <!-- LOG PITCH COUNT -->
+      <div class="card">
+        <div class="card-header">📝 Log Pitch Count</div>
+        <div class="card-body">
+          <form onsubmit="submitPitchLog(event)">
+            <div class="form-group">
+              <label>Pitcher Full Name</label>
+              <select id="pPlayerName" class="form-select" required></select>
+            </div>
+            <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
+            <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
+            <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
+          </form>
+        </div>
+      </div>
+    </div><!-- RSVP MODAL -->
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
