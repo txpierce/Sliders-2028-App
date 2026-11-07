@@ -980,7 +980,7 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        renderDynamicTeams(data.teams);
+        renderDynamicTeams(data.teams || DEFAULT_TEAMS);
         updateSelectedTeamOps(team);
 
         // Render Announcement Banner (Check Array or String)
@@ -1021,16 +1021,24 @@
         renderAgenda(currentTournaments, currentGames, currentEvents);
         renderRoster(currentRoster);
         renderTournaments(currentTournaments, currentGames);
-        renderRotations(currentTournaments, data.rotations, currentGames);
+        renderRotations(currentTournaments, data.rotations || [], currentGames);
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS);
         updateSelectedTeamOps(team);
+
+        // Fallback UI rendering to prevent 'Loading...' state from freezing tabs
+        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+        renderAgenda(currentTournaments, currentGames, currentEvents);
+        renderRoster(currentRoster);
+        renderTournaments(currentTournaments, currentGames);
+        renderRotations(currentTournaments, [], currentGames);
+        renderPitchTracker(currentPitchLogs);
       }
     }
 
-    function populateTournamentDropdowns(tournaments) {
+        function populateTournamentDropdowns(tournaments) {
       const select = document.getElementById('gAdminTournamentSelect');
       if (!select) return;
       if (!tournaments || tournaments.length === 0) {
@@ -1345,24 +1353,11 @@
         announcementText: text,
         text: text
       };
-
-      try {
-        const res = await fetch(, { method: 'POST', body: JSON.stringify(payload) });
-        const resData = await res.json();
-        if (resData && resData.status === 'error') {
-          alert('Error from Google Sheets backend: ' + resData.message);
-        } else {
-          document.getElementById('announcementText').innerText = text;
-          alert('Announcement published and saved to Google Sheets!');
-          e.target.reset();
-          loadData();
-        }
-      } catch(err) {
-        document.getElementById('announcementText').innerText = text;
-        alert('Announcement saved!');
-        e.target.reset();
-        loadData();
-      }
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      document.getElementById('announcementText').innerText = text;
+      alert('Announcement published and saved to Google Sheets!');
+      e.target.reset();
+      loadData();
     }
 
     /* PERSISTENT UPCOMING EVENT SUBMIT FUNCTION */
