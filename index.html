@@ -109,8 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Full Grad Class" selected>2028 Full Grad Class (Coordinator: Matt Pierce)</option>
-      <option value="2028 Grads">2028 Grads (Coordinator: Matt Pierce)</option>
+      <option value="2028 Full Grad Class">2028 Full Grad Class (Coach: Matt Pierce)</option>
       <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
       <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
       <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
@@ -124,7 +123,7 @@
       <select id="navTabDropdown" class="nav-select" onchange="switchTabFromDropdown(this.value)">
         <option value="welcomeTab">✉️ Welcome & Values</option>
         <option value="springTrainingTab">📑 Spring Training</option>
-        <option value="teamsHubTab" selected>🧢 Team Ops Hub</option>
+        <option value="teamsHubTab">🧢 Team Ops Hub</option>
         <option value="scheduleLogisticsTab">🗓️ Schedules & Hotels</option>
         <option value="gameOpsRotationsTab">⚾ Lineups & Rotations</option>
         <option value="pitchSmartTab">📊 PitchSmart Rest</option>
@@ -138,7 +137,7 @@
   <div class="container">
 
     <!-- 1. WELCOME & PROGRAM OVERVIEW -->
-    <div id="welcomeTab" class="tab-panel">
+    <div id="welcomeTab" class="tab-panel active">
       <div class="announcement-box" id="announcementDisplay">
         <h4>📢 Head Coach Announcement</h4>
         <p id="announcementText">Loading announcement...</p>
@@ -200,7 +199,7 @@
     </div>
 
     <!-- 3. TEAM OPS HUB -->
-    <div id="teamsHubTab" class="tab-panel active">
+    <div id="teamsHubTab" class="tab-panel">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <span id="selectedTeamTitle">🧢 Team Operations Hub</span>
@@ -683,11 +682,10 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
-      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce", "sportsYou Code": "5YWZ-W4MA", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
-      { "Team": "2028 Grads", "Head Coach": "Matt Pierce", "sportsYou Code": "5YWZ-W4MA", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "#", "Calendar Link": "#", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
@@ -875,6 +873,15 @@
     }
     setInterval(updateClock, 1000);
 
+    let userHasChangedTeam = false;
+
+    function onTeamChange() {
+      userHasChangedTeam = true;
+      const selectedTeam = document.getElementById('teamSelector').value;
+      updateSelectedTeamOps(selectedTeam);
+      loadData();
+    }
+
     function renderDynamicTeams(teams) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
@@ -884,8 +891,23 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      const currentSelected = teamSelect ? teamSelect.value : '2028 Full Grad Class';
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
+      
+      if (teamSelect) {
+        teamSelect.innerHTML = optionsHTML;
+        if (userHasChangedTeam && teamSelect.value && activeTeams.some(t => t['Team'] === teamSelect.value)) {
+          // Keep user manual selection
+        } else if (activeTeams.length > 0) {
+          // Default strictly to the first team in the sheet / DEFAULT_TEAMS (e.g. 2028 Full Grad Class / 2028 Grads)
+          teamSelect.value = activeTeams[0]['Team'];
+        }
+      }
+
+      const adminOptionsHTML = `<option value="All">All Teams</option>` + activeTeams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+      if (ntTeamSelect) ntTeamSelect.innerHTML = adminOptionsHTML;
+      if (npTeamSelect) npTeamSelect.innerHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']}</option>`).join('');
+      if (aeTeamSelect) aeTeamSelect.innerHTML = adminOptionsHTML;
+    }">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
@@ -929,11 +951,7 @@
         </tr>`;
     }
 
-    function onTeamChange() {
-      const selectedTeam = document.getElementById('teamSelector').value;
-      updateSelectedTeamOps(selectedTeam);
-      loadData();
-    }
+    
 
     function parseTournamentDate(t) {
       if (t['Start Date'] && t['Start Date'].match(/^\d{4}-\d{2}-\d{2}$/)) {
@@ -977,7 +995,7 @@
 
     async function loadData() {
       const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '2028 Full Grad Class';
+      const team = (teamSelect && teamSelect.value) ? teamSelect.value : "2028 Full Grad Class";
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
@@ -985,7 +1003,8 @@
         const data = await res.json();
         
         renderDynamicTeams(data.teams);
-        updateSelectedTeamOps(team);
+        const currentActiveTeam = teamSelect ? teamSelect.value : team;
+        updateSelectedTeamOps(currentActiveTeam);
 
         // Render Announcement Banner (Check Array or String)
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
@@ -1030,7 +1049,8 @@
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS);
-        updateSelectedTeamOps(team);
+        const currentActiveTeam = teamSelect ? teamSelect.value : team;
+        updateSelectedTeamOps(currentActiveTeam);
       }
     }
 
@@ -1555,7 +1575,7 @@
     window.onload = function() {
       buildAdminGameSlots();
       renderDynamicTeams(DEFAULT_TEAMS);
-      updateSelectedTeamOps('2028 Full Grad Class');
+      updateSelectedTeamOps("2028 Full Grad Class");
       updateClock();
       loadData();
     };
