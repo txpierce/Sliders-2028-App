@@ -109,7 +109,10 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="">Loading Teams from Sheet...</option>
+      <option value="2028 Full Grad Class">2028 Full Grad Class (Grad Coordinator: Matt Pierce)</option>
+      <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
+      <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
+      <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
     </select>
   </header>
 
@@ -501,50 +504,6 @@
         </div>
       </div>
 
-      <!-- ADD NEW TOURNAMENT CARD -->
-      <div class="card">
-        <div class="card-header">🏆 Add New Tournament to Schedule</div>
-        <div class="card-body">
-          <form onsubmit="submitNewTournament(event)">
-            <div class="grid-2">
-              <div class="form-group">
-                <label>Assigned Team</label>
-                <select id="ntTeam" class="form-select" required></select>
-              </div>
-              <div class="form-group">
-                <label>Tournament Name</label>
-                <input type="text" id="ntName" class="form-control" placeholder="e.g. Five Tool Pudge World Classic" required>
-              </div>
-              <div class="form-group">
-                <label>Start Date</label>
-                <input type="date" id="ntStartDate" class="form-control" required>
-              </div>
-              <div class="form-group">
-                <label>End Date</label>
-                <input type="date" id="ntEndDate" class="form-control" required>
-              </div>
-              <div class="form-group">
-                <label>Location / City</label>
-                <input type="text" id="ntLocation" class="form-control" placeholder="e.g. Melissa, TX" required>
-              </div>
-              <div class="form-group">
-                <label>Facility / Field Map Link (or TBA)</label>
-                <input type="text" id="ntMapLink" class="form-control" placeholder="Field Map Link or TBA">
-              </div>
-              <div class="form-group">
-                <label>Hotel Booking Link (or TBA)</label>
-                <input type="text" id="ntHotelLink" class="form-control" placeholder="Hotel Booking Link or TBA">
-              </div>
-              <div class="form-group">
-                <label>Hotel Cutoff Date</label>
-                <input type="date" id="ntCutoffDate" class="form-control">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Tournament to Schedule</button>
-          </form>
-        </div>
-      </div>
-
       <!-- ADD NEW PLAYER CARD -->
       <div class="card">
         <div class="card-header">🧢 Add New Player to Roster</div>
@@ -590,6 +549,50 @@
               </div>
             </div>
             <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADD NEW TOURNAMENT CARD -->
+      <div class="card">
+        <div class="card-header">🏆 Add New Tournament to Schedule</div>
+        <div class="card-body">
+          <form onsubmit="submitNewTournament(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Assigned Team</label>
+                <select id="ntTeam" class="form-select" required></select>
+              </div>
+              <div class="form-group">
+                <label>Tournament Name</label>
+                <input type="text" id="ntName" class="form-control" placeholder="e.g. Five Tool Pudge World Classic" required>
+              </div>
+              <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="ntStartDate" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" id="ntEndDate" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Location / City</label>
+                <input type="text" id="ntLocation" class="form-control" placeholder="e.g. Melissa, TX" required>
+              </div>
+              <div class="form-group">
+                <label>Facility / Field Map Link (or TBA)</label>
+                <input type="text" id="ntMapLink" class="form-control" placeholder="Field Map Link or TBA">
+              </div>
+              <div class="form-group">
+                <label>Hotel Booking Link (or TBA)</label>
+                <input type="text" id="ntHotelLink" class="form-control" placeholder="Hotel Booking Link or TBA">
+              </div>
+              <div class="form-group">
+                <label>Hotel Cutoff Date</label>
+                <input type="date" id="ntCutoffDate" class="form-control">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Tournament to Schedule</button>
           </form>
         </div>
       </div>
@@ -682,8 +685,8 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
-      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
-      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce (Coordinator)", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "#", "Calendar Link": "#", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
+      { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA6ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
     ];
@@ -870,8 +873,13 @@
     }
     setInterval(updateClock, 1000);
 
-    function renderDynamicTeams(teams, preferredTeam) {
-      const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
+    function renderDynamicTeams(teams) {
+      const rawTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : [];
+      const hasGrad = rawTeams.some(t => t['Team'] === '2028 Full Grad Class');
+      const activeTeams = hasGrad ? rawTeams : [DEFAULT_TEAMS[0], ...rawTeams.filter(t => t['Team'] !== '2028 Full Grad Class')];
+      if (activeTeams.length === 1 && rawTeams.length === 0) {
+        activeTeams.push(...DEFAULT_TEAMS.slice(1));
+      }
       fetchedTeams = activeTeams;
 
       const teamSelect = document.getElementById('teamSelector');
@@ -879,18 +887,15 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      // Build options strictly in the exact order listed in the Teams section of Google Sheets
+      const currentSelected = teamSelect ? teamSelect.value : '2028 Full Grad Class';
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
-        const currentVal = teamSelect.value;
-        if (preferredTeam && activeTeams.some(t => t['Team'] === preferredTeam)) {
-          teamSelect.value = preferredTeam;
-        } else if (currentVal && activeTeams.some(t => t['Team'] === currentVal)) {
-          teamSelect.value = currentVal;
-        } else if (activeTeams.length > 0) {
-          teamSelect.value = activeTeams[0]['Team'];
+        if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
+          teamSelect.value = currentSelected;
+        } else {
+          teamSelect.value = '2028 Full Grad Class';
         }
       }
 
@@ -900,7 +905,7 @@
       if (aeTeamSelect) aeTeamSelect.innerHTML = adminOptionsHTML;
     }
 
-    function updateSelectedTeamOps(selectedTeamName) {
+function updateSelectedTeamOps(selectedTeamName) {
       const teamObj = fetchedTeams.find(t => t['Team'] === selectedTeamName) || {
         'Team': selectedTeamName,
         'Head Coach': 'Head Coach',
@@ -932,7 +937,7 @@
     function onTeamChange() {
       const selectedTeam = document.getElementById('teamSelector').value;
       updateSelectedTeamOps(selectedTeam);
-      loadData(selectedTeam);
+      loadData();
     }
 
     function parseTournamentDate(t) {
@@ -975,28 +980,20 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    async function loadData(explicitTeam) {
+    async function loadData() {
       const teamSelect = document.getElementById('teamSelector');
-      let team = explicitTeam || (teamSelect ? teamSelect.value : '');
+      const team = teamSelect ? teamSelect.value : '2028 Full Grad Class';
+      const queryTeam = (team === '2028 Full Grad Class') ? 'All' : team;
       
       try {
-        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
+        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(queryTeam)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        const sheetTeams = (data.teams && Array.isArray(data.teams) && data.teams.length > 0) ? data.teams : DEFAULT_TEAMS;
-        
-        // Default to the first team listed in the Teams section of Google Sheets if no explicit selection is active
-        if (!explicitTeam && sheetTeams.length > 0) {
-          if (!team || !sheetTeams.some(t => t['Team'] === team)) {
-            team = sheetTeams[0]['Team'];
-          }
-        }
-
-        renderDynamicTeams(sheetTeams, team);
+        renderDynamicTeams(data.teams);
         updateSelectedTeamOps(team);
 
-        // Render Announcement Banner
+        // Render Announcement Banner (Check Array or String)
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
           const latestAnn = data.announcements[data.announcements.length - 1];
           document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
@@ -1006,7 +1003,7 @@
           document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
-        // Render Spring Training Itinerary
+        // Render Spring Training Itinerary (Check Array or String)
         if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
           const latestSt = data.springTraining[data.springTraining.length - 1];
           const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
@@ -1038,8 +1035,8 @@
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS, team);
-        updateSelectedTeamOps(team || (DEFAULT_TEAMS[0] ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce'));
+        renderDynamicTeams(DEFAULT_TEAMS);
+        updateSelectedTeamOps(team);
       }
     }
 
@@ -1563,11 +1560,10 @@
 
     window.onload = function() {
       buildAdminGameSlots();
-      renderDynamicTeams(DEFAULT_TEAMS, '2028 Full Grad Class');
-      const topTeam = '2028 Full Grad Class';
-      updateSelectedTeamOps(topTeam);
+      renderDynamicTeams(DEFAULT_TEAMS);
+      updateSelectedTeamOps('2028 Full Grad Class');
       updateClock();
-      loadData('2028 Full Grad Class');
+      loadData();
     };
   </script>
 </body>
