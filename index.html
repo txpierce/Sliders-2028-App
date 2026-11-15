@@ -109,9 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
-      <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
-      <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
+      <option value="">Loading Teams from Sheet...</option>
     </select>
   </header>
 
@@ -501,54 +499,6 @@
             </form>
           </div>
         </div>
-
-        <div class="card">
-        <div class="card-header">🧢 Add New Player to Roster</div>
-        <div class="card-body">
-          <form onsubmit="submitNewPlayer(event)">
-            <div class="grid-2">
-              <div class="form-group">
-                <label>Assigned Team</label>
-                <select id="npTeam" class="form-select" required></select>
-              </div>
-              <div class="form-group">
-                <label>Player Full Name</label>
-                <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
-              </div>
-              <div class="form-group">
-                <label>Jersey #</label>
-                <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
-              </div>
-              <div class="form-group">
-                <label>Primary Position</label>
-                <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
-              </div>
-              <div class="form-group">
-                <label>Secondary Position</label>
-                <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
-              </div>
-              <div class="form-group">
-                <label>Pitcher Capability</label>
-                <select id="npPitcherStatus" class="form-select">
-                  <option value="RHP">RHP</option>
-                  <option value="LHP">LHP</option>
-                  <option value="Both">RHP / LHP</option>
-                  <option value="Position Only">Position Only</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>High School</label>
-                <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
-              </div>
-              <div class="form-group">
-                <label>Parent Contact Info</label>
-                <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
-          </form>
-        </div>
-      </div>
       </div>
 
       <!-- ADD NEW TOURNAMENT CARD -->
@@ -596,7 +546,55 @@
       </div>
 
       <!-- ADD NEW PLAYER CARD -->
-   <!-- BATCH GAMES CARD -->
+      <div class="card">
+        <div class="card-header">🧢 Add New Player to Roster</div>
+        <div class="card-body">
+          <form onsubmit="submitNewPlayer(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Assigned Team</label>
+                <select id="npTeam" class="form-select" required></select>
+              </div>
+              <div class="form-group">
+                <label>Player Full Name</label>
+                <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
+              </div>
+              <div class="form-group">
+                <label>Jersey #</label>
+                <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
+              </div>
+              <div class="form-group">
+                <label>Primary Position</label>
+                <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
+              </div>
+              <div class="form-group">
+                <label>Secondary Position</label>
+                <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
+              </div>
+              <div class="form-group">
+                <label>Pitcher Capability</label>
+                <select id="npPitcherStatus" class="form-select">
+                  <option value="RHP">RHP</option>
+                  <option value="LHP">LHP</option>
+                  <option value="Both">RHP / LHP</option>
+                  <option value="Position Only">Position Only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>High School</label>
+                <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
+              </div>
+              <div class="form-group">
+                <label>Parent Contact Info</label>
+                <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- BATCH GAMES CARD -->
       <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
         <div class="card-body">
@@ -681,9 +679,10 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
+      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
@@ -871,7 +870,7 @@
     }
     setInterval(updateClock, 1000);
 
-    function renderDynamicTeams(teams) {
+    function renderDynamicTeams(teams, preferredTeam) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
 
@@ -880,13 +879,18 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      const currentSelected = teamSelect ? teamSelect.value : '2028 Pierce';
+      // Build options strictly in the exact order listed in the Teams section of Google Sheets
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
-        if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
-          teamSelect.value = currentSelected;
+        const currentVal = teamSelect.value;
+        if (preferredTeam && activeTeams.some(t => t['Team'] === preferredTeam)) {
+          teamSelect.value = preferredTeam;
+        } else if (currentVal && activeTeams.some(t => t['Team'] === currentVal)) {
+          teamSelect.value = currentVal;
+        } else if (activeTeams.length > 0) {
+          teamSelect.value = activeTeams[0]['Team'];
         }
       }
 
@@ -928,7 +932,7 @@
     function onTeamChange() {
       const selectedTeam = document.getElementById('teamSelector').value;
       updateSelectedTeamOps(selectedTeam);
-      loadData();
+      loadData(selectedTeam);
     }
 
     function parseTournamentDate(t) {
@@ -971,19 +975,28 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    async function loadData() {
+    async function loadData(explicitTeam) {
       const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '2028 Pierce';
+      let team = explicitTeam || (teamSelect ? teamSelect.value : '');
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        renderDynamicTeams(data.teams);
+        const sheetTeams = (data.teams && Array.isArray(data.teams) && data.teams.length > 0) ? data.teams : DEFAULT_TEAMS;
+        
+        // Default to the first team listed in the Teams section of Google Sheets if no explicit selection is active
+        if (!explicitTeam && sheetTeams.length > 0) {
+          if (!team || !sheetTeams.some(t => t['Team'] === team)) {
+            team = sheetTeams[0]['Team'];
+          }
+        }
+
+        renderDynamicTeams(sheetTeams, team);
         updateSelectedTeamOps(team);
 
-        // Render Announcement Banner (Check Array or String)
+        // Render Announcement Banner
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
           const latestAnn = data.announcements[data.announcements.length - 1];
           document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
@@ -993,7 +1006,7 @@
           document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
-        // Render Spring Training Itinerary (Check Array or String)
+        // Render Spring Training Itinerary
         if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
           const latestSt = data.springTraining[data.springTraining.length - 1];
           const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
@@ -1025,8 +1038,8 @@
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS);
-        updateSelectedTeamOps(team);
+        renderDynamicTeams(DEFAULT_TEAMS, team);
+        updateSelectedTeamOps(team || (DEFAULT_TEAMS[0] ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce'));
       }
     }
 
@@ -1550,10 +1563,11 @@
 
     window.onload = function() {
       buildAdminGameSlots();
-      renderDynamicTeams(DEFAULT_TEAMS);
-      updateSelectedTeamOps('2028 Pierce');
+      renderDynamicTeams(DEFAULT_TEAMS, '2028 Full Grad Class');
+      const topTeam = '2028 Full Grad Class';
+      updateSelectedTeamOps(topTeam);
       updateClock();
-      loadData();
+      loadData('2028 Full Grad Class');
     };
   </script>
 </body>
