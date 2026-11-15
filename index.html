@@ -109,7 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Full Grad Class">2028 Full Grad Class (Grad Coordinator: Matt Pierce)</option>
+      <option value="2028 Full Grad Class">2028 Full Grad Class (Coordinator: Matt Pierce)</option>
       <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
       <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
       <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
@@ -453,7 +453,7 @@
       </div>
 
       <div class="grid-2">
-        <!-- ADD NEW TEAM CARD -->
+        <!-- ADD NEW TEAM -->
         <div class="card">
           <div class="card-header">➕ Add New Team to Program</div>
           <div class="card-body">
@@ -487,7 +487,7 @@
           </div>
         </div>
 
-        <!-- ADD NEW PLAYER CARD -->
+        <!-- ADD NEW PLAYER TO ROSTER -->
         <div class="card">
         <div class="card-header">🧢 Add New Player to Roster</div>
         <div class="card-body">
@@ -537,7 +537,7 @@
       </div>
       </div>
 
-      <!-- ADD NEW TOURNAMENT CARD -->
+      <!-- ADD NEW TOURNAMENT -->
       <div class="card">
         <div class="card-header">🏆 Add New Tournament to Schedule</div>
         <div class="card-body">
@@ -611,7 +611,9 @@
             </form>
           </div>
         </div>
-    </div>
+    </div></div>
+
+  </div>
 
   <!-- RSVP MODAL -->
   <div id="rsvpModal" class="modal-overlay">
@@ -683,6 +685,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
+      { "Team": "2028 Full Grad Class", "Head Coach": "Matt Pierce (Coordinator)", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "#", "Calendar Link": "#", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
       { "Team": "2028 Borden", "Head Coach": "Nathan Borden", "sportsYou Code": "KRXJ-CK3C", "GameChanger Link": "https://web.gc.com/teams/Ml3nTpzTsmZU", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdjYWNhODg1ZmU3M2Y3NjM0ZTM1M2IyYjgzMzI0N2E4YWNhZGZmODAyNjI3ZDg4YTY1NDA0NjNiZmQ4MWRhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(361) 228-3874", "Coach Email": "nathanborden07@gmail.com" },
       { "Team": "2028 Taylor", "Head Coach": "Brandon Taylor", "sportsYou Code": "Q3EK-J7SS", "GameChanger Link": "https://web.gc.com/teams/CgOvvexQuPjb", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=YWMyNDJhNzllMGY4OWJlNjliZDQ3MDc5ZmQzN2Q3MjVmODNjN2JlZTZmODY3MWQ4OGIwYzU3OTZjYWMzZmIwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(210) 850-6409", "Coach Email": "bwt243@gmail.com" }
@@ -870,6 +873,8 @@
     }
     setInterval(updateClock, 1000);
 
+    let rawAppData = null;
+
     function renderDynamicTeams(teams) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
@@ -879,13 +884,15 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      const currentSelected = teamSelect ? teamSelect.value : '2028 Pierce';
+      const currentSelected = teamSelect ? teamSelect.value : '2028 Full Grad Class';
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
         if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
           teamSelect.value = currentSelected;
+        } else if (activeTeams.length > 0) {
+          teamSelect.value = activeTeams[0]['Team'];
         }
       }
 
@@ -895,138 +902,110 @@
       if (aeTeamSelect) aeTeamSelect.innerHTML = adminOptionsHTML;
     }
 
-    function updateSelectedTeamOps(selectedTeamName) {
-      const teamObj = fetchedTeams.find(t => t['Team'] === selectedTeamName) || {
-        'Team': selectedTeamName,
-        'Head Coach': 'Head Coach',
-        'sportsYou Code': 'N/A',
-        'GameChanger Link': '#',
-        'Calendar Link': '#',
-        'Coach Phone': 'N/A',
-        'Coach Email': 'N/A'
-      };
+    function applyTeamView() {
+      if (!rawAppData) return;
+      const teamSelect = document.getElementById('teamSelector');
+      const selectedTeam = teamSelect ? teamSelect.value : '2028 Full Grad Class';
 
-      document.getElementById('selectedTeamTitle').innerText = `🧢 ${teamObj['Team']} Operations Hub`;
-      document.getElementById('selectedTeamBadge').innerText = `${teamObj['Head Coach']} - Head Coach`;
-      document.getElementById('teamSportsYouCode').innerText = teamObj['sportsYou Code'] || 'N/A';
-      
-      const gcBtn = document.getElementById('gameChangerBtn');
-      const calBtn = document.getElementById('calendarBtn');
-      if (gcBtn) gcBtn.href = teamObj['GameChanger Link'] || '#';
-      if (calBtn) calBtn.href = teamObj['Calendar Link'] || '#';
+      updateSelectedTeamOps(selectedTeam);
 
-      document.getElementById('staffTableBody').innerHTML = `
-        <tr>
-          <td>Head Coach</td>
-          <td>${teamObj['Head Coach']}</td>
-          <td>${teamObj['Coach Phone'] || '-'}</td>
-          <td>${teamObj['Coach Email'] || '-'}</td>
-        </tr>`;
+      const isFullClass = !selectedTeam || selectedTeam === '2028 Full Grad Class' || selectedTeam === 'All';
+
+      // Filter roster
+      const teamRoster = isFullClass ? (rawAppData.roster || []) : (rawAppData.roster || []).filter(r => {
+        const t = (r['Team'] || '').toString().trim().toLowerCase();
+        return !t || t === 'all' || t === selectedTeam.toLowerCase();
+      });
+
+      // Filter tournaments
+      const teamTournaments = isFullClass ? (rawAppData.tournaments || []) : (rawAppData.tournaments || []).filter(t => {
+        const tm = (t['Team'] || '').toString().trim().toLowerCase();
+        return !tm || tm === 'all' || tm === selectedTeam.toLowerCase();
+      });
+
+      // Filter custom events
+      const teamEvents = isFullClass ? (rawAppData.events || []) : (rawAppData.events || []).filter(e => {
+        const tm = (e['Team'] || e['Assigned Team'] || '').toString().trim().toLowerCase();
+        return !tm || tm === 'all' || tm === selectedTeam.toLowerCase();
+      });
+
+      // Render Announcement Banner
+      const announcements = isFullClass ? (rawAppData.announcements || []) : (rawAppData.announcements || []).filter(a => {
+        const tm = (a['Team'] || '').toString().trim().toLowerCase();
+        return !tm || tm === 'all' || tm === selectedTeam.toLowerCase();
+      });
+      if (announcements.length > 0) {
+        const latestAnn = announcements[announcements.length - 1];
+        document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+      } else if (typeof rawAppData.announcement === 'string' && rawAppData.announcement) {
+        document.getElementById('announcementText').innerText = rawAppData.announcement;
+      } else {
+        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+      }
+
+      // Render Spring Training Itinerary
+      const springTraining = isFullClass ? (rawAppData.springTraining || []) : (rawAppData.springTraining || []).filter(s => {
+        const tm = (s['Team'] || '').toString().trim().toLowerCase();
+        return !tm || tm === 'all' || tm === selectedTeam.toLowerCase();
+      });
+      if (springTraining.length > 0) {
+        const latestSt = springTraining[springTraining.length - 1];
+        const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
+        if (stText) {
+          document.getElementById('springTrainingContent').innerHTML = `
+            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+              ${stText}
+            </div>`;
+        }
+      } else if (typeof rawAppData.springTraining === 'string' && rawAppData.springTraining) {
+        document.getElementById('springTrainingContent').innerHTML = `
+          <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+            ${rawAppData.springTraining}
+          </div>`;
+      }
+
+      currentRoster = teamRoster;
+      currentPitchLogs = rawAppData.pitchSmart || [];
+      currentTournaments = sortTournamentsChronologically(teamTournaments);
+      currentGames = rawAppData.games || [];
+      currentEvents = teamEvents;
+
+      populatePlayerDropdowns(currentRoster);
+      populateTournamentDropdowns(currentTournaments);
+      renderAgenda(currentTournaments, currentGames, currentEvents);
+      renderRoster(currentRoster);
+      renderTournaments(currentTournaments, currentGames);
+      renderRotations(currentTournaments, rawAppData.rotations || [], currentGames);
+      renderPitchTracker(currentPitchLogs);
     }
 
     function onTeamChange() {
-      const selectedTeam = document.getElementById('teamSelector').value;
-      updateSelectedTeamOps(selectedTeam);
-      loadData();
-    }
-
-    function parseTournamentDate(t) {
-      if (t['Start Date'] && t['Start Date'].match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const parts = t['Start Date'].split('-');
-        const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-        if (!isNaN(d.getTime())) return d;
+      if (rawAppData) {
+        applyTeamView();
+      } else {
+        loadData();
       }
-
-      const datesStr = (t['Dates'] || '').toString().trim();
-      const ymdMatch = datesStr.match(/(\d{4}-\d{2}-\d{2})/);
-      if (ymdMatch) {
-        const parts = ymdMatch[1].split('-');
-        const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-        if (!isNaN(d.getTime())) return d;
-      }
-
-      const monthsMap = {
-        jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2,
-        apr: 3, april: 3, may: 4, june: 5, jun: 5, jul: 6, july: 6,
-        aug: 7, august: 7, sep: 8, september: 8, oct: 9, october: 9,
-        nov: 10, november: 10, dec: 11, december: 11
-      };
-
-      const textMatch = datesStr.match(/([A-Za-z]+)\s+(\d{1,2})(?:[-–]\d{1,2})?,?\s+(\d{4})/);
-      if (textMatch) {
-        const mStr = textMatch[1].toLowerCase();
-        const dNum = parseInt(textMatch[2], 10);
-        const yNum = parseInt(textMatch[3], 10);
-        if (monthsMap[mStr] !== undefined) {
-          return new Date(yNum, monthsMap[mStr], dNum);
-        }
-      }
-
-      return new Date(2099, 11, 31);
-    }
-
-    function sortTournamentsChronologically(tournaments) {
-      if (!tournaments || !Array.isArray(tournaments) || tournaments.length === 0) return [];
-      return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
     async function loadData() {
-      const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '2028 Full Grad Class';
-      const queryTeam = (team && team.includes('Full Grad Class')) ? 'All' : team;
-      
       try {
-        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(queryTeam)}`);
+        const res = await fetch(`${API_URL}?action=getAppData&team=All`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
+        rawAppData = data;
+        try {
+          sessionStorage.setItem('sliders_all_app_data', JSON.stringify(data));
+        } catch(e) {}
+
         renderDynamicTeams(data.teams);
-        updateSelectedTeamOps(team);
-
-        // Render Announcement Banner (Check Array or String)
-        if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
-          const latestAnn = data.announcements[data.announcements.length - 1];
-          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
-        } else if (typeof data.announcement === 'string' && data.announcement) {
-          document.getElementById('announcementText').innerText = data.announcement;
-        } else {
-          document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
-        }
-
-        // Render Spring Training Itinerary (Check Array or String)
-        if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
-          const latestSt = data.springTraining[data.springTraining.length - 1];
-          const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
-          if (stText) {
-            document.getElementById('springTrainingContent').innerHTML = `
-              <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-                ${stText}
-              </div>`;
-          }
-        } else if (typeof data.springTraining === 'string' && data.springTraining) {
-          document.getElementById('springTrainingContent').innerHTML = `
-            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-              ${data.springTraining}
-            </div>`;
-        }
-
-        currentRoster = data.roster || [];
-        currentPitchLogs = data.pitchSmart || [];
-        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
-        currentGames = data.games || [];
-        currentEvents = data.events || [];
-
-        populatePlayerDropdowns(currentRoster);
-        populateTournamentDropdowns(currentTournaments);
-        renderAgenda(currentTournaments, currentGames, currentEvents);
-        renderRoster(currentRoster);
-        renderTournaments(currentTournaments, currentGames);
-        renderRotations(currentTournaments, data.rotations, currentGames);
-        renderPitchTracker(currentPitchLogs);
+        applyTeamView();
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS);
-        updateSelectedTeamOps(team);
+        if (!rawAppData) {
+          renderDynamicTeams(DEFAULT_TEAMS);
+          updateSelectedTeamOps('2028 Full Grad Class');
+        }
       }
     }
 
@@ -1553,6 +1532,16 @@
       renderDynamicTeams(DEFAULT_TEAMS);
       updateSelectedTeamOps('2028 Full Grad Class');
       updateClock();
+
+      const cached = sessionStorage.getItem('sliders_all_app_data');
+      if (cached) {
+        try {
+          const data = JSON.parse(cached);
+          rawAppData = data;
+          renderDynamicTeams(data.teams);
+          applyTeamView();
+        } catch(e) {}
+      }
       loadData();
     };
   </script>
