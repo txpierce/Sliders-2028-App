@@ -984,13 +984,31 @@
         updateSelectedTeamOps(team);
 
         // Render Announcement Banner (Check Array or String)
+        let annContent = "";
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
           const latestAnn = data.announcements[data.announcements.length - 1];
-          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+          if (typeof latestAnn === 'string') {
+            annContent = latestAnn;
+          } else if (latestAnn && typeof latestAnn === 'object') {
+            annContent = latestAnn['Announcement Text'] || latestAnn['Announcement'] || latestAnn['announcementText'] || latestAnn['text'] || latestAnn['Text'] || latestAnn['Message'] || latestAnn['message'] || latestAnn['Details'] || latestAnn['details'] || latestAnn['Banner Text'] || latestAnn['Coach Announcement'] || "";
+            if (!annContent) {
+              const keys = Object.keys(latestAnn);
+              for (let i = 0; i < keys.length; i++) {
+                const k = keys[i];
+                if (k.toLowerCase() !== 'timestamp' && k.toLowerCase() !== 'team' && k.toLowerCase() !== 'id' && latestAnn[k]) {
+                  annContent = latestAnn[k];
+                  break;
+                }
+              }
+            }
+          }
         } else if (typeof data.announcement === 'string' && data.announcement) {
-          document.getElementById('announcementText').innerText = data.announcement;
-        } else {
-          document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+          annContent = data.announcement;
+        }
+
+        const annEl = document.getElementById('announcementText');
+        if (annEl) {
+          annEl.innerText = annContent || "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
         // Render Spring Training Itinerary (Check Array or String)
