@@ -973,39 +973,27 @@
 
     async function loadData() {
       const teamSelect = document.getElementById('teamSelector');
-      const selectedTeam = teamSelect ? teamSelect.value : '2028 Full Grad Class';
+      const team = teamSelect ? teamSelect.value : '2028 Pierce';
       
-      // Map '2028 Full Grad Class' or empty team to 'All' so Apps Script queries all rows from Google Sheets
-      const queryTeam = (selectedTeam === '2028 Full Grad Class' || selectedTeam === 'All' || !selectedTeam) ? 'All' : selectedTeam;
-
       try {
-        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(queryTeam)}`);
+        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const textData = await res.text();
-        let data;
-        try {
-          data = JSON.parse(textData);
-        } catch(e) {
-          throw new Error("Received non-JSON response from Apps Script. Check deployment access setting (Who has access: Anyone).");
-        }
+        const data = await res.json();
+        
+        renderDynamicTeams(data.teams);
+        updateSelectedTeamOps(team);
 
-        if (data.teams && Array.isArray(data.teams) && data.teams.length > 0) {
-          renderDynamicTeams(data.teams);
-        }
-        updateSelectedTeamOps(selectedTeam);
-
-        // Render Announcement Banner
-        const annEl = document.getElementById('announcementText');
+        // Render Announcement Banner (Check Array or String)
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
           const latestAnn = data.announcements[data.announcements.length - 1];
-          if (annEl) annEl.innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
         } else if (typeof data.announcement === 'string' && data.announcement) {
-          if (annEl) annEl.innerText = data.announcement;
+          document.getElementById('announcementText').innerText = data.announcement;
         } else {
-          if (annEl) annEl.innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+          document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
-        // Render Spring Training Itinerary
+        // Render Spring Training Itinerary (Check Array or String)
         if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
           const latestSt = data.springTraining[data.springTraining.length - 1];
           const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
@@ -1038,11 +1026,7 @@
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS);
-        updateSelectedTeamOps(selectedTeam);
-        const annEl = document.getElementById('announcementText');
-        if (annEl) annEl.innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details.";
-        renderRoster([]);
-        renderAgenda([], [], []);
+        updateSelectedTeamOps(team);
       }
     }
 
