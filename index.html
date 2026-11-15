@@ -971,79 +971,78 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    async function loadData() {
+    function applyAppData(data, requestedTeam) {
+      const activeTeam = data.team || requestedTeam || (data.teams && data.teams.length > 0 ? data.teams[0]['Team'] : '');
+      renderDynamicTeams(data.teams, activeTeam);
+      updateSelectedTeamOps(activeTeam);
+
+      // Render Announcement Banner
+      if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
+        const latestAnn = data.announcements[data.announcements.length - 1];
+        document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+      } else if (typeof data.announcement === 'string' && data.announcement) {
+        document.getElementById('announcementText').innerText = data.announcement;
+      } else {
+        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+      }
+
+      // Render Spring Training Itinerary
+      if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
+        const latestSt = data.springTraining[data.springTraining.length - 1];
+        const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
+        if (stText) {
+          document.getElementById('springTrainingContent').innerHTML = `
+            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+              ${stText}
+            </div>`;
+        }
+      } else if (typeof data.springTraining === 'string' && data.springTraining) {
+        document.getElementById('springTrainingContent').innerHTML = `
+          <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+            ${data.springTraining}
+          </div>`;
+      }
+
+      currentRoster = data.roster || [];
+      currentPitchLogs = data.pitchSmart || [];
+      currentTournaments = sortTournamentsChronologically(data.tournaments || []);
+      currentGames = data.games || [];
+      currentEvents = data.events || [];
+
+      populatePlayerDropdowns(currentRoster);
+      populateTournamentDropdowns(currentTournaments);
+      renderAgenda(currentTournaments, currentGames, currentEvents);
+      renderRoster(currentRoster);
+      renderTournaments(currentTournaments, currentGames);
+      renderRotations(currentTournaments, data.rotations, currentGames);
+      renderPitchTracker(currentPitchLogs);
+    }
+
+    async function loadData(forceRefresh = false) {
       const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '2028 Pierce';
+      const team = teamSelect ? teamSelect.value : '';
+      
+      const cacheKey = `slider_cache_${team || 'default'}`;
+      if (!forceRefresh) {
+        const cachedStr = sessionStorage.getItem(cacheKey);
+        if (cachedStr) {
+          try {
+            const cachedData = JSON.parse(cachedStr);
+            applyAppData(cachedData, team);
+          } catch(e) {}
+        }
+      }
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        renderDynamicTeams(data.teams);
-        updateSelectedTeamOps(team);
-
-        // Render Announcement Banner (Check Array or String)
-        let annContent = "";
-        if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
-          const latestAnn = data.announcements[data.announcements.length - 1];
-          if (typeof latestAnn === 'string') {
-            annContent = latestAnn;
-          } else if (latestAnn && typeof latestAnn === 'object') {
-            annContent = latestAnn['Announcement Text'] || latestAnn['Announcement'] || latestAnn['announcementText'] || latestAnn['text'] || latestAnn['Text'] || latestAnn['Message'] || latestAnn['message'] || latestAnn['Details'] || latestAnn['details'] || latestAnn['Banner Text'] || latestAnn['Coach Announcement'] || "";
-            if (!annContent) {
-              const keys = Object.keys(latestAnn);
-              for (let i = 0; i < keys.length; i++) {
-                const k = keys[i];
-                if (k.toLowerCase() !== 'timestamp' && k.toLowerCase() !== 'team' && k.toLowerCase() !== 'id' && latestAnn[k]) {
-                  annContent = latestAnn[k];
-                  break;
-                }
-              }
-            }
-          }
-        } else if (typeof data.announcement === 'string' && data.announcement) {
-          annContent = data.announcement;
-        }
-
-        const annEl = document.getElementById('announcementText');
-        if (annEl) {
-          annEl.innerText = annContent || "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
-        }
-
-        // Render Spring Training Itinerary (Check Array or String)
-        if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
-          const latestSt = data.springTraining[data.springTraining.length - 1];
-          const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
-          if (stText) {
-            document.getElementById('springTrainingContent').innerHTML = `
-              <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-                ${stText}
-              </div>`;
-          }
-        } else if (typeof data.springTraining === 'string' && data.springTraining) {
-          document.getElementById('springTrainingContent').innerHTML = `
-            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-              ${data.springTraining}
-            </div>`;
-        }
-
-        currentRoster = data.roster || [];
-        currentPitchLogs = data.pitchSmart || [];
-        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
-        currentGames = data.games || [];
-        currentEvents = data.events || [];
-
-        populatePlayerDropdowns(currentRoster);
-        populateTournamentDropdowns(currentTournaments);
-        renderAgenda(currentTournaments, currentGames, currentEvents);
-        renderRoster(currentRoster);
-        renderTournaments(currentTournaments, currentGames);
-        renderRotations(currentTournaments, data.rotations, currentGames);
-        renderPitchTracker(currentPitchLogs);
+        sessionStorage.setItem(cacheKey, JSON.stringify(data));
+        applyAppData(data, team);
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS);
+        renderDynamicTeams(DEFAULT_TEAMS, team);
         updateSelectedTeamOps(team);
       }
     }
