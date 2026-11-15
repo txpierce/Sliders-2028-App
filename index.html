@@ -109,9 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
-      <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
-      <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
+      <option value="">Loading Teams from Sheet...</option>
     </select>
   </header>
 
@@ -681,7 +679,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyDDoMkGnKFHj8GDDEQJXprYOxE1wRTg08hJS8Hwmu1UDSqJiEUACzULw0PhRwDrd-Smg/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbztu8rFMBdyXg3X56F0_CxlZZsvFN79eQZW-yBfEIk7x5GdSr-meBGKCsdymfLMBIXXyg/exec";
 
     const DEFAULT_TEAMS = [
       { "Team": "2028 Pierce", "Head Coach": "Matt Pierce", "sportsYou Code": "GGVD-ZCSV", "GameChanger Link": "https://web.gc.com/teams/XlmuG2vLD7gg", "Calendar Link": "https://calendar.google.com/calendar/u/0?cid=NjdhOWYzMmVjYzk3NzRmZDI1ZGJhN2QwY2MxZWQ2NWQwMGUzNGQ1YzA3YjJhZjA2ODFkNmUzMWI0ZjU2ZDYxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t", "Coach Phone": "(832) 443-2715", "Coach Email": "pierce.matt.c@gmail.com" },
@@ -871,7 +869,7 @@
     }
     setInterval(updateClock, 1000);
 
-    function renderDynamicTeams(teams) {
+    function renderDynamicTeams(teams, preferredTeam) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
 
@@ -880,13 +878,18 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      const currentSelected = teamSelect ? teamSelect.value : '2028 Pierce';
+      // Build options strictly in the exact order listed in the Teams section of Google Sheets
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
-        if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
-          teamSelect.value = currentSelected;
+        const currentVal = teamSelect.value;
+        if (preferredTeam && activeTeams.some(t => t['Team'] === preferredTeam)) {
+          teamSelect.value = preferredTeam;
+        } else if (currentVal && activeTeams.some(t => t['Team'] === currentVal)) {
+          teamSelect.value = currentVal;
+        } else if (activeTeams.length > 0) {
+          teamSelect.value = activeTeams[0]['Team'];
         }
       }
 
@@ -928,7 +931,7 @@
     function onTeamChange() {
       const selectedTeam = document.getElementById('teamSelector').value;
       updateSelectedTeamOps(selectedTeam);
-      loadData();
+      loadData(selectedTeam);
     }
 
     function parseTournamentDate(t) {
@@ -971,79 +974,71 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    function applyAppData(data, requestedTeam) {
-      const activeTeam = data.team || requestedTeam || (data.teams && data.teams.length > 0 ? data.teams[0]['Team'] : '');
-      renderDynamicTeams(data.teams, activeTeam);
-      updateSelectedTeamOps(activeTeam);
-
-      // Render Announcement Banner
-      if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
-        const latestAnn = data.announcements[data.announcements.length - 1];
-        document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
-      } else if (typeof data.announcement === 'string' && data.announcement) {
-        document.getElementById('announcementText').innerText = data.announcement;
-      } else {
-        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
-      }
-
-      // Render Spring Training Itinerary
-      if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
-        const latestSt = data.springTraining[data.springTraining.length - 1];
-        const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
-        if (stText) {
-          document.getElementById('springTrainingContent').innerHTML = `
-            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-              ${stText}
-            </div>`;
-        }
-      } else if (typeof data.springTraining === 'string' && data.springTraining) {
-        document.getElementById('springTrainingContent').innerHTML = `
-          <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-            ${data.springTraining}
-          </div>`;
-      }
-
-      currentRoster = data.roster || [];
-      currentPitchLogs = data.pitchSmart || [];
-      currentTournaments = sortTournamentsChronologically(data.tournaments || []);
-      currentGames = data.games || [];
-      currentEvents = data.events || [];
-
-      populatePlayerDropdowns(currentRoster);
-      populateTournamentDropdowns(currentTournaments);
-      renderAgenda(currentTournaments, currentGames, currentEvents);
-      renderRoster(currentRoster);
-      renderTournaments(currentTournaments, currentGames);
-      renderRotations(currentTournaments, data.rotations, currentGames);
-      renderPitchTracker(currentPitchLogs);
-    }
-
-    async function loadData(forceRefresh = false) {
+    async function loadData(explicitTeam) {
       const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '';
-      
-      const cacheKey = `slider_cache_${team || 'default'}`;
-      if (!forceRefresh) {
-        const cachedStr = sessionStorage.getItem(cacheKey);
-        if (cachedStr) {
-          try {
-            const cachedData = JSON.parse(cachedStr);
-            applyAppData(cachedData, team);
-          } catch(e) {}
-        }
-      }
+      let team = explicitTeam || (teamSelect ? teamSelect.value : '');
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        sessionStorage.setItem(cacheKey, JSON.stringify(data));
-        applyAppData(data, team);
+        const sheetTeams = (data.teams && Array.isArray(data.teams) && data.teams.length > 0) ? data.teams : DEFAULT_TEAMS;
+        
+        // Default to the first team listed in the Teams section of Google Sheets if no explicit selection is active
+        if (!explicitTeam && sheetTeams.length > 0) {
+          if (!team || !sheetTeams.some(t => t['Team'] === team)) {
+            team = sheetTeams[0]['Team'];
+          }
+        }
+
+        renderDynamicTeams(sheetTeams, team);
+        updateSelectedTeamOps(team);
+
+        // Render Announcement Banner
+        if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
+          const latestAnn = data.announcements[data.announcements.length - 1];
+          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+        } else if (typeof data.announcement === 'string' && data.announcement) {
+          document.getElementById('announcementText').innerText = data.announcement;
+        } else {
+          document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+        }
+
+        // Render Spring Training Itinerary
+        if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
+          const latestSt = data.springTraining[data.springTraining.length - 1];
+          const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
+          if (stText) {
+            document.getElementById('springTrainingContent').innerHTML = `
+              <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+                ${stText}
+              </div>`;
+          }
+        } else if (typeof data.springTraining === 'string' && data.springTraining) {
+          document.getElementById('springTrainingContent').innerHTML = `
+            <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+              ${data.springTraining}
+            </div>`;
+        }
+
+        currentRoster = data.roster || [];
+        currentPitchLogs = data.pitchSmart || [];
+        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
+        currentGames = data.games || [];
+        currentEvents = data.events || [];
+
+        populatePlayerDropdowns(currentRoster);
+        populateTournamentDropdowns(currentTournaments);
+        renderAgenda(currentTournaments, currentGames, currentEvents);
+        renderRoster(currentRoster);
+        renderTournaments(currentTournaments, currentGames);
+        renderRotations(currentTournaments, data.rotations, currentGames);
+        renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
         renderDynamicTeams(DEFAULT_TEAMS, team);
-        updateSelectedTeamOps(team);
+        updateSelectedTeamOps(team || (DEFAULT_TEAMS[0] ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce'));
       }
     }
 
@@ -1568,7 +1563,8 @@
     window.onload = function() {
       buildAdminGameSlots();
       renderDynamicTeams(DEFAULT_TEAMS);
-      updateSelectedTeamOps('2028 Pierce');
+      const topTeam = (DEFAULT_TEAMS && DEFAULT_TEAMS.length > 0) ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce';
+      updateSelectedTeamOps(topTeam);
       updateClock();
       loadData();
     };
