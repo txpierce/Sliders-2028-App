@@ -109,9 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
-      <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
-      <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
+      <option value="">Loading Teams from Sheet...</option>
     </select>
   </header>
 
@@ -381,7 +379,6 @@
     </div>
 
     <!-- 9. COORDINATOR ADMIN CONSOLE -->
-        <!-- 9. COORDINATOR ADMIN CONSOLE -->
     <div id="adminTab" class="tab-panel">
       <div class="grid-2">
         <!-- EDIT ANNOUNCEMENTS -->
@@ -453,6 +450,22 @@
       </div>
 
       <div class="grid-2">
+        <!-- LOG PITCH COUNT -->
+        <div class="card">
+          <div class="card-header">📝 Log Pitch Count</div>
+          <div class="card-body">
+            <form onsubmit="submitPitchLog(event)">
+              <div class="form-group">
+                <label>Pitcher Full Name</label>
+                <select id="pPlayerName" class="form-select" required></select>
+              </div>
+              <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
+              <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
+              <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
+            </form>
+          </div>
+        </div>
+
         <!-- ADD NEW TEAM CARD -->
         <div class="card">
           <div class="card-header">➕ Add New Team to Program</div>
@@ -483,55 +496,6 @@
                 <input type="text" id="ntCoachPhone" class="form-control" placeholder="(555) 555-5555 / coach@email.com">
               </div>
               <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Team to Program</button>
-            </form>
-          </div>
-        </div>
-
-        <!-- ADD NEW PLAYER CARD -->
-        <div class="card">
-          <div class="card-header">🧢 Add New Player to Roster</div>
-          <div class="card-body">
-            <form onsubmit="submitNewPlayer(event)">
-              <div class="grid-2">
-                <div class="form-group">
-                  <label>Assigned Team</label>
-                  <select id="npTeam" class="form-select" required></select>
-                </div>
-                <div class="form-group">
-                  <label>Player Full Name</label>
-                  <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
-                </div>
-                <div class="form-group">
-                  <label>Jersey #</label>
-                  <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
-                </div>
-                <div class="form-group">
-                  <label>Primary Position</label>
-                  <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
-                </div>
-                <div class="form-group">
-                  <label>Secondary Position</label>
-                  <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
-                </div>
-                <div class="form-group">
-                  <label>Pitcher Capability</label>
-                  <select id="npPitcherStatus" class="form-select">
-                    <option value="RHP">RHP</option>
-                    <option value="LHP">LHP</option>
-                    <option value="Both">RHP / LHP</option>
-                    <option value="Position Only">Position Only</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>High School</label>
-                  <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
-                </div>
-                <div class="form-group">
-                  <label>Parent Contact Info</label>
-                  <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
-                </div>
-              </div>
-              <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
             </form>
           </div>
         </div>
@@ -581,6 +545,55 @@
         </div>
       </div>
 
+      <!-- ADD NEW PLAYER CARD -->
+      <div class="card">
+        <div class="card-header">🧢 Add New Player to Roster</div>
+        <div class="card-body">
+          <form onsubmit="submitNewPlayer(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Assigned Team</label>
+                <select id="npTeam" class="form-select" required></select>
+              </div>
+              <div class="form-group">
+                <label>Player Full Name</label>
+                <input type="text" id="npFullName" class="form-control" placeholder="e.g. Jackson Miller" required>
+              </div>
+              <div class="form-group">
+                <label>Jersey #</label>
+                <input type="text" id="npJersey" class="form-control" placeholder="e.g. 14" required>
+              </div>
+              <div class="form-group">
+                <label>Primary Position</label>
+                <input type="text" id="npPrimaryPos" class="form-control" placeholder="e.g. SS / RHP" required>
+              </div>
+              <div class="form-group">
+                <label>Secondary Position</label>
+                <input type="text" id="npSecondaryPos" class="form-control" placeholder="e.g. OF">
+              </div>
+              <div class="form-group">
+                <label>Pitcher Capability</label>
+                <select id="npPitcherStatus" class="form-select">
+                  <option value="RHP">RHP</option>
+                  <option value="LHP">LHP</option>
+                  <option value="Both">RHP / LHP</option>
+                  <option value="Position Only">Position Only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>High School</label>
+                <input type="text" id="npHighSchool" class="form-control" placeholder="e.g. Smithson Valley HS">
+              </div>
+              <div class="form-group">
+                <label>Parent Contact Info</label>
+                <input type="text" id="npContactInfo" class="form-control" placeholder="e.g. (832) 555-0199 / parent@email.com">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-navy" style="width:100%; margin-top:8px;">Add Player to Roster</button>
+          </form>
+        </div>
+      </div>
+
       <!-- BATCH GAMES CARD -->
       <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
@@ -595,23 +608,11 @@
           </form>
         </div>
       </div>
+    </div>
 
-      <!-- LOG PITCH COUNT -->
-      <div class="card">
-        <div class="card-header">📝 Log Pitch Count</div>
-        <div class="card-body">
-          <form onsubmit="submitPitchLog(event)">
-            <div class="form-group">
-              <label>Pitcher Full Name</label>
-              <select id="pPlayerName" class="form-select" required></select>
-            </div>
-            <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
-            <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
-            <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
-          </form>
-        </div>
-      </div>
-    </div><!-- RSVP MODAL -->
+  </div>
+
+  <!-- RSVP MODAL -->
   <div id="rsvpModal" class="modal-overlay">
     <div class="modal-content">
       <div class="card-header">
@@ -868,7 +869,7 @@
     }
     setInterval(updateClock, 1000);
 
-    function renderDynamicTeams(teams) {
+    function renderDynamicTeams(teams, preferredTeam) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
 
@@ -877,13 +878,18 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      const currentSelected = teamSelect ? teamSelect.value : '2028 Pierce';
+      // Build options strictly in the exact order listed in the Teams section of Google Sheets
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
-        if (currentSelected && activeTeams.some(t => t['Team'] === currentSelected)) {
-          teamSelect.value = currentSelected;
+        const currentVal = teamSelect.value;
+        if (preferredTeam && activeTeams.some(t => t['Team'] === preferredTeam)) {
+          teamSelect.value = preferredTeam;
+        } else if (currentVal && activeTeams.some(t => t['Team'] === currentVal)) {
+          teamSelect.value = currentVal;
+        } else if (activeTeams.length > 0) {
+          teamSelect.value = activeTeams[0]['Team'];
         }
       }
 
@@ -925,7 +931,7 @@
     function onTeamChange() {
       const selectedTeam = document.getElementById('teamSelector').value;
       updateSelectedTeamOps(selectedTeam);
-      loadData();
+      loadData(selectedTeam);
     }
 
     function parseTournamentDate(t) {
@@ -968,19 +974,28 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    async function loadData() {
+    async function loadData(explicitTeam) {
       const teamSelect = document.getElementById('teamSelector');
-      const team = teamSelect ? teamSelect.value : '2028 Pierce';
+      let team = explicitTeam || (teamSelect ? teamSelect.value : '');
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        renderDynamicTeams(data.teams);
+        const sheetTeams = (data.teams && Array.isArray(data.teams) && data.teams.length > 0) ? data.teams : DEFAULT_TEAMS;
+        
+        // Default to the first team listed in the Teams section of Google Sheets if no explicit selection is active
+        if (!explicitTeam && sheetTeams.length > 0) {
+          if (!team || !sheetTeams.some(t => t['Team'] === team)) {
+            team = sheetTeams[0]['Team'];
+          }
+        }
+
+        renderDynamicTeams(sheetTeams, team);
         updateSelectedTeamOps(team);
 
-        // Render Announcement Banner (Check Array or String)
+        // Render Announcement Banner
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
           const latestAnn = data.announcements[data.announcements.length - 1];
           document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
@@ -990,7 +1005,7 @@
           document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
         }
 
-        // Render Spring Training Itinerary (Check Array or String)
+        // Render Spring Training Itinerary
         if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
           const latestSt = data.springTraining[data.springTraining.length - 1];
           const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
@@ -1022,8 +1037,8 @@
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS);
-        updateSelectedTeamOps(team);
+        renderDynamicTeams(DEFAULT_TEAMS, team);
+        updateSelectedTeamOps(team || (DEFAULT_TEAMS[0] ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce'));
       }
     }
 
@@ -1548,7 +1563,8 @@
     window.onload = function() {
       buildAdminGameSlots();
       renderDynamicTeams(DEFAULT_TEAMS);
-      updateSelectedTeamOps('2028 Pierce');
+      const topTeam = (DEFAULT_TEAMS && DEFAULT_TEAMS.length > 0) ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce';
+      updateSelectedTeamOps(topTeam);
       updateClock();
       loadData();
     };
