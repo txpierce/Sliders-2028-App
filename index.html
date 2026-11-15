@@ -109,6 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
+      <option value="2028 Full Grad Class">2028 Full Grad Class (Grad Coordinator: Matt Pierce)</option>
       <option value="2028 Pierce">2028 Pierce (Coach: Matt Pierce)</option>
       <option value="2028 Borden">2028 Borden (Coach: Nathan Borden)</option>
       <option value="2028 Taylor">2028 Taylor (Coach: Brandon Taylor)</option>
@@ -383,6 +384,7 @@
     <!-- 9. COORDINATOR ADMIN CONSOLE -->
     <div id="adminTab" class="tab-panel">
       <div class="grid-2">
+        <!-- EDIT ANNOUNCEMENTS -->
         <div class="card">
           <div class="card-header">✏️ Publish Coach Announcement</div>
           <div class="card-body">
@@ -394,6 +396,9 @@
               <button type="submit" class="btn btn-navy" style="width: 100%;">Publish & Save Announcement</button>
             </form>
           </div>
+        </div>
+
+        <!-- ADD UPCOMING EVENT / PRACTICE -->
         <div class="card">
           <div class="card-header">📅 Add Upcoming Event / Practice</div>
           <div class="card-body">
@@ -433,8 +438,8 @@
         </div>
       </div>
 
-      <div style="margin-top: 15px;">
-        <div class="card">
+      <!-- SPRING TRAINING ITINERARY EDITOR -->
+      <div class="card">
         <div class="card-header">📑 Update Spring Training Page & Itinerary</div>
         <div class="card-body">
           <form onsubmit="submitSpringTrainingUpdate(event)">
@@ -447,7 +452,8 @@
         </div>
       </div>
 
-      <div class="grid-2" style="margin-top: 15px;">
+      <div class="grid-2">
+        <!-- ADD NEW TEAM CARD -->
         <div class="card">
           <div class="card-header">➕ Add New Team to Program</div>
           <div class="card-body">
@@ -480,6 +486,8 @@
             </form>
           </div>
         </div>
+
+        <!-- ADD NEW PLAYER CARD -->
         <div class="card">
         <div class="card-header">🧢 Add New Player to Roster</div>
         <div class="card-body">
@@ -527,9 +535,10 @@
           </form>
         </div>
       </div>
+      </div>
 
-      <div style="margin-top: 15px;">
-        <div class="card">
+      <!-- ADD NEW TOURNAMENT CARD -->
+      <div class="card">
         <div class="card-header">🏆 Add New Tournament to Schedule</div>
         <div class="card-body">
           <form onsubmit="submitNewTournament(event)">
@@ -572,8 +581,8 @@
         </div>
       </div>
 
-      <div style="margin-top: 15px;">
-        <div class="card">
+      <!-- BATCH GAMES CARD -->
+      <div class="card">
         <div class="card-header">➕ Insert Tournament Game Schedule (Up to 20 Games Batch)</div>
         <div class="card-body">
           <form onsubmit="submitBatchGames(event)">
@@ -586,9 +595,23 @@
           </form>
         </div>
       </div>
-    </div>
 
-  </div>
+      <!-- LOG PITCH COUNT -->
+      <div class="card">
+          <div class="card-header">📝 Log Pitch Count</div>
+          <div class="card-body">
+            <form onsubmit="submitPitchLog(event)">
+              <div class="form-group">
+                <label>Pitcher Full Name</label>
+                <select id="pPlayerName" class="form-select" required></select>
+              </div>
+              <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
+              <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
+              <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
+            </form>
+          </div>
+        </div>
+    </div>
 
   <!-- RSVP MODAL -->
   <div id="rsvpModal" class="modal-overlay">
@@ -949,87 +972,62 @@
 
     async function loadData() {
       const teamSelect = document.getElementById('teamSelector');
-      let selectedTeam = teamSelect ? teamSelect.value : '2028 Full Grad Class';
-      let queryTeam = (selectedTeam === '2028 Full Grad Class' || selectedTeam === 'All') ? 'All' : selectedTeam;
-
-      const cacheKey = 'sliders_app_cache_' + queryTeam;
-
-      // 1. Instant Cache Render (Sub-Second Load)
-      try {
-        const cachedStr = sessionStorage.getItem(cacheKey);
-        if (cachedStr) {
-          const cachedData = JSON.parse(cachedStr);
-          applyAppDataToUI(cachedData, selectedTeam);
-        }
-      } catch (e) {
-        console.warn('Cache read error:', e);
-      }
-
-      // 2. Network Fetch & Background UI Sync
+      const team = teamSelect ? teamSelect.value : '2028 Full Grad Class';
+      const queryTeam = (team && team.includes('Full Grad Class')) ? 'All' : team;
+      
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(queryTeam)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-
-        // Save to Session Storage
-        try {
-          sessionStorage.setItem(cacheKey, JSON.stringify(data));
-        } catch (e) {}
-
-        applyAppDataToUI(data, selectedTeam);
-      } catch (err) {
-        console.error("Error fetching app data:", err);
-      }
-    }
-
-    function applyAppDataToUI(data, selectedTeam) {
-      if (data.teams && Array.isArray(data.teams) && data.teams.length > 0) {
+        
         renderDynamicTeams(data.teams);
-      } else {
-        renderDynamicTeams(DEFAULT_TEAMS);
-      }
-      updateSelectedTeamOps(selectedTeam);
+        updateSelectedTeamOps(team);
 
-      // Render Announcement Banner
-      if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
-        const latestAnn = data.announcements[data.announcements.length - 1];
-        document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
-      } else if (typeof data.announcement === 'string' && data.announcement) {
-        document.getElementById('announcementText').innerText = data.announcement;
-      } else {
-        document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub!";
-      }
+        // Render Announcement Banner (Check Array or String)
+        if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
+          const latestAnn = data.announcements[data.announcements.length - 1];
+          document.getElementById('announcementText').innerText = latestAnn['Announcement Text'] || latestAnn['text'] || JSON.stringify(latestAnn);
+        } else if (typeof data.announcement === 'string' && data.announcement) {
+          document.getElementById('announcementText').innerText = data.announcement;
+        } else {
+          document.getElementById('announcementText').innerText = "Welcome to the South Texas Sliders Operations Hub! Select your team from the top dropdown to view schedule details and submit player availability per game.";
+        }
 
-      // Render Spring Training Itinerary
-      if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
-        const latestSt = data.springTraining[data.springTraining.length - 1];
-        const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
-        if (stText) {
+        // Render Spring Training Itinerary (Check Array or String)
+        if (data.springTraining && Array.isArray(data.springTraining) && data.springTraining.length > 0) {
+          const latestSt = data.springTraining[data.springTraining.length - 1];
+          const stText = latestSt['Itinerary Text'] || latestSt['text'] || '';
+          if (stText) {
+            document.getElementById('springTrainingContent').innerHTML = `
+              <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
+                ${stText}
+              </div>`;
+          }
+        } else if (typeof data.springTraining === 'string' && data.springTraining) {
           document.getElementById('springTrainingContent').innerHTML = `
             <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-              ${stText}
+              ${data.springTraining}
             </div>`;
         }
-      } else if (typeof data.springTraining === 'string' && data.springTraining) {
-        document.getElementById('springTrainingContent').innerHTML = `
-          <div style="background:#F8FAFC; border-left:4px solid var(--navy); padding:14px; border-radius:4px; font-size:0.92rem; white-space:pre-wrap;">
-            ${data.springTraining}
-          </div>`;
+
+        currentRoster = data.roster || [];
+        currentPitchLogs = data.pitchSmart || [];
+        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
+        currentGames = data.games || [];
+        currentEvents = data.events || [];
+
+        populatePlayerDropdowns(currentRoster);
+        populateTournamentDropdowns(currentTournaments);
+        renderAgenda(currentTournaments, currentGames, currentEvents);
+        renderRoster(currentRoster);
+        renderTournaments(currentTournaments, currentGames);
+        renderRotations(currentTournaments, data.rotations, currentGames);
+        renderPitchTracker(currentPitchLogs);
+      } catch (err) {
+        console.error("Error loading app data:", err);
+        renderDynamicTeams(DEFAULT_TEAMS);
+        updateSelectedTeamOps(team);
       }
-
-      currentRoster = data.roster || [];
-      currentPitchLogs = data.pitchSmart || [];
-      currentTournaments = sortTournamentsChronologically(data.tournaments || []);
-      currentGames = data.games || [];
-      currentEvents = data.events || [];
-
-      populatePlayerDropdowns(currentRoster);
-      populateTournamentDropdowns(currentTournaments);
-      renderAgenda(currentTournaments, currentGames, currentEvents);
-      renderRoster(currentRoster);
-      renderTournaments(currentTournaments, currentGames);
-      renderRotations(currentTournaments, data.rotations, currentGames);
-      renderPitchTracker(currentPitchLogs);
     }
 
     function populateTournamentDropdowns(tournaments) {
@@ -1127,24 +1125,161 @@
                     `;
                   }).join('')}
                 </div>` : ''}
-      </div>
+            </div>`;
+        }
+      }).join('');
+    }
 
-      <div style="margin-top: 15px;">
-        <div class="card">
-          <div class="card-header">📝 Log Pitch Count</div>
-          <div class="card-body">
-            <form onsubmit="submitPitchLog(event)">
-              <div class="form-group">
-                <label>Pitcher Full Name</label>
-                <select id="pPlayerName" class="form-select" required></select>
+    function populatePlayerDropdowns(roster) {
+      const rSelect = document.getElementById('rPlayerName');
+      const pSelect = document.getElementById('pPlayerName');
+      const mSelect = document.getElementById('mPlayerName');
+      
+      const optionsHTML = roster.length > 0 
+        ? roster.map(r => `<option value="${r['Full Name']}">${r['Full Name']} (#${r['Jersey #']})</option>`).join('')
+        : `<option value="">No players found</option>`;
+
+      if (rSelect) rSelect.innerHTML = optionsHTML;
+      if (pSelect) pSelect.innerHTML = optionsHTML;
+      if (mSelect) mSelect.innerHTML = optionsHTML;
+    }
+
+    function renderRoster(roster) {
+      const tbody = document.getElementById('teamRosterBody');
+      if (!roster || roster.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No roster records found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = roster.map(r => `
+        <tr>
+          <td><strong>${r['Full Name']}</strong></td>
+          <td><span class="badge bg-navy">#${r['Jersey #']}</span></td>
+          <td>${r['Primary Pos']}</td>
+          <td>${r['Secondary Pos'] || '-'}</td>
+          <td>${r['Pitcher Status']}</td>
+          <td>${r['High School']}</td>
+        </tr>
+      `).join('');
+    }
+
+    /* CLEAN & READABLE SCHEDULES & HOTELS TAB */
+    function renderTournaments(tournaments, games) {
+      const container = document.getElementById('tournamentsListContainer');
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No tournaments published yet.</div></div>`;
+        return;
+      }
+      container.innerHTML = tournaments.map(t => {
+        const eventGames = (games || []).filter(g => g['Event ID'] === t['Event ID'] || g['Event ID'] === t['Tournament Name']);
+        const hasValidHotel = t['Hotel Booking Link'] && typeof t['Hotel Booking Link'] === 'string' && t['Hotel Booking Link'].startsWith('http');
+        const hasValidMap = t['Facility Map Link'] && typeof t['Facility Map Link'] === 'string' && t['Facility Map Link'].startsWith('http');
+        const formattedDateRange = formatTournamentDateRange(t);
+
+        return `
+          <div class="card">
+            <div class="card-header">
+              <span>🏟️ ${t['Tournament Name']} (${formattedDateRange})</span>
+              <span>${t['Location']}</span>
+            </div>
+            <div class="card-body">
+              <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
+                ${hasValidHotel ? `<a href="${t['Hotel Booking Link']}" target="_blank" class="btn btn-navy btn-sm">🏨 Hotel Link (Cutoff: ${t['Cutoff Date'] || 'N/A'})</a>` : `<span class="badge bg-navy">Hotel Link: ${t['Hotel Booking Link'] || 'TBA'}</span>`}
+                ${hasValidMap ? `<a href="${t['Facility Map Link']}" target="_blank" class="btn btn-gold btn-sm">📍 Field Map</a>` : `<span class="badge bg-gold">Field Map: ${t['Facility Map Link'] || 'TBA'}</span>`}
               </div>
-              <div class="form-group"><label>Outing Date</label><input type="date" id="pDate" class="form-control" required></div>
-              <div class="form-group"><label>Pitches Thrown</label><input type="number" id="pCount" class="form-control" max="95" required></div>
-              <button type="submit" class="btn btn-navy" style="width:100%;">Calculate Rest & Log</button>
-            </form>
-          </div>
-      </div>
-    </div></div>
+              
+              <h3>Game Schedule & Player RSVP</h3>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr><th>Game</th><th>Date</th><th>Time</th><th>Opponent</th><th>Field / Location</th><th>Uniform Combo</th><th>Action</th></tr>
+                  </thead>
+                  <tbody>
+                    ${eventGames.length > 0 ? eventGames.map(g => {
+                      const cleanDate = formatCleanDate(g['Date']);
+                      const cleanTime = formatCleanTime(g['Game Time']);
+                      const gameLabel = formatGameLabel(g['Game ID']);
+                      
+                      return `
+                        <tr>
+                          <td><span class="badge bg-navy">${gameLabel}</span></td>
+                          <td><strong>${cleanDate}</strong></td>
+                          <td><strong>${cleanTime}</strong></td>
+                          <td><strong>vs. ${g['Opponent']}</strong></td>
+                          <td>${g['Location/Field #'] || 'TBD'}</td>
+                          <td><span class="badge bg-gold">${g['Designated Uniform'] || 'TBD'}</span></td>
+                          <td>
+                            <button class="btn btn-navy btn-sm" onclick="toggleModal(true, '${t['Tournament Name']}', '${gameLabel} - vs. ${g['Opponent']}')">RSVP Game</button>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No games published for this event yet.</td></tr>`}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    /* CLEAN & READABLE ROTATIONS TAB */
+    function renderRotations(tournaments, rotations, games) {
+      const container = document.getElementById('rotationsListContainer');
+      if (!tournaments || tournaments.length === 0) {
+        container.innerHTML = `<div class="card"><div class="card-body" style="text-align:center;">No tournament lineups published yet.</div></div>`;
+        return;
+      }
+      container.innerHTML = tournaments.map(t => {
+        const eventRotations = (rotations || []).filter(r => {
+          const game = (games || []).find(g => g['Game ID'] === r['Game ID']);
+          return game && (game['Event ID'] === t['Event ID'] || game['Event ID'] === t['Tournament Name']);
+        });
+
+        const formattedDateRange = formatTournamentDateRange(t);
+
+        return `
+          <div class="card">
+            <div class="card-header">
+              <span>🏟️ ${t['Tournament Name']} - Lineup Cards</span>
+              <span>${formattedDateRange}</span>
+            </div>
+            <div class="card-body">
+              ${eventRotations.length > 0 ? eventRotations.map(r => {
+                const gameInfo = (games || []).find(g => g['Game ID'] === r['Game ID']) || {};
+                const gDate = formatCleanDate(gameInfo['Date']);
+                const gTime = formatCleanTime(gameInfo['Game Time']);
+                const gLabel = formatGameLabel(r['Game ID']);
+                const gOpponent = gameInfo['Opponent'] ? `vs. ${gameInfo['Opponent']}` : '';
+                const gLocation = gameInfo['Location/Field #'] || '';
+                const gUniform = gameInfo['Designated Uniform'] || '';
+
+                return `
+                  <div class="tight-lineup-card">
+                    <div class="tight-lineup-header">
+                      <span>⚾ ${gLabel} | ${gDate} @ ${gTime} ${gOpponent} (${gLocation})</span>
+                      <span class="badge bg-gold">${gUniform}</span>
+                    </div>
+                    <div style="padding: 10px 12px; background: #fff;">
+                      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:8px; font-size:0.82rem;">
+                        <span><strong>SP:</strong> <span class="badge bg-navy">${r['Starting Pitcher (SP)']}</span></span>
+                        <span><strong>Relief:</strong> ${r['Relief Pitchers (RP1, RP2)'] || 'TBD'}</span>
+                      </div>
+                      
+                      <div class="lineup-vertical-list">
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">C</span><span class="lineup-player-name">${r['C'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">1B</span><span class="lineup-player-name">${r['1B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">2B</span><span class="lineup-player-name">${r['2B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">3B</span><span class="lineup-player-name">${r['3B'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">SS</span><span class="lineup-player-name">${r['SS'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">LF</span><span class="lineup-player-name">${r['LF'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">CF</span><span class="lineup-player-name">${r['CF'] || 'TBD'}</span></div>
+                        <div class="lineup-vertical-item"><span class="lineup-pos-tag">RF</span><span class="lineup-player-name">${r['RF'] || 'TBD'}</span></div>
+                        ${r['EH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">EH</span><span class="lineup-player-name">${r['EH']}</span></div>` : ''}
+                        ${r['DH'] ? `<div class="lineup-vertical-item"><span class="lineup-pos-tag">DH</span><span class="lineup-player-name">${r['DH']}</span></div>` : ''}
+                      </div>
+                    </div>
+                  </div>`;
+              }).join('') : `<p style="color:var(--text-muted); text-align:center;">No published lineups for this tournament yet.</p>`}
+            </div>
           </div>`;
       }).join('');
     }
@@ -1416,7 +1551,7 @@
     window.onload = function() {
       buildAdminGameSlots();
       renderDynamicTeams(DEFAULT_TEAMS);
-      updateSelectedTeamOps('2028 Pierce');
+      updateSelectedTeamOps('2028 Full Grad Class');
       updateClock();
       loadData();
     };
