@@ -983,7 +983,7 @@ function updateSelectedTeamOps(selectedTeamName) {
     async function loadData() {
       const teamSelect = document.getElementById('teamSelector');
       const team = teamSelect ? teamSelect.value : '2028 Full Grad Class';
-      const queryTeam = (team === '2028 Full Grad Class') ? 'All' : team;
+      const queryTeam = team;
       
       try {
         const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(queryTeam)}`);
