@@ -109,7 +109,7 @@
     </div>
     <!-- Pre-populated Header Team Dropdown -->
     <select id="teamSelector" onchange="onTeamChange()">
-      <option value="">Loading Teams from Sheet...</option>
+      <option value="">Loading Teams...</option>
     </select>
   </header>
 
@@ -688,6 +688,7 @@
     ];
 
     let fetchedTeams = DEFAULT_TEAMS;
+    let hasUserSelectedTeam = false;
     let currentRoster = [];
     let currentPitchLogs = [];
     let currentTournaments = [];
@@ -869,7 +870,7 @@
     }
     setInterval(updateClock, 1000);
 
-    function renderDynamicTeams(teams, preferredTeam) {
+    function renderDynamicTeams(teams) {
       const activeTeams = (teams && Array.isArray(teams) && teams.length > 0) ? teams : DEFAULT_TEAMS;
       fetchedTeams = activeTeams;
 
@@ -878,16 +879,13 @@
       const npTeamSelect = document.getElementById('npTeam');
       const aeTeamSelect = document.getElementById('aeTeam');
 
-      // Build options strictly in the exact order listed in the Teams section of Google Sheets
       const optionsHTML = activeTeams.map(t => `<option value="${t['Team']}">${t['Team']} (Coach: ${t['Head Coach'] || 'Staff'})</option>`).join('');
       
       if (teamSelect) {
         teamSelect.innerHTML = optionsHTML;
-        const currentVal = teamSelect.value;
-        if (preferredTeam && activeTeams.some(t => t['Team'] === preferredTeam)) {
-          teamSelect.value = preferredTeam;
-        } else if (currentVal && activeTeams.some(t => t['Team'] === currentVal)) {
-          teamSelect.value = currentVal;
+        
+        if (hasUserSelectedTeam && teamSelect.dataset.userChoice && activeTeams.some(t => t['Team'] === teamSelect.dataset.userChoice)) {
+          teamSelect.value = teamSelect.dataset.userChoice;
         } else if (activeTeams.length > 0) {
           teamSelect.value = activeTeams[0]['Team'];
         }
@@ -929,7 +927,10 @@
     }
 
     function onTeamChange() {
-      const selectedTeam = document.getElementById('teamSelector').value;
+      const teamSelect = document.getElementById('teamSelector');
+      const selectedTeam = teamSelect.value;
+      hasUserSelectedTeam = true;
+      teamSelect.dataset.userChoice = selectedTeam;
       updateSelectedTeamOps(selectedTeam);
       loadData(selectedTeam);
     }
@@ -974,26 +975,34 @@
       return [...tournaments].sort((a, b) => parseTournamentDate(a) - parseTournamentDate(b));
     }
 
-    async function loadData(explicitTeam) {
+    async function loadData(overrideTeam) {
       const teamSelect = document.getElementById('teamSelector');
-      let team = explicitTeam || (teamSelect ? teamSelect.value : '');
+      let team = overrideTeam;
+      if (!team) {
+        if (hasUserSelectedTeam && teamSelect && teamSelect.dataset.userChoice) {
+          team = teamSelect.dataset.userChoice;
+        } else {
+          team = '';
+        }
+      }
       
       try {
-        const res = await fetch(`${API_URL}?action=getAppData&team=${encodeURIComponent(team)}`);
+        const res = await fetch(`${API_URL}?action=getAppData${team ? '&team=' + encodeURIComponent(team) : ''}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
-        const sheetTeams = (data.teams && Array.isArray(data.teams) && data.teams.length > 0) ? data.teams : DEFAULT_TEAMS;
+        renderDynamicTeams(data.teams);
         
-        // Default to the first team listed in the Teams section of Google Sheets if no explicit selection is active
-        if (!explicitTeam && sheetTeams.length > 0) {
-          if (!team || !sheetTeams.some(t => t['Team'] === team)) {
-            team = sheetTeams[0]['Team'];
-          }
-        }
+        const firstTeamInSheet = (data.teams && data.teams.length > 0) ? data.teams[0]['Team'] : (fetchedTeams[0] ? fetchedTeams[0]['Team'] : '');
+        const activeTeamName = (hasUserSelectedTeam && teamSelect && teamSelect.dataset.userChoice) 
+          ? teamSelect.dataset.userChoice 
+          : firstTeamInSheet;
 
-        renderDynamicTeams(sheetTeams, team);
-        updateSelectedTeamOps(team);
+        if (teamSelect && activeTeamName) {
+          teamSelect.value = activeTeamName;
+        }
+        
+        updateSelectedTeamOps(activeTeamName);
 
         // Render Announcement Banner
         if (data.announcements && Array.isArray(data.announcements) && data.announcements.length > 0) {
@@ -1022,10 +1031,26 @@
             </div>`;
         }
 
-        currentRoster = data.roster || [];
+        let roster = data.roster || [];
+        let tournaments = data.tournaments || [];
+        let games = data.games || [];
+
+        if (activeTeamName && (!team || team === '')) {
+          const cleanTeam = activeTeamName.trim().toLowerCase();
+          roster = roster.filter(r => {
+            const rt = (r['Team'] || r['Assigned Team'] || '').toString().trim().toLowerCase();
+            return !rt || rt === 'all' || rt === cleanTeam || cleanTeam.includes(rt) || rt.includes(cleanTeam);
+          });
+          tournaments = tournaments.filter(t => {
+            const tt = (t['Team'] || t['Assigned Team'] || '').toString().trim().toLowerCase();
+            return !tt || tt === 'all' || tt === cleanTeam || cleanTeam.includes(tt) || tt.includes(cleanTeam);
+          });
+        }
+
+        currentRoster = roster;
         currentPitchLogs = data.pitchSmart || [];
-        currentTournaments = sortTournamentsChronologically(data.tournaments || []);
-        currentGames = data.games || [];
+        currentTournaments = sortTournamentsChronologically(tournaments);
+        currentGames = games;
         currentEvents = data.events || [];
 
         populatePlayerDropdowns(currentRoster);
@@ -1037,8 +1062,9 @@
         renderPitchTracker(currentPitchLogs);
       } catch (err) {
         console.error("Error loading app data:", err);
-        renderDynamicTeams(DEFAULT_TEAMS, team);
-        updateSelectedTeamOps(team || (DEFAULT_TEAMS[0] ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce'));
+        renderDynamicTeams(DEFAULT_TEAMS);
+        const fallbackTeam = (fetchedTeams && fetchedTeams[0]) ? fetchedTeams[0]['Team'] : '';
+        updateSelectedTeamOps(fallbackTeam);
       }
     }
 
@@ -1562,9 +1588,6 @@
 
     window.onload = function() {
       buildAdminGameSlots();
-      renderDynamicTeams(DEFAULT_TEAMS);
-      const topTeam = (DEFAULT_TEAMS && DEFAULT_TEAMS.length > 0) ? DEFAULT_TEAMS[0]['Team'] : '2028 Pierce';
-      updateSelectedTeamOps(topTeam);
       updateClock();
       loadData();
     };
